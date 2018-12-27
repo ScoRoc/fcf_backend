@@ -1,34 +1,32 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import './App.min.css';
+
+import Home from './pages/home/Home';
+import SignIn from './pages/signin/SignIn';
+import NewManager from './pages/new-manager/NewManager';
+
+import Footer from './components/Footer';
+import Header from './components/Header';
+
+// const user = {
+//   name: 'Scott',
+// }
+const user = false;
 
 class App extends Component {
 
-  componentDidMount() {
-    axios.get('/test').then(response => {
-      console.log(response.data);
-    })
-  }
-
   render() {
+    const firstPage = user ? <Home /> : <SignIn />;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <div className="App">
+          <Header />
+          <NewManager />
+          {firstPage}
+          <Footer />
+        </div>
+      </Router>
     );
   }
 }

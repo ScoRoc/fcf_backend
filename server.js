@@ -4,8 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-// const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/fcf_backend', { useNewUrlParser: true, useCreateIndex: true }); // for local dev
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/fcf_backend', { useNewUrlParser: true, useCreateIndex: true }); // for local dev
 // mongoose.connect(process.env.MONGODB_URI, {useMongoClient: true});  // for heroku deployment
 
 const app = express();
@@ -19,8 +19,10 @@ app.get('/test', (req, res) => {
 });
 
 const auth = require('./routes/auth');
+const manager = require('./routes/manager');
 
 app.use('/auth', auth);
+app.use('/manager', manager);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
