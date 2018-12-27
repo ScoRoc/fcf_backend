@@ -49,21 +49,21 @@ managerSchema.pre('save', function(next) {
   next();
 });
 
-// managerSchema.set('toJSON', {
-//   transform: function(doc, returned, options) {
-//     const returnObject = {...returned};
-//     delete returnObject.password;
-//     return returnObject;
-//   }
-// });
+managerSchema.set('toJSON', {
+  transform: (doc, returned, options) => {
+    const returnObject = {...returned};
+    delete returnObject.password;
+    return returnObject;
+  }
+});
 
-// managerSchema.set('toObject', {
-//   transform: function(doc, returned, options) {
-//     const returnObject = {...returned};
-//     delete returnObject.password;
-//     return returnObject;
-//   }
-// });
+managerSchema.set('toObject', {
+  transform: (doc, returned, options) => {
+    const returnObject = {...returned};
+    delete returnObject.password;
+    return returnObject;
+  }
+});
 
 const Manager = mongoose.model('Manager', managerSchema);
 

@@ -1,5 +1,23 @@
 @import '../../sass/variables';
+@import '../../sass/silent-classes';
 
 .SignIn {
-  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signin-form {
+  @extend %new-manager-wrappers;
+
+  label {
+    width: 100%;
+    margin-bottom: 1em;
+    font-size: 1em;
+  }
+
+  input {
+    width: 100%;
+    font-size: 1em;
+  }
 }

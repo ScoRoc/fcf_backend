@@ -1,0 +1,20 @@
+@import './_variables';
+
+%new-manager-wrappers {
+  width: 30vw;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: $greyMedium;
+  font-size: 1.1em;
+
+  button {
+    height: 2.5em;
+    width: 100%;
+    margin-top: 1em;
+    font-size: 1em;
+    cursor: pointer;
+  }
+}

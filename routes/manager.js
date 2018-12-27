@@ -7,33 +7,33 @@ const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
 
 // await this
-const findManager = email => {
+const findManagerByEmail = email => {
   return Manager.findOne({email});
 }
 
-router.post('/login', (req, res) => {
-  let hashedPass = '';
-  let passwordMatch = false;
-  Manager.findOne({email: req.body.email.toLowerCase()}, function(err, manager) {
-    if (!manager) {
-      res.json({manager: null, token: null});
-    } else {
-      hashedPass = manager.password;
-      passwordMatch = bcrypt.compareSync(req.body.password, hashedPass);
-      if (passwordMatch) {
-        let token = jwt.sign(manager.toObject(), process.env.JWT_SECRET, {
-          expiresIn: 60 * 60 * 24
-        });
-        res.json({manager: manager.toObject(), token});
-      } else {
-        res.json({ error: true, message: 'Email or password is incorrect'});
-      }
-    }
-  })
+const doesPasswordMatch = (pw, hashedPw) => {
+  return bcrypt.compareSync(pw, hashedPw);
+}
+
+const createToken = manager => {
+  const expireTime = 60 * 60 * 24 * 7
+  return jwt.sign(manager.toObject(), process.env.JWT_SECRET, {
+    expiresIn: expireTime,
+  });
+}
+
+router.post('/signin', async (req, res) => {
+  const errMsg = 'Email or password is incorrect.';
+  let manager = await findManagerByEmail(req.body.email);
+  const hashedPass = manager ? manager.password : '';
+  !manager  ? res.json({ manager: null, token: null, errors: true, _message: errMsg })
+            : doesPasswordMatch(req.body.password, hashedPass)
+              ? res.json({ manager: manager.toObject(), token: createToken(manager) })
+              : res.json({ errors: true, _message: errMsg });
 });
 
 router.post('/addmanager', async (req, res) => {
-  if ( await findManager(req.body.email) ) {
+  if ( await findManagerByEmail(req.body.email) ) {
     res.send({errors: true, _message: 'There is already a user with that email.'});
   } else {
     const { email, firstName, lastName, password } = req.body;
@@ -56,9 +56,9 @@ router.post('/addmanager', async (req, res) => {
 });
 
 router.post('/validate', (req, res) => {
-  let token = req.body.token;
+  const token = req.body.token;
   if (!token) {
-    res.status(401).json({message: "Must pass the token"})
+    res.status(401).json({errors: true, _message: "Must pass the token"})
   } else {
     jwt.verify(token, process.env.JWT_SECRET, function(err, manager) {
       if (err) {
@@ -66,15 +66,15 @@ router.post('/validate', (req, res) => {
       } else {
         Manager.findById({
           '_id': manager._id
-        }, function(err, manager) {
+        }, function(err, foundManager) {
           if (err) {
             res.status(401).send(err);
           } else {
-            res.json({manager: manager.toObject(), token})
+            res.json({manager: foundManager.toObject(), token})
           }
-        })
+        });
       }
-    })
+    });
   }
 });
 
