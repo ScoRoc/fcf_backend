@@ -1,10 +1,6 @@
 @import '../../sass/variables';
 
-.NewManager {
-  background: $greyMediumDark;
-}
-
-.new-manager-form {
+%new-manager-wrappers {
   width: 30vw;
   padding: 1em;
   display: flex;
@@ -13,6 +9,31 @@
   align-items: flex-start;
   background: $greyMedium;
   font-size: 1.1em;
+
+  button {
+    height: 2.5em;
+    width: 100%;
+    margin-top: 1em;
+    font-size: 1em;
+    cursor: pointer;
+  }
+}
+
+.NewManager {
+  background: $greyMediumDark;
+
+  h2 {
+    text-align: center;
+  }
+
+  &__body {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+.new-manager-form {
+  @extend %new-manager-wrappers;
 
   label {
     width: 100%;
@@ -24,13 +45,16 @@
     width: 100%;
     font-size: 1em;
   }
+}
 
-  button {
-    height: 2.5em;
-    width: 100%;
-    margin-top: 1em;
-    font-size: 1em;
-    cursor: pointer;
+.successful-new-manager {
+  @extend %new-manager-wrappers;
+
+  h3 {
+    text-decoration: underline;
   }
+}
 
+.placeholder {
+  width: 30vw;
 }

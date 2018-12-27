@@ -9,22 +9,28 @@ export default class NewManagerForm extends React.Component {
 
   handleSuccess = data => {
     console.log('success: ', data);
+    this.props.updateSuccessfulManager(data);
   }
 
   handleSubmit = e => {
     e.preventDefault();
+    const email = this.email.value.toLowerCase();
     const firstName = this.firstName.value.toLowerCase();
     const lastName = this.lastName.value.toLowerCase();
-    const email = this.email.value.toLowerCase();
     const password = this.password.value;
     axios.post('/manager/addmanager', { email, firstName, lastName, password }).then(result => {
       result.data.errors ? this.handleErrors(result.data._message) : this.handleSuccess(result.data);
+      this.email.value = '';
+      this.firstName.value = '';
+      this.lastName.value = '';
+      this.password.value = '';
     });
   }
 
   render() {
     return (
       <form className='new-manager-form' onSubmit={this.handleSubmit}>
+        <h3>Enter New Manager Info</h3>
         <label htmlFor='new-manager-first-name'>First Name
           <br />
           <input id='new-manager-first-name' type='text' ref={ input => {this.firstName = input}} required />

@@ -48,7 +48,7 @@ router.post('/addmanager', async (req, res) => {
           console.log('err: ', err);
           res.send(err);
         } else {
-          res.json({ manager: manager.toObject() });
+          res.json({ manager: manager.toObject(), managerPassword: password });
         }
       }
     )
