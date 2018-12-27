@@ -1,9 +1,12 @@
 import React from 'react';
 
+import Nav from './Nav';
+
 const Header = props => {
   return (
     <header>
-      <p>header</p>
+      <h2>FCF Management Portal</h2>
+      <Nav />
     </header>
   );
 }
