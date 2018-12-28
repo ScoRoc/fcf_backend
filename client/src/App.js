@@ -13,6 +13,7 @@ import AddManagerPage from './pages/new-manager/AddManagerPage';
 import Footer from './components/Footer';
 // import Main from './components/Main';
 import Header from './components/Header';
+import LoadingFirstPage from './components/LoadingFirstPage';
 
 class App extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class App extends Component {
 
   componentDidMount() {
     const token = localStorage.getItem('fcf_backend');
-    if (!token) {
+    if (token === 'undefined' || !token) {
       localStorage.removeItem('fcf_backend');
       this.logout();
     } else {
@@ -54,9 +55,10 @@ class App extends Component {
       <Router>
         <div className="App">
           <Header logout={this.logout} manager={manager} />
-          {/* <NewManager /> */}
+          {/* <AddManagerPage /> */}
           {/* <Main manager={manager} liftManager={this.liftManager} /> */}
           <main className='main flex1'>
+            <Route exact path='/' render={() => <LoadingFirstPage />} />
             <Route path='/home' render={() => <HomePage manager={manager} />} />
             <Route path='/announcements' render={() => <AnnouncementsPage />} />
             <Route path='/events' render={() => <EventsPage />} />

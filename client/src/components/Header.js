@@ -7,7 +7,7 @@ const Header = props => {
   const navArea = props.manager ? <Nav logout={props.logout} manager={props.manager} /> : '';
   return (
     <header>
-      <h2>FCF Management Portal</h2>
+      <h2><span>FCF </span><span id='long-mgmt'>Management </span><span id='short-mgmt'>Mgmt.</span><span>Portal</span></h2>
       {navArea}
     </header>
   );

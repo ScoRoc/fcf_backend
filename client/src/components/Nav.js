@@ -5,7 +5,9 @@ import './components.min.css';
 
 const Nav = props => {
   const addManager  = props.manager.email === 'super@super.com'
-                    ? <NavLink to='/addmanager' activeClassName='selected-nav-link'>Add Manager</NavLink>
+                    ? <NavLink to='/addmanager' activeClassName='selected-nav-link'>
+                        <span id='add-manager-span-wrapper'><span>Add </span><span>Manager</span></span>
+                      </NavLink>
                     : '';
   return (
     <nav>

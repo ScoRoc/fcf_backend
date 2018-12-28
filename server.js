@@ -18,9 +18,11 @@ app.get('/test', (req, res) => {
   res.send('working')
 });
 
+const announcements = require('./routes/announcements');
 const auth = require('./routes/auth');
 const manager = require('./routes/manager');
 
+app.use('/announcements', announcements);
 app.use('/auth', auth);
 app.use('/manager', manager);
 
