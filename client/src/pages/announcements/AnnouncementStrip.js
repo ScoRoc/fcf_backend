@@ -6,9 +6,11 @@ export default class AnnouncementStrip extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      announcementText: '',
       charCount: 0,
       editable: false,
-      announcementText: '',
+      height: 0,
+      width: 0,
     }
   }
 
@@ -33,14 +35,26 @@ export default class AnnouncementStrip extends React.Component {
                         : this.setState({ charCount: value.length - 1});
   }
 
+  updateWindowDimensions = () => {
+    this.setState({ width: window.innerWidth, height: window.innerheight });
+  }
+
   componentDidMount() {
     const { text } = this.props;
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
     this.setState({ announcementText: text, charCount: text.length })
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
   render() {
     const { deleteAnnouncement, id } = this.props;
-    const { editable, announcementText } = this.state;
+    const { announcementText, editable, width } = this.state;
+    const minMaxWidth = width >= 475 ? '75%' : '100%';
+    const divMinMaxHeight = width >= 600 ? '2.7em' : '100%';
     const btn = editable
               ? <button onClick={() => this.handleEditAnnouncement(announcementText, id)}>Done</button>
               : <button onClick={this.toggleEdit}>Edit</button>;
@@ -49,8 +63,13 @@ export default class AnnouncementStrip extends React.Component {
                           charLimit={150}
                           liftText={this.liftAnnouncementText}
                           text={announcementText}
+                          divStyle={{
+                            minHeight: divMinMaxHeight,
+                            minWidth: minMaxWidth,
+                            maxWidth: minMaxWidth,
+                          }}
                           textareaStyle={{
-                            minHeight: '2.7em',
+                            minHeight: '100%',
                             minWidth: '100%',
                             maxWidth: '100%',
                           }}
@@ -59,8 +78,10 @@ export default class AnnouncementStrip extends React.Component {
     return (
       <div className='announcement-row'>
         {announcement}
-        {btn}
-        <button onClick={() => deleteAnnouncement(id)}>Delete</button>
+        <div className='announcement-row__btn-wrap'>
+          {btn}
+          <button onClick={() => deleteAnnouncement(id)}>Delete</button>
+        </div>
       </div>
     );
   }

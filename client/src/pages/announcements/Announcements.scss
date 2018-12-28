@@ -17,6 +17,14 @@
   justify-content: flex-start;
   align-items: center;
   background: $greyMedium;
+
+  @media screen and (min-width: 600px) and (max-width: 768px) {
+    padding: .5em 1em;
+  }
+
+  @media screen and (max-width: 600px) {
+    padding: .5em;
+  }
 }
 
 .AddAnnouncement {
@@ -53,9 +61,8 @@
   }
 
   button {
-    height: 2.5em;
-    margin-top: 1em;
-    flex-basis: 10%;
+    height: 2.728em;
+    flex-basis: 6em;
     color: $white;
     font-size: 1em;
     background: $greyDark;
@@ -63,6 +70,10 @@
     outline: none;
     transition: 250ms;
     cursor: pointer;
+
+    @media screen and (max-width: 768px) {
+      flex-basis: 4em;
+    }
 
     &:hover {
       color: $yellow;
@@ -90,7 +101,16 @@
   align-items: flex-start;
   background: $greyDark;
 
+  h3 {
+    //
+
+    @media screen and (max-width: 475px) {
+      font-size: 1em;
+    }
+  }
+
   .announcement-row {
+    height: 100%;
     width: 100%;
     margin: .5em 0;
     padding: .25em .75em;
@@ -99,14 +119,34 @@
     align-items: center;
     background: $greyMediumDark;
 
+    @media screen and (max-width: 475px) {
+      width: 100%;
+      flex-direction: column;
+    }
+
     .text {
       height: 3.33em;
       width: 75%;
-      margin: 1em 0;
       padding: 2px;
       display: flex;
       align-items: center;
       border: 1px solid transparent;
+
+      @media screen and (min-width: 600px) and (max-width: 768px) {
+        height: 5em;
+        width: 75%;
+      }
+
+      @media screen and (min-width: 475px) and (max-width: 600px) {
+        height: 8.25em;
+        width: 75%;
+      }
+
+      @media screen and (max-width: 475px) {
+        height: 9.4em;
+        width: 100%;
+        margin: 1em 0;
+      }
     }
 
     textarea {
@@ -114,6 +154,19 @@
       width: 100%;
       margin-top: 1em;
       font-size: 1em;
+
+      @media screen and (min-width: 600px) and (max-width: 768px) {
+        height: 4.35em;
+      }
+
+      @media screen and (min-width: 475px) and (max-width: 600px) {
+        height: 7.62em;
+      }
+
+      @media screen and (max-width: 475px) {
+        height: 8.75em;
+        width: 100%;
+      }
     }
 
     .char-count {
@@ -122,11 +175,58 @@
       align-self: flex-end;
     }
 
+    &__btn-wrap {
+      height: 100%;
+      width: 20%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      @media screen and (min-width: 600px) and (max-width: 768px) {
+        height: 5.3125em;
+        width: 20%;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+
+      @media screen and (min-width: 475px) and (max-width: 600px) {
+        height: 5.3125em;
+        width: 20%;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+
+      @media screen and (max-width: 475px) {
+        height: 2em;
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
     button {
       @extend %button;
       margin: 0;
       height: 2.5em;
-      width: 10%;
+      width: 45%;
+
+      @media screen and (min-width: 768px) and (max-width: 900px) {
+        width: 48%;
+      }
+
+      @media screen and (min-width: 600px) and (max-width: 768px) {
+        height: 40%;
+        width: 100%;
+      }
+
+      @media screen and (min-width: 475px) and (max-width: 600px) {
+        height: 40%;
+        width: 100%;
+      }
+
+      @media screen and (max-width: 475px) {
+        height: 100%;
+        width: 45%;
+      }
 
       &:active {
         background: darken($greyDark, 15%);
@@ -138,9 +238,13 @@
 }
 
 .TextAreaCharCount {
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: 475px) {
+    width: 100%;
+  }
 }
 
 .warning-red {
