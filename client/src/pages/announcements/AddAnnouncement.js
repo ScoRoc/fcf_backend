@@ -57,7 +57,7 @@ export default class AddAnnouncement extends React.Component {
               </div>
             <button type='submit'>Add</button>
           </form>
-          <p className={turnRed}>{charCount} / 150</p>
+          <p className={`${turnRed} char-count`}>{charCount} / 150</p>
         </div>
       </section>
     );

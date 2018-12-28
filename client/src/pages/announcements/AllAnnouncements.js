@@ -21,7 +21,7 @@ import AnnouncementStrip from './AnnouncementStrip';
                               deleteAnnouncement={deleteAnnouncement}
                               id={announcement._id}
                               key={announcement._id}
-                              text={announcement.announcementText}
+                              announcementText={announcement.announcementText}
                             />
                           ))
                           : 'Loading...';
