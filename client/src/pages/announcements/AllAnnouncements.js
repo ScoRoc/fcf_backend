@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import AnnouncementStrip from './AnnouncementStrip';
+
  const AllAnnouncements = props => {
   const { announcements } = props;
   const deleteAnnouncement = id => {
@@ -9,20 +11,19 @@ import axios from 'axios';
       method: 'delete',
       data: { id },
     }).then(result => {
-      console.log('result: ', result);
+      // console.log('result: ', result);
       props.deleteAnnouncement(id);
     });
   }
   const allAnnouncements  = announcements
-                          ? announcements.slice(0).reverse().map(announcement => {
-                            return (
-                              <div className='announcement-row' key={announcement._id}>
-                                <p>{announcement.announcementText}</p>
-                                <button>Edit</button>
-                                <button onClick={() => deleteAnnouncement(announcement._id)}>Delete</button>
-                              </div>
-                            )
-                          })
+                          ? announcements.slice(0).reverse().map(announcement => (
+                            <AnnouncementStrip
+                              deleteAnnouncement={deleteAnnouncement}
+                              id={announcement._id}
+                              key={announcement._id}
+                              text={announcement.announcementText}
+                            />
+                          ))
                           : 'Loading...';
   return (
     <section className='AllAnnouncements-section'>

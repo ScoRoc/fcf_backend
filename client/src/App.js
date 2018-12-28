@@ -59,7 +59,7 @@ class App extends Component {
           {/* <Main manager={manager} liftManager={this.liftManager} /> */}
           <main className='main flex1'>
             <Route exact path='/' render={() => <LoadingFirstPage />} />
-            <Route path='/home' render={() => <HomePage manager={manager} />} />
+            <Route path='/home' render={() => <HomePage />} />
             <Route path='/announcements' render={() => <AnnouncementsPage />} />
             <Route path='/events' render={() => <EventsPage />} />
             <Route path='/wod' render={() => <WodPage />} />
