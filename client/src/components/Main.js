@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Route, withRouter } from 'react-router-dom';
 
+import './components.min.css';
 import HomePage from '../pages/home/HomePage';
 import SignInPage from '../pages/signin/SignInPage';
 

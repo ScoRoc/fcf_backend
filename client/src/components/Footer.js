@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './components.min.css';
+
 const Footer = props => {
   return (
     <footer>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import './components.min.css';
+
 const Nav = props => {
   const addManager  = props.manager.email === 'super@super.com'
                     ? <NavLink to='/addmanager' activeClassName='selected-nav-link'>Add Manager</NavLink>
