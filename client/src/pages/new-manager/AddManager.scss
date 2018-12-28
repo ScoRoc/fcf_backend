@@ -1,10 +1,12 @@
 @import '../../sass/variables';
 @import '../../sass/silent-classes';
 
-.NewManager {
+.AddManager {
+  padding: 1.5em 0;
   background: $greyMediumDark;
 
   h2 {
+    margin-top: 0;
     text-align: center;
   }
 
@@ -14,8 +16,8 @@
   }
 }
 
-.new-manager-form {
-  @extend %new-manager-wrappers;
+.add-manager-form {
+  @extend %add-manager-wrappers;
 
   label {
     width: 100%;
@@ -30,7 +32,7 @@
 }
 
 .successful-new-manager {
-  @extend %new-manager-wrappers;
+  @extend %add-manager-wrappers;
 
   h3 {
     text-decoration: underline;

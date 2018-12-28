@@ -29,11 +29,12 @@ header {
 }
 
 nav {
-  min-width: 40vw;
+  // min-width: 40vw;
   display: flex;
   justify-content: space-around;
 
   a {
+    padding: 0 1.6em;
     color: $white;
     text-decoration: none;
 
@@ -49,6 +50,11 @@ nav {
     transform-origin: bottom;
     transform: scale(1.3);
   }
+}
+
+main {
+  margin: 0;
+  padding: 0;
 }
 
 footer {

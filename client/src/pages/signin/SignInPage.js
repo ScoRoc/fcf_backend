@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import './SignIn.min.css';
 
-export default class SignIn extends React.Component {
+export default class SignInPage extends React.Component {
 
   handleErrors = data => {
     console.log('data: ', data);

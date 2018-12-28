@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import './NewManager.min.css';
-import NewManagerForm from './NewManagerForm';
+import './AddManager.min.css';
+import AddManagerForm from './AddManagerForm';
 import SuccessfulNewManager from './SuccessfulNewManager';
 
-export default class NewManager extends Component {
+export default class AddManagerPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -39,10 +39,10 @@ export default class NewManager extends Component {
                           <h3>Newly added manager...</h3>
                         </div>;
     return (
-      <div className='NewManager'>
+      <div className='AddManager'>
         <h2>Add New Manager</h2>
-        <div className='NewManager__body'>
-          <NewManagerForm updateSuccessfulManager={this.updateSuccessfulManager} />
+        <div className='AddManager__body'>
+          <AddManagerForm updateSuccessfulManager={this.updateSuccessfulManager} />
           {newManager}
         </div>
       </div>

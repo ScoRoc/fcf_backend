@@ -3,7 +3,7 @@ import React from 'react';
 import Nav from './Nav';
 
 const Header = props => {
-  const navArea = props.manager ? <Nav logout={props.logout} /> : '';
+  const navArea = props.manager ? <Nav logout={props.logout} manager={props.manager} /> : '';
   return (
     <header>
       <h2>FCF Management Portal</h2>

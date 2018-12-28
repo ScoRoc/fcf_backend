@@ -3,12 +3,15 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.min.css';
-import Home from './pages/home/Home';
-import SignIn from './pages/signin/SignIn';
-import Main from './components/Main';
-import NewManager from './pages/new-manager/NewManager';
+import HomePage from './pages/home/HomePage';
+import SignInPage from './pages/signin/SignInPage';
+import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
+import EventsPage from './pages/events/EventsPage';
+import WodPage from './pages/wod/WodPage';
+import AddManagerPage from './pages/new-manager/AddManagerPage';
 
 import Footer from './components/Footer';
+// import Main from './components/Main';
 import Header from './components/Header';
 
 class App extends Component {
@@ -52,11 +55,15 @@ class App extends Component {
         <div className="App">
           <Header logout={this.logout} manager={manager} />
           {/* <NewManager /> */}
-          <Main manager={manager} liftManager={this.liftManager} />
-          {/* <main className='main flex1'>
-            <Route path='/home' render={() => <Home manager={manager} />} />
-            <Route path='/signin' render={() => <SignIn manager={manager} liftManager={this.liftManager} />} />
-          </main> */}
+          {/* <Main manager={manager} liftManager={this.liftManager} /> */}
+          <main className='main flex1'>
+            <Route path='/home' render={() => <HomePage manager={manager} />} />
+            <Route path='/announcements' render={() => <AnnouncementsPage />} />
+            <Route path='/events' render={() => <EventsPage />} />
+            <Route path='/wod' render={() => <WodPage />} />
+            <Route path='/addmanager' render={() => <AddManagerPage />} />
+            <Route path='/signin' render={() => <SignInPage manager={manager} liftManager={this.liftManager} />} />
+          </main>
           <Footer />
         </div>
       </Router>

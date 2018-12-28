@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
-export default class NewManagerForm extends React.Component {
+import './AddManager.min.css';
+
+export default class AddManagerForm extends React.Component {
 
   handleErrors = err => {
     console.log('err: ', err);
@@ -29,23 +31,23 @@ export default class NewManagerForm extends React.Component {
 
   render() {
     return (
-      <form className='new-manager-form' onSubmit={this.handleSubmit}>
+      <form className='add-manager-form' onSubmit={this.handleSubmit}>
         <h3>Enter New Manager Info</h3>
-        <label htmlFor='new-manager-first-name'>First Name
+        <label htmlFor='add-manager-first-name'>First Name
           <br />
-          <input id='new-manager-first-name' type='text' ref={ input => {this.firstName = input}} required />
+          <input id='add-manager-first-name' type='text' ref={ input => {this.firstName = input}} required />
         </label>
-        <label htmlFor='new-manager-last-name'>Last Name
+        <label htmlFor='add-manager-last-name'>Last Name
           <br />
-          <input id='new-manager-last-name' type='text' ref={ input => {this.lastName = input}} required />
+          <input id='add-manager-last-name' type='text' ref={ input => {this.lastName = input}} required />
         </label>
-        <label htmlFor='new-manager-email'>Email
+        <label htmlFor='add-manager-email'>Email
           <br />
-          <input id='new-manager-email' type='email' ref={ input => {this.email = input}} required />
+          <input id='add-manager-email' type='email' ref={ input => {this.email = input}} required />
         </label>
-        <label htmlFor='new-manager-password'>Password
+        <label htmlFor='add-manager-password'>Password
           <br />
-          <input id='new-manager-password' type='text' ref={ input => {this.password = input}} required />
+          <input id='add-manager-password' type='text' ref={ input => {this.password = input}} required />
         </label>
         <button type='submit'>Add Manager</button>
       </form>
