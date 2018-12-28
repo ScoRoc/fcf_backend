@@ -1,5 +1,7 @@
 import React from 'react';
 
+import TextAreaCharCount from '../../components/TextAreaCharCount';
+
 export default class AnnouncementStrip extends React.Component {
   constructor(props) {
     super(props);
@@ -34,16 +36,17 @@ export default class AnnouncementStrip extends React.Component {
   render() {
     const { deleteAnnouncement, id, announcementText } = this.props;
     const { charCount, editable, text } = this.state;
+    const turnRed = charCount === 150 ? 'warning-red' : '';
     const btn = editable
               ? <button onClick={this.editAnnouncement}>Done</button>
               : <button onClick={this.toggleEdit}>Edit</button>;
     const announcement  = editable
-                        ? <div>
-                            <textarea onChange={this.handleChange} value={text}></textarea>
-                            <p className={`${turnRed} char-count`}>{charCount} / 150</p>
-                          </div>
+                        // ? <div>
+                        //     <textarea onChange={this.handleChange} value={text}></textarea>
+                        //     <p className={`${turnRed} char-count`}>{charCount} / 150</p>
+                        //   </div>
+                        ? <TextAreaCharCount text={text} />
                         : <p className='text'>{text}</p>;
-    const turnRed = charCount === 150 ? 'warning-red' : '';
     return (
       <div className='announcement-row'>
         {announcement}

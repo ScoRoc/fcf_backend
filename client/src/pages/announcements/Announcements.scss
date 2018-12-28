@@ -107,12 +107,6 @@
       border: 1px solid transparent;
     }
 
-    div {
-      width: 75%;
-      display: flex;
-      flex-direction: column;
-    }
-
     textarea {
       height: 2.7em;
       width: 100%;
@@ -139,6 +133,12 @@
       }
     }
   }
+}
+
+.TextAreaCharCount {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
 }
 
 .warning-red {

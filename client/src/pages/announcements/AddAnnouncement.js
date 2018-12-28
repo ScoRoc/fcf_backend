@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 
+import TextAreaCharCount from '../../components/TextAreaCharCount';
+
 export default class AddAnnouncement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       announcementText: '',
-      charCount: 0,
     }
   }
 
@@ -20,11 +21,8 @@ export default class AddAnnouncement extends React.Component {
     this.props.addAnnouncement(data.announcement);
   }
 
-  handleChange = e => {
-    e.preventDefault();
-    const { value } = e.target;
-    value.length <= 150 ? this.setState({ charCount: value.length, announcementText: value })
-                        : this.setState({ charCount: value.length - 1});
+  liftAnnouncementText = announcementText => {
+    this.setState({ announcementText });
   }
 
   handleSubmit = e => {
@@ -48,16 +46,16 @@ export default class AddAnnouncement extends React.Component {
           <form className='add-announcement-form' onSubmit={this.handleSubmit}>
             <div>
               <label htmlFor='new-manager-email'>Announcement</label>
-              <textarea
-                onChange={this.handleChange}
+              <TextAreaCharCount
                 id='new-manager-email'
+                liftText={this.liftAnnouncementText}
+                pStyle={{marginRight: '5%'}}
                 required
-                value={announcementText}
-                ></textarea>
+                text={announcementText}
+              />
               </div>
             <button type='submit'>Add</button>
           </form>
-          <p className={`${turnRed} char-count`}>{charCount} / 150</p>
         </div>
       </section>
     );
