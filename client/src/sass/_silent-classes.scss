@@ -1,5 +1,31 @@
 @import './_variables';
 
+%button {
+  height: 2.5em;
+  width: 100%;
+  margin-top: 1em;
+  color: $white;
+  font-size: 1em;
+  background: $greyDark;
+  border: none;
+  transition: 250ms;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    color: $yellow;
+    background: darken($greyDark, 8%);
+    border-radius: .5em;
+    transform: scale(1.04, 1.15);
+  }
+
+  &:active {
+    background: darken($greyDark, 15%);
+    border-radius: 0;
+    transform: scale(.9);
+  }
+}
+
 %add-manager-wrappers {
   width: 30vw;
   padding: 1em;
@@ -11,21 +37,7 @@
   font-size: 1.1em;
 
   button {
-    height: 2.5em;
-    width: 100%;
-    margin-top: 1em;
-    color: $white;
-    font-size: 1em;
-    background: $greyDark;
-    border: none;
-    transition: 250ms;
-    cursor: pointer;
-
-    &:hover {
-      color: $yellow;
-      background: darken($greyDark, 8%);
-      transform: scale(1.04, 1.15);
-    }
+    @extend %button;
   }
 }
 

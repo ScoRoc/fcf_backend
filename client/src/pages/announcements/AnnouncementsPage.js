@@ -20,6 +20,17 @@ export default class AnnouncementsPage extends React.Component {
     this.setState({ announcements: withNewAnnouncement });
   }
 
+  getIndexOfAnnouncement = id => {
+    const { announcements } = this.state;
+    return announcements.indexOf(announcements.find(announcement => announcement.id === id));
+  }
+
+  deleteAnnouncement = id => {
+    const announcements = this.state.announcements.slice(0);
+    announcements.splice(this.getIndexOfAnnouncement(id), 1);
+    this.setState({ announcements });
+  }
+
   componentDidMount() {
     axios.get('/announcements').then(result => {
       console.log('result.data: ', result.data);
@@ -34,7 +45,10 @@ export default class AnnouncementsPage extends React.Component {
         <h1>Accouncments</h1>
         <section className='AnnouncementsPage'>
           <AddAnnouncement addAnnouncement={this.addAnnouncement} />
-          <AllAnnouncements announcements={announcements} />
+          <AllAnnouncements
+            announcements={announcements}
+            deleteAnnouncement={this.deleteAnnouncement}
+          />
         </section>
       </>
     );

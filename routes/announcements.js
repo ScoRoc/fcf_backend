@@ -26,4 +26,12 @@ router.post('/', (req, res) => {
   });
 });
 
+router.delete('/', (req, res) => {
+  Announcement.findByIdAndDelete(req.body.id).exec((err, foo) => {
+    console.log('err: ', err);
+    console.log('foo: ', foo);
+    res.send('yo')
+  })
+});
+
 module.exports = router;
