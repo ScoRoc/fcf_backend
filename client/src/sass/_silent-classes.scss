@@ -22,8 +22,17 @@
     cursor: pointer;
 
     &:hover {
+      color: $yellow;
       background: darken($greyDark, 8%);
       transform: scale(1.04, 1.15);
     }
   }
+}
+
+%page {
+  // padding: .5em 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }

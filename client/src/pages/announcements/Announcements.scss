@@ -1,5 +1,56 @@
 @import '../../sass/variables';
+@import '../../sass/silent-classes';
 
 .AnnouncementsPage {
-  position: relative;
+  @extend %page;
+  flex: 1;
+
+  h1 {
+    align-self: flex-start;
+  }
+}
+
+.AddAnnouncementPage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background: green;
+}
+
+.AddAnnouncement {
+  width: 90%;
+}
+
+.add-announcement-form {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background: $greyMedium;
+  font-size: 1.1em;
+
+  label, input {
+    width: 95%;
+    font-size: 1em;
+  }
+
+  button {
+    height: 2.5em;
+    margin-top: 1em;
+    flex-basis: 10%;
+    color: $white;
+    font-size: 1em;
+    background: $greyDark;
+    border: none;
+    transition: 250ms;
+    cursor: pointer;
+
+    &:hover {
+      color: $yellow;
+      background: darken($greyDark, 8%);
+      transform: scale(1.1, 1.2);
+    }
+  }
 }

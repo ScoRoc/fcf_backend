@@ -2,14 +2,19 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 
 import './Announcements.min.css';
-import SubNav from '../../components/SubNav';
+import AddAnnouncement from './AddAnnouncement';
+import AllAnnouncements from './AllAnnouncements';
+// import SubNav from '../../components/SubNav';
 
 const AnnouncementsPage = props => {
   return (
-    <section className='AnnouncementsPage'>
-      <SubNav page='announcements' />
-      <span>accouncments</span>
-    </section>
+    <>
+      <h1>Accouncments</h1>
+      <section className='AnnouncementsPage'>
+        <AddAnnouncement />
+        <AllAnnouncements />
+      </section>
+    </>
   );
 }
 
