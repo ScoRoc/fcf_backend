@@ -34,7 +34,7 @@ export default class AnnouncementsPage extends React.Component {
       method: 'delete',
       data: { id },
     }).then(result => {
-      console.log('result: ', result);
+      // console.log('result: ', result);
       announcements.splice(this.getIndexOfAnnouncement(id), 1);
       this.setState({ announcements });
     });
@@ -55,7 +55,7 @@ export default class AnnouncementsPage extends React.Component {
 
   componentDidMount() {
     axios.get('/announcements').then(result => {
-      console.log('result.data from AnnouncementsPage: ', result.data);
+      // console.log('result.data from AnnouncementsPage: ', result.data);
       this.setState({ announcements: result.data.announcements });
     });
   }

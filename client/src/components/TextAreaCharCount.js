@@ -32,7 +32,6 @@ export default class TextAreaCharCount extends React.Component {
   }
 
   render() {
-    const x150 = 'nise;ng raeunijwab nawiorioawr;wna;;weoiwnavwaaoi;va niov;anvio;wanriov;aenrveano;inawi;o wpeo wpairgw[ v]qe rvowp rnow;an vo;aw n woa invwan eeieieie';
     const { charCount, text } = this.state;
     const { divStyle, pStyle, textareaStyle, charLimit, liftText, ...rest } = this.props;
     const turnRed = charCount === charLimit ? 'warning-red' : '';

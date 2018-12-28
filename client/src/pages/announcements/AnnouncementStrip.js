@@ -17,9 +17,7 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   handleEditAnnouncement = (announcementText, id) => {
-    // console.log('edited');
     this.toggleEdit();
-    // if (announcementText !== this.prevState.announcementText) this.props.editAnnouncement(announcementText, id);
     this.props.editAnnouncement(announcementText, id);
   }
 
@@ -47,7 +45,16 @@ export default class AnnouncementStrip extends React.Component {
               ? <button onClick={() => this.handleEditAnnouncement(announcementText, id)}>Done</button>
               : <button onClick={this.toggleEdit}>Edit</button>;
     const announcement  = editable
-                        ? <TextAreaCharCount charLimit={150} liftText={this.liftAnnouncementText} text={announcementText} />
+                        ? <TextAreaCharCount
+                          charLimit={150}
+                          liftText={this.liftAnnouncementText}
+                          text={announcementText}
+                          textareaStyle={{
+                            minHeight: '2.7em',
+                            minWidth: '100%',
+                            maxWidth: '100%',
+                          }}
+                        />
                         : <p className='text'>{announcementText}</p>;
     return (
       <div className='announcement-row'>

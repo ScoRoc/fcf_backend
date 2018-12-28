@@ -54,7 +54,12 @@ export default class AddAnnouncement extends React.Component {
                 charLimit={150}
                 id='new-manager-email'
                 liftText={this.liftAnnouncementText}
-                pStyle={{marginRight: '5%'}}
+                pStyle={{ marginRight: '5%' }}
+                textareaStyle={{
+                  minHeight: '2.7em',
+                  minWidth: '95%',
+                  maxWidth: '95%',
+                }}
                 required
                 text={announcementText}
               />
