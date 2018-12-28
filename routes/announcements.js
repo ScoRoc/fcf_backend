@@ -26,10 +26,22 @@ router.post('/', (req, res) => {
   });
 });
 
+router.put('/', (req, res) => {
+  const { announcementText, id  } = req.body;
+  Announcement.findByIdAndUpdate(id, { announcementText }, { new: true, runValidators: true }, (err, updatedAnnouncement) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send({ err });
+    } else {
+      res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
+    }
+  });
+});
+
 router.delete('/', (req, res) => {
   Announcement.findByIdAndDelete(req.body.id).exec((err, deletedAnnouncement) => {
     console.log('deletedAnnouncement: ', deletedAnnouncement);
-    res.send('Successfully deleted announcement')
+    res.send({ msg: 'Successfully deleted announcement', deletedAnnouncement });
   });
 });
 

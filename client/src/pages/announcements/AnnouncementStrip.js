@@ -8,7 +8,7 @@ export default class AnnouncementStrip extends React.Component {
     this.state = {
       charCount: 0,
       editable: false,
-      text: '',
+      announcementText: '',
     }
   }
 
@@ -16,9 +16,16 @@ export default class AnnouncementStrip extends React.Component {
     this.setState({ editable: !this.state.editable });
   }
 
-  editAnnouncement = () => {
-    console.log('edited');
+  handleEditAnnouncement = (announcementText, id) => {
+    // console.log('edited');
     this.toggleEdit();
+    // if (announcementText !== this.prevState.announcementText) this.props.editAnnouncement(announcementText, id);
+    this.props.editAnnouncement(announcementText, id);
+  }
+
+  liftAnnouncementText = announcementText => {
+    announcementText.length <= 150  ? this.setState({ charCount: announcementText.length, announcementText: announcementText })
+                                    : this.setState({ charCount: announcementText.length - 1});
   }
 
   handleChange = e => {
@@ -29,30 +36,23 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   componentDidMount() {
-    const { announcementText } = this.props;
-    this.setState({ text: announcementText, charCount: announcementText.length })
+    const { text } = this.props;
+    this.setState({ announcementText: text, charCount: text.length })
   }
 
   render() {
-    const { deleteAnnouncement, id, announcementText } = this.props;
-    const { charCount, editable, text } = this.state;
-    const turnRed = charCount === 150 ? 'warning-red' : '';
+    const { deleteAnnouncement, id } = this.props;
+    const { editable, announcementText } = this.state;
     const btn = editable
-              ? <button onClick={this.editAnnouncement}>Done</button>
+              ? <button onClick={() => this.handleEditAnnouncement(announcementText, id)}>Done</button>
               : <button onClick={this.toggleEdit}>Edit</button>;
     const announcement  = editable
-                        // ? <div>
-                        //     <textarea onChange={this.handleChange} value={text}></textarea>
-                        //     <p className={`${turnRed} char-count`}>{charCount} / 150</p>
-                        //   </div>
-                        ? <TextAreaCharCount text={text} />
-                        : <p className='text'>{text}</p>;
+                        ? <TextAreaCharCount charLimit={150} liftText={this.liftAnnouncementText} text={announcementText} />
+                        : <p className='text'>{announcementText}</p>;
     return (
       <div className='announcement-row'>
         {announcement}
         {btn}
-        {/* <p>{text}</p> */}
-        {/* <button onClick={this.toggleEdit}>Edit</button> */}
         <button onClick={() => deleteAnnouncement(id)}>Delete</button>
       </div>
     );

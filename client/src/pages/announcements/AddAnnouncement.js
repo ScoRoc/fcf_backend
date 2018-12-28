@@ -8,6 +8,7 @@ export default class AddAnnouncement extends React.Component {
     super(props);
     this.state = {
       announcementText: '',
+      charCount: 0,
     }
   }
 
@@ -25,6 +26,11 @@ export default class AddAnnouncement extends React.Component {
     this.setState({ announcementText });
   }
 
+  liftAnnouncementText = announcementText => {
+    announcementText.length <= 150  ? this.setState({ charCount: announcementText.length, announcementText: announcementText })
+                                    : this.setState({ charCount: announcementText.length - 1});
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     const { announcementText } = this.state;
@@ -36,9 +42,7 @@ export default class AddAnnouncement extends React.Component {
   }
 
   render() {
-    // const text150 = 'de2100 iosdf;io haweoi;haow;ge haow glai;og ;ilagklawji;lgenalwgil/agaw;il gj;aw eg;liawieg l;naigalwg ;awk gniawln g;aw gn;awl ngilawngr ;ilgihwlgaw2';
-    const { charCount, announcementText } = this.state;
-    const turnRed = charCount === 150 ? 'warning-red' : '';
+    const { announcementText } = this.state;
     return (
       <section className='AddAnnouncementSection'>
         <div className='AddAnnouncement'>
@@ -47,6 +51,7 @@ export default class AddAnnouncement extends React.Component {
             <div>
               <label htmlFor='new-manager-email'>Announcement</label>
               <TextAreaCharCount
+                charLimit={150}
                 id='new-manager-email'
                 liftText={this.liftAnnouncementText}
                 pStyle={{marginRight: '5%'}}

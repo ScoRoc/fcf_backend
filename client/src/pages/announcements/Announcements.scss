@@ -100,10 +100,12 @@
     background: $greyMediumDark;
 
     .text {
-      height: 2.7em;
+      height: 3.33em;
       width: 75%;
-      margin: 1.312em 0;
+      margin: 1em 0;
       padding: 2px;
+      display: flex;
+      align-items: center;
       border: 1px solid transparent;
     }
 
