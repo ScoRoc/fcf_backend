@@ -53,8 +53,6 @@ export default class AnnouncementStrip extends React.Component {
   render() {
     const { deleteAnnouncement, id } = this.props;
     const { announcementText, editable, width } = this.state;
-    const minMaxWidth = width >= 475 ? '75%' : '100%';
-    const divMinMaxHeight = width >= 600 ? '2.7em' : '100%';
     const btn = editable
               ? <button onClick={() => this.handleEditAnnouncement(announcementText, id)}>Done</button>
               : <button onClick={this.toggleEdit}>Edit</button>;
@@ -63,24 +61,22 @@ export default class AnnouncementStrip extends React.Component {
                           charLimit={150}
                           liftText={this.liftAnnouncementText}
                           text={announcementText}
-                          divStyle={{
-                            minHeight: divMinMaxHeight,
-                            minWidth: minMaxWidth,
-                            maxWidth: minMaxWidth,
-                          }}
-                          textareaStyle={{
-                            minHeight: '100%',
-                            minWidth: '100%',
-                            maxWidth: '100%',
-                          }}
+                          divClass='announcement-row__text-wrap-div'
+                          pClass='announcement-row__text-wrap-p'
+                          textareaClass='announcement-row__text-wrap-textarea'
                         />
                         : <p className='text'>{announcementText}</p>;
     return (
-      <div className='announcement-row'>
-        {announcement}
-        <div className='announcement-row__btn-wrap'>
-          {btn}
-          <button onClick={() => deleteAnnouncement(id)}>Delete</button>
+      <div className='AnnouncementStrip'>
+        <div className='announcement-row'>
+          {announcement}
+          <div className='announcement-row__btn-wrap'>
+            {btn}
+            <button onClick={() => deleteAnnouncement(id)}>Delete</button>
+          </div>
+        </div>
+        <div className='likes-wrapper'>
+          <p>Likes: 1000</p>
         </div>
       </div>
     );

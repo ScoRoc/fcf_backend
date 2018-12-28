@@ -33,12 +33,12 @@ export default class TextAreaCharCount extends React.Component {
 
   render() {
     const { charCount, text } = this.state;
-    const { divStyle, pStyle, textareaStyle, charLimit, liftText, ...rest } = this.props;
+    const { divClass, pClass, textareaClass, charLimit, liftText, ...rest } = this.props;
     const turnRed = charCount === charLimit ? 'warning-red' : '';
     return (
-      <div style={divStyle} className='TextAreaCharCount'>
-        <textarea style={textareaStyle} onChange={this.handleChange} value={text} {...rest}></textarea>
-        <p style={pStyle} className={`${turnRed} char-count`}>{charCount} / 150</p>
+      <div className={`${divClass} TextAreaCharCount`}>
+        <textarea className={textareaClass} onChange={this.handleChange} value={text} {...rest}></textarea>
+        <p className={`${turnRed} ${pClass} char-count`}>{charCount} / 150</p>
       </div>
     );
   }
