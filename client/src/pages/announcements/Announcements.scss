@@ -19,22 +19,14 @@
   background: $greyMedium;
 
   &__form {
-    // height: 10em;
     width: 100%;
     padding: .6em 1em;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     font-size: 1.1em;
-  //
-  //   .char-count {
-  //     margin: 0 5% .5em 0;
-  //     align-self: flex-end;
-  //   }
-  //
+
     &__div {
-      // margin-top: 3em;
-      // width: 100%;
       display: flex;
       flex-direction: column;
 
@@ -45,21 +37,10 @@
       }
     }
 
-    // &__text-wrap-div {
-    //
-    //   &__p {
-    //     margin: 0;
-    //     margin-right: 14%;
-    //     align-self: flex-end;
-    //   }
-    // }
-
     button {
-  //     height: 2.728em;
       width: 50%;
       margin: 0 auto;
       padding: .5em 0;
-  //     flex-basis: 6em;
       color: $white;
       font-size: 1em;
       background: $greyDark;
@@ -84,24 +65,23 @@
   }
 }
 
-// .AllAnnouncements-section {
-//   width: 100%;
-//   margin: 2em 0;
-//   padding: 0 3em;
-//   padding-bottom: 1.3em;
-//   flex: 1;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-around;
-//   align-items: flex-start;
-//   background: $greyDark;
-// }
-//
-// .AnnouncementStrip {
+.AllAnnouncements {
+  padding: 0 1em;
+  // padding-bottom: 1.3em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  // background: $greyDark;
+}
+
+.AnnouncementStrip {
 //   width: 100%;
 //   display: flex;
 //   justify-content: space-between;
-// }
+  // background: $greyMediumDark;
+  // background: $greyDark;
+}
 //
 // .likes-wrapper {
 //   width: 12%;
@@ -188,7 +168,6 @@
 @media screen and (min-width: 1200px) {
   .AddAnnouncement {
     &__form {
-      // width: 100%;
       flex-direction: row;
       align-items: center;
 
@@ -298,15 +277,7 @@
 //     }
 //   }
 }
-//
-// @media screen and (max-width: 768px) {
-//   .add-announcement-form {
-//     button {
-//       flex-basis: 4em;
-//     }
-//   }
-// }
-//
+
 @media screen and (min-width: 600px) and (max-width: 768px) {
   .AnnouncementsPage {
     h1 {
@@ -368,14 +339,6 @@
 }
 
 @media screen and (max-width: 600px) {
-//   .AddAnnouncement {
-//     padding: .5em;
-//   }
-
-  // .AddAnnouncement {
-  //
-  // }
-//
 //   .AllAnnouncements {
 //     padding: 0 .5em;
 //   }

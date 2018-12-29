@@ -16,10 +16,12 @@ import AnnouncementStrip from './AnnouncementStrip';
                           ))
                           : 'Loading...';
   return (
-    <section className='AllAnnouncements-section'>
-      <h3>Current Announcements</h3>
+    <>
+    <h3 id='h3-AllAnnouncements'>Current Announcements</h3>
+    <section className='AllAnnouncements'>
       {allAnnouncements}
     </section>
+    </>
   );
 }
 

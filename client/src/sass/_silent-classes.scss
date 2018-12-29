@@ -1,5 +1,19 @@
 @import './_variables';
 
+%btn-hover {
+  color: $yellow;
+  background: darken($greyDark, 8%);
+  border-radius: .5em;
+  transform: scale(1.04, 1.15);
+}
+
+%btn-active {
+  background: darken($greyDark, 15%);
+  border-radius: 0;
+  transform: scale(.9);
+  transition: 125ms;
+}
+
 %button {
   height: 2.5em;
   width: 100%;
@@ -13,17 +27,11 @@
   outline: none;
 
   &:hover {
-    color: $yellow;
-    background: darken($greyDark, 8%);
-    border-radius: .5em;
-    transform: scale(1.04, 1.15);
+    @extend %btn-hover;
   }
 
   &:active {
-    background: darken($greyDark, 15%);
-    border-radius: 0;
-    transform: scale(.9);
-    transition: 125ms;
+    @extend %btn-active;
   }
 }
 
