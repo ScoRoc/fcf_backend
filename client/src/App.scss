@@ -139,17 +139,13 @@ nav {
 
 main {
   margin: 0;
-  padding: .5em 2em;
+  padding: .5em 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
 
-  @media screen and (min-width: 475px) and (max-width: 600px) {
-    padding: .5em 1.5em;
-  }
-
-  @media screen and (max-width: 475px) {
-    padding: .5em 1em;
+  @media screen and (min-width: 1200px) {
+    padding: .5em 2em;
   }
 }
 

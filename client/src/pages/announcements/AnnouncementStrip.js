@@ -5,6 +5,7 @@ import TextAreaCharCount from '../../components/TextAreaCharCount';
 export default class AnnouncementStrip extends React.Component {
   constructor(props) {
     super(props);
+    this.charLimit = 150;
     this.state = {
       announcementText: '',
       charCount: 0,
@@ -24,14 +25,15 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   liftAnnouncementText = announcementText => {
-    announcementText.length <= 150  ? this.setState({ charCount: announcementText.length, announcementText: announcementText })
+    // this.setState({ charCount: announcementText.length, announcementText: announcementText });
+    announcementText.length <= this.charLimit  ? this.setState({ charCount: announcementText.length, announcementText: announcementText })
                                     : this.setState({ charCount: announcementText.length - 1});
   }
 
   handleChange = e => {
     e.preventDefault();
     const { value } = e.target;
-    value.length <= 150 ? this.setState({ charCount: value.length, text: value })
+    value.length <= this.charLimit ? this.setState({ charCount: value.length, text: value })
                         : this.setState({ charCount: value.length - 1});
   }
 
@@ -58,7 +60,8 @@ export default class AnnouncementStrip extends React.Component {
               : <button onClick={this.toggleEdit}>Edit</button>;
     const announcement  = editable
                         ? <TextAreaCharCount
-                          charLimit={150}
+                          allowTypingPastLimit={false}
+                          charLimit={this.charLimit}
                           liftText={this.liftAnnouncementText}
                           text={announcementText}
                           divClass='announcement-row__text-wrap-div'

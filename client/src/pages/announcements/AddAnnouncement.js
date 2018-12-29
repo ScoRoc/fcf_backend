@@ -47,22 +47,16 @@ export default class AddAnnouncement extends React.Component {
       <section className='AddAnnouncementSection'>
         <div className='AddAnnouncement'>
           <h3>Add an Announcement</h3>
-          <form className='add-announcement-form' onSubmit={this.handleSubmit}>
-            <div>
+          <form className='AddAnnouncement__form' onSubmit={this.handleSubmit}>
+            <div className='AddAnnouncement__form__div'>
               <label htmlFor='new-manager-email'>Announcement</label>
               <TextAreaCharCount
                 charLimit={150}
                 id='new-manager-email'
                 liftText={this.liftAnnouncementText}
-                divClass='add-announcement-form__text-wrap-div'
-                pClass='add-announcement-form__text-wrap-p'
-                textareaClass='add-announcement-form__text-wrap-textarea'
-                // pStyle={{ marginRight: '5%' }}
-                // textareaStyle={{
-                //   minHeight: '2.7em',
-                //   minWidth: '95%',
-                //   maxWidth: '95%',
-                // }}
+                divClass='AddAnnouncement__form__text-wrap-div'
+                pClass='AddAnnouncement__form__text-wrap-div__p'
+                textareaClass='AddAnnouncement__form__text-wrap-div__textarea'
                 required
                 text={announcementText}
               />

@@ -1,64 +1,57 @@
-// @import '../sass/variables';
-//
-// header {
-//   height: 12vh;
-//   padding: 0 1.5em;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   background: $greyDark;
-// }
-//
-// nav {
-//   display: flex;
-//   justify-content: space-around;
-//
-//   a {
-//     padding: 0 1.6em;
-//     color: $white;
-//     text-decoration: none;
-//
-//     &:hover {
-//       transform: scale(1.3);
-//       transform-origin: bottom;
-//       transition: 250ms;
-//     }
-//   }
-//
-//   .selected-nav-link {
-//     color: $yellow;
-//     transform-origin: bottom;
-//     transform: scale(1.3);
-//   }
-// }
-//
-// footer {
-//   height: 8vh;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background: $black;
-// }
-//
-// .subnav {
-//   height: 5vh;
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   display: flex;
-//   justify-content: space-around;
-//   align-items: center;
-//   background: $greyMediumDark;
-//
-//   a {
-//     padding: 0 1.6em;
-//
-//     &:hover {
-//       transform: scale(1.15);
-//     }
-//   }
-//
-//   .selected-nav-link {
-//     transform: scale(1.15);
-//   }
-// }
+@import '../sass/variables';
+@import '../sass/silent-classes';
+
+.TextAreaCharCount {
+  display: flex;
+  flex-direction: column;
+
+  textarea {
+    min-height: 2em;
+    min-width: 100%;
+    max-width: 100%;
+    font-size: 1.3em;
+  }
+
+  .char-count {
+    margin: 0;
+    align-self: flex-end;
+    font-size: 1.1em;
+  }
+
+
+  @media screen and (min-width: 768px) and (max-width: 1200px) {
+
+    .char-count {
+      font-size: 1em;
+    }
+
+    textarea {
+      min-height: 2.7em;
+      font-size: 1.3em;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .char-count {
+      font-size: .9em;
+    }
+  }
+
+  @media screen and (min-width: 600px) and (max-width: 768px) {
+
+    textarea {
+      min-height: 2.7em;
+      font-size: 1.1em;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+
+    textarea {
+      min-height: 3.2em;
+      font-size: 1em;
+    }
+  }
+}
+
+// lasino;anwe iawne;vaiw v;owa eo;vjaio;e jo;aifj o;ia jrgioaej i;oae o wa;iof jwa;oi io;waj o;iw v;iowa io;wa ;iowan i;vwan;iv a;iw v;iaw ;oiawi eio;aw

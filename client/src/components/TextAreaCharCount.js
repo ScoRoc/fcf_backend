@@ -1,9 +1,12 @@
 import React from 'react';
 
+import './components.min.css';
+
 export default class TextAreaCharCount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      allowTypingPastLimit: false,
       charCount: 0,
       charLimit: 100,
       editable: false,
@@ -11,34 +14,60 @@ export default class TextAreaCharCount extends React.Component {
     }
   }
 
+  isNewText = text => text !== this.state.text;
+
+  isTextLTEtoLimit = length => length <= this.state.charLimit;
+
+  isTextGTEtoLimit = length => length >= this.state.charLimit;
+
   handleChange = e => {
     e.preventDefault();
     const { value } = e.target;
-    value.length <= this.state.charLimit ? this.setState({ charCount: value.length, text: value })
-                        : this.setState({ charCount: value.length - 1});
-    this.props.liftText(value);
+    this.setState((prevState, props) => {
+      const { allowTypingPastLimit, charLimit } = prevState;
+      const newState  = allowTypingPastLimit
+                      ? { charCount: value.length, text: value }
+                      : this.isTextLTEtoLimit(value.length)
+                        ? { charCount: value.length, text: value }
+                        :  { charCount: value.length - 1 };
+      props.liftText(value);
+      return newState;
+    });
   }
 
   componentDidUpdate() {
-    const { text } = this.props;
-    if (text !== this.state.text) {
-      this.setState({ charCount: text.length, text });
-    }
+    this.setState((prevState, props) => {
+      const { text } = props;
+      if ( this.isNewText(text) ) {
+        return { charCount: text.length, text };
+      }
+    })
   }
 
   componentDidMount() {
-    const { charLimit, text } = this.props;
-    this.setState({ text: text, charCount: text.length, charLimit })
+    this.setState((prevState, props) => {
+      const { allowTypingPastLimit, charLimit, text } = props;
+      return {
+        allowTypingPastLimit: false || allowTypingPastLimit,
+        charCount: text.length,
+        charLimit,
+      };
+    });
   }
 
   render() {
     const { charCount, text } = this.state;
     const { divClass, pClass, textareaClass, charLimit, liftText, ...rest } = this.props;
-    const turnRed = charCount === charLimit ? 'warning-red' : '';
+    const turnRed = this.isTextGTEtoLimit(charCount) ? 'warning-red' : '';
     return (
-      <div className={`${divClass} TextAreaCharCount`}>
-        <textarea className={textareaClass} onChange={this.handleChange} value={text} {...rest}></textarea>
-        <p className={`${turnRed} ${pClass} char-count`}>{charCount} / 150</p>
+      <div className={`TextAreaCharCount ${divClass}`}>
+        <textarea
+          className={textareaClass}
+          rows='1'
+          onChange={this.handleChange}
+          value={text} {...rest}>
+        </textarea>
+        <p className={`char-count ${turnRed} ${pClass}`}>{charCount} / {charLimit}</p>
       </div>
     );
   }
