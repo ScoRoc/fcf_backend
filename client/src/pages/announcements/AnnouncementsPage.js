@@ -64,8 +64,8 @@ export default class AnnouncementsPage extends React.Component {
     const { announcements } = this.state;
     return (
       <>
-        <h1>Accouncments</h1>
         <section className='AnnouncementsPage'>
+          <h1>Accouncments</h1>
           <AddAnnouncement addAnnouncement={this.addAnnouncement} />
           <AllAnnouncements
             announcements={announcements}

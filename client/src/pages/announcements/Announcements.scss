@@ -6,51 +6,44 @@
   flex: 1;
 
   h1 {
-    // align-self: flex-start;
+    margin: .5em .5em;
+    align-self: flex-start;
+    font-size: 1.7em;
   }
-}
-
-.AddAnnouncementSection {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background: $greyMedium;
 }
 
 .AddAnnouncement {
   width: 100%;
-  padding: .8em 1em;
   display: flex;
-  flex-direction: column;
-
-  h3 {
-    margin: 0;
-    margin-bottom: .8em;
-  }
+  align-items: center;
+  background: $greyMedium;
 
   &__form {
-    // background: green;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
-  //   align-items: center;
-    // font-size: 1.1em;
-  //
-  //   label, textarea {
-  //     width: 95%;
-  //     font-size: 1em;
-  //   }
+    // height: 10em;
+    width: 100%;
+    padding: .6em 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 1.1em;
   //
   //   .char-count {
   //     margin: 0 5% .5em 0;
   //     align-self: flex-end;
   //   }
   //
-  //   &__div {
-  //     width: 100%;
-  //     display: flex;
-  //     flex-direction: column;
-  //   }
+    &__div {
+      // margin-top: 3em;
+      // width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-bottom: 1em;
+        font-size: .9em;
+        font-weight: bold;
+      }
+    }
 
     // &__text-wrap-div {
     //
@@ -61,32 +54,33 @@
     //   }
     // }
 
-
-  //
-  //   button {
+    button {
   //     height: 2.728em;
+      width: 50%;
+      margin: 0 auto;
+      padding: .5em 0;
   //     flex-basis: 6em;
-  //     color: $white;
-  //     font-size: 1em;
-  //     background: $greyDark;
-  //     border: none;
-  //     outline: none;
-  //     transition: 250ms;
-  //     cursor: pointer;
-  //
-  //     &:hover {
-  //       color: $yellow;
-  //       background: darken($greyDark, 8%);
-  //       border-radius: .5em;
-  //       transform: scale(1.1, 1.2);
-  //     }
-  //
-  //     &:active {
-  //       background: darken($greyDark, 15%);
-  //       border-radius: 0;
-  //       transform: scale(.9);
-  //     }
-  //   }
+      color: $white;
+      font-size: 1em;
+      background: $greyDark;
+      border: none;
+      outline: none;
+      transition: 250ms;
+      cursor: pointer;
+
+      &:hover {
+        color: $yellow;
+        background: darken($greyDark, 8%);
+        border-radius: .5em;
+        transform: scale(1.1, 1.2);
+      }
+
+      &:active {
+        background: darken($greyDark, 15%);
+        border-radius: 0;
+        transform: scale(.9);
+      }
+    }
   }
 }
 
@@ -191,10 +185,53 @@
  // MEDIA QUERIES //
 ///////////////////
 
-// @media screen and (min-width: 900px) and (max-width: 1200px) {
-//   .AllAnnouncements-section {
-//     padding: 0 .5em;
-//   }
+@media screen and (min-width: 1200px) {
+  .AddAnnouncement {
+    &__form {
+      // width: 100%;
+      flex-direction: row;
+      align-items: center;
+
+      &__div {
+        flex: 1;
+
+        label {
+          font-size: 1.2em;
+        }
+      }
+
+      &__text-wrap-div {
+        &__textarea {
+          width: 100% !important;
+        }
+      }
+
+      button {
+        width: 15%;
+        margin-left: 1.5em;
+        margin-bottom: 1.2em;
+        padding: .8em 0;
+        align-self: flex-end;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1200px) {
+  .AddAnnouncement {
+    &__form {
+      &__div {
+        label {
+          font-size: 1.1em;
+        }
+      }
+
+      button {
+        width: 25%;
+        padding: .8em 0;
+      }
+    }
+  }
 //
 //   .likes-wrapper {
 //     font-size: .9em;
@@ -205,12 +242,33 @@
 //       padding: 0 1em 0 .5em;
 //     }
 //   }
-// }
-//
-// @media screen and (min-width: 768px) and (max-width: 900px) {
-//   .AllAnnouncements-section {
-//     padding: 0 1.2em;
-//   }
+}
+
+@media screen and (min-width: 768px) {
+  .AnnouncementsPage {
+    h1 {
+      font-size: 2em;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 900px) {
+  .AddAnnouncement {
+    &__form {
+      padding: .8em 1em;
+
+      &__div {
+        label {
+          font-size: 1.1em;
+        }
+      }
+
+      button {
+        width: 30%;
+        padding: .7em 0;
+      }
+    }
+  }
 //
 //   .likes-wrapper {
 //     font-size: .8em;
@@ -239,7 +297,7 @@
 //       width: 48%;
 //     }
 //   }
-// }
+}
 //
 // @media screen and (max-width: 768px) {
 //   .add-announcement-form {
@@ -249,14 +307,29 @@
 //   }
 // }
 //
-// @media screen and (min-width: 600px) and (max-width: 768px) {
-//   .AddAnnouncementSection {
-//     padding: .5em 1em;
-//   }
-//
-//   .AllAnnouncements-section {
-//     padding: 0 .8em;
-//   }
+@media screen and (min-width: 600px) and (max-width: 768px) {
+  .AnnouncementsPage {
+    h1 {
+      font-size: 1.8em;
+    }
+  }
+
+  .AddAnnouncement {
+    &__form {
+      padding: .7em 1em;
+
+      &__div {
+        label {
+          font-size: 1em;
+        }
+      }
+
+      button {
+        width: 40%;
+        padding: .6em 0;
+      }
+    }
+  }
 //
 //   .likes-wrapper {
 //     font-size: .7em;
@@ -292,18 +365,22 @@
 //       width: 100%;
 //     }
 //   }
-// }
-//
-// @media screen and (max-width: 600px) {
-//   .AddAnnouncementSection {
+}
+
+@media screen and (max-width: 600px) {
+//   .AddAnnouncement {
 //     padding: .5em;
 //   }
+
+  // .AddAnnouncement {
+  //
+  // }
 //
-//   .AllAnnouncements-section {
+//   .AllAnnouncements {
 //     padding: 0 .5em;
 //   }
-// }
-//
+}
+
 // @media screen and (min-width: 475px) and (max-width: 600px) {
 //   .announcement-row {
 //     min-height: 20vh;

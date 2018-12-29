@@ -44,26 +44,23 @@ export default class AddAnnouncement extends React.Component {
   render() {
     const { announcementText } = this.state;
     return (
-      <section className='AddAnnouncementSection'>
-        <div className='AddAnnouncement'>
-          <h3>Add an Announcement</h3>
-          <form className='AddAnnouncement__form' onSubmit={this.handleSubmit}>
-            <div className='AddAnnouncement__form__div'>
-              <label htmlFor='new-manager-email'>Announcement</label>
-              <TextAreaCharCount
-                charLimit={150}
-                id='new-manager-email'
-                liftText={this.liftAnnouncementText}
-                divClass='AddAnnouncement__form__text-wrap-div'
-                pClass='AddAnnouncement__form__text-wrap-div__p'
-                textareaClass='AddAnnouncement__form__text-wrap-div__textarea'
-                required
-                text={announcementText}
-              />
-              </div>
-            <button type='submit'>Add</button>
-          </form>
-        </div>
+      <section className='AddAnnouncement'>
+        <form className='AddAnnouncement__form' onSubmit={this.handleSubmit}>
+          <div className='AddAnnouncement__form__div'>
+            <label htmlFor='new-manager-email'>Add Announcement</label>
+            <TextAreaCharCount
+              charLimit={150}
+              id='new-manager-email'
+              liftText={this.liftAnnouncementText}
+              divClass='AddAnnouncement__form__text-wrap-div'
+              pClass='AddAnnouncement__form__text-wrap-div__p'
+              textareaClass='AddAnnouncement__form__text-wrap-div__textarea'
+              required
+              text={announcementText}
+            />
+            </div>
+          <button type='submit'>Add Announcement</button>
+        </form>
       </section>
     );
   }
