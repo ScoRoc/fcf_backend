@@ -7,13 +7,16 @@ export default class AnnouncementStrip extends React.Component {
     super(props);
     this.charLimit = 150;
     this.state = {
+      allowTypingPastLimit: true,
       announcementText: '',
       charCount: 0,
       editable: false,
-      height: 0,
-      width: 0,
     }
   }
+
+  isTextLTEtoLimit = length => length <= this.charLimit;
+
+  isTextGTEtoLimit = length => length >= this.charLimit;
 
   toggleEdit = () => {
     this.setState({ editable: !this.state.editable });
@@ -25,9 +28,15 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   liftAnnouncementText = announcementText => {
-    // this.setState({ charCount: announcementText.length, announcementText: announcementText });
-    announcementText.length <= this.charLimit  ? this.setState({ charCount: announcementText.length, announcementText: announcementText })
-                                    : this.setState({ charCount: announcementText.length - 1});
+    this.setState((prevState, props) => {
+      const { allowTypingPastLimit } = prevState;
+      const newState  = allowTypingPastLimit
+                      ? { charCount: announcementText.length, announcementText: announcementText }
+                      : this.isTextLTEtoLimit(announcementText.length)
+                        ? { charCount: announcementText.length, announcementText: announcementText }
+                        : { charCount: announcementText.length - 1 };
+      return newState;
+    });
   }
 
   handleChange = e => {
@@ -37,49 +46,46 @@ export default class AnnouncementStrip extends React.Component {
                         : this.setState({ charCount: value.length - 1});
   }
 
-  updateWindowDimensions = () => {
-    this.setState({ width: window.innerWidth, height: window.innerheight });
-  }
-
   componentDidMount() {
     const { text } = this.props;
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
     this.setState({ announcementText: text, charCount: text.length })
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
   render() {
     const { deleteAnnouncement, id } = this.props;
-    const { announcementText, editable, width } = this.state;
+    const { allowTypingPastLimit, announcementText, editable } = this.state;
+    const disabled = this.isTextLTEtoLimit(announcementText.length) ? '' : 'disabled';
     const btn = editable
-              ? <button onClick={() => this.handleEditAnnouncement(announcementText, id)}>Done</button>
+              ? <button
+                  className={disabled}
+                  disabled={disabled}
+                  onClick={() => this.handleEditAnnouncement(announcementText, id)}
+                >Done</button>
               : <button onClick={this.toggleEdit}>Edit</button>;
     const announcement  = editable
                         ? <TextAreaCharCount
-                          allowTypingPastLimit={false}
-                          charLimit={this.charLimit}
-                          liftText={this.liftAnnouncementText}
-                          text={announcementText}
-                          divClass='announcement-row__text-wrap-div'
-                          pClass='announcement-row__text-wrap-p'
-                          textareaClass='announcement-row__text-wrap-textarea'
-                        />
-                        : <p className='text'>{announcementText}</p>;
+                            allowTypingPastLimit={allowTypingPastLimit}
+                            charLimit={this.charLimit}
+                            liftText={this.liftAnnouncementText}
+                            text={announcementText}
+                            divClass='AnnouncementStrip__text-wrap__div'
+                            pClass='AnnouncementStrip__text-wrap__div__p'
+                            textareaClass='AnnouncementStrip__text-wrap__div__textarea'
+                          />
+                        : <p className='AnnouncementStrip__text-wrap__p'>
+                            {announcementText}
+                          </p>;
     return (
       <div className='AnnouncementStrip'>
-        <div className='announcement-row'>
+        <div className='AnnouncementStrip__text-wrap'>
           {announcement}
-          <div className='announcement-row__btn-wrap'>
-            {btn}
-            <button onClick={() => deleteAnnouncement(id)}>Delete</button>
-          </div>
         </div>
-        <div className='likes-wrapper'>
+        <div className='AnnouncementStrip__likes-div'>
           <p>Likes: 1000</p>
+        </div>
+        <div className='AnnouncementStrip__btn-div'>
+          {btn}
+          <button onClick={() => deleteAnnouncement(id)}>Delete</button>
         </div>
       </div>
     );

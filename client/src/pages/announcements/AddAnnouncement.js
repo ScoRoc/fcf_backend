@@ -29,12 +29,8 @@ export default class AddAnnouncement extends React.Component {
   }
 
   liftAnnouncementText = announcementText => {
-    this.setState({ announcementText });
-  }
-
-  liftAnnouncementText = announcementText => {
     this.setState((prevState, props) => {
-      const { allowTypingPastLimit, charLimit } = prevState;
+      const { allowTypingPastLimit } = prevState;
       const newState  = allowTypingPastLimit
                       ? { charCount: announcementText.length, announcementText: announcementText }
                       : this.isTextLTEtoLimit(announcementText.length)
@@ -65,7 +61,7 @@ export default class AddAnnouncement extends React.Component {
   }
 
   render() {
-    const { announcementText, charLimit } = this.state;
+    const { allowTypingPastLimit, announcementText, charLimit } = this.state;
     const disabled = this.isTextLTEtoLimit(announcementText.length) ? '' : 'disabled';
     return (
       <section className='AddAnnouncement'>
@@ -73,6 +69,7 @@ export default class AddAnnouncement extends React.Component {
           <div className='AddAnnouncement__form__div'>
             <label htmlFor='new-manager-email'>Add Announcement</label>
             <TextAreaCharCount
+              allowTypingPastLimit={allowTypingPastLimit}
               charLimit={charLimit}
               id='new-manager-email'
               liftText={this.liftAnnouncementText}

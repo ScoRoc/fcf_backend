@@ -14,7 +14,7 @@ import AnnouncementStrip from './AnnouncementStrip';
                               text={announcement.announcementText}
                             />
                           ))
-                          : 'Loading...';
+                          : <p className='f'>'Loading...'</p>;
   return (
     <>
     <h3 id='h3-AllAnnouncements'>Current Announcements</h3>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './components.min.css';
+import './TextAreaCharCount.min.css';
 
 export default class TextAreaCharCount extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class TextAreaCharCount extends React.Component {
     e.preventDefault();
     const { value } = e.target;
     this.setState((prevState, props) => {
-      const { allowTypingPastLimit, charLimit } = prevState;
+      const { allowTypingPastLimit } = prevState;
       const newState  = allowTypingPastLimit
                       ? { charCount: value.length, text: value }
                       : this.isTextLTEtoLimit(value.length)
@@ -47,8 +47,9 @@ export default class TextAreaCharCount extends React.Component {
   componentDidMount() {
     this.setState((prevState, props) => {
       const { allowTypingPastLimit, charLimit, text } = props;
+      const pastLimit = allowTypingPastLimit === undefined ? false : allowTypingPastLimit;
       return {
-        allowTypingPastLimit: false || allowTypingPastLimit,
+        allowTypingPastLimit: pastLimit,
         charCount: text.length,
         charLimit,
       };
@@ -57,7 +58,7 @@ export default class TextAreaCharCount extends React.Component {
 
   render() {
     const { charCount, text } = this.state;
-    const { divClass, pClass, textareaClass, charLimit, liftText, ...rest } = this.props;
+    const { allowTypingPastLimit, divClass, pClass, textareaClass, charLimit, liftText, ...rest } = this.props;
     const turnRed = this.isTextLTEtoLimit(charCount) ? '' : 'warning-red';
     return (
       <div className={`TextAreaCharCount ${divClass}`}>
