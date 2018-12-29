@@ -66,7 +66,11 @@ export default class AnnouncementsPage extends React.Component {
       <>
         <section className='AnnouncementsPage'>
           <h1>Accouncments</h1>
-          <AddAnnouncement addAnnouncement={this.addAnnouncement} />
+          <AddAnnouncement
+            addAnnouncement={this.addAnnouncement}
+            allowTypingPastLimit={true}
+            charLimit={150}
+          />
           <AllAnnouncements
             announcements={announcements}
             deleteAnnouncement={this.deleteAnnouncement}

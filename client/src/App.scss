@@ -156,6 +156,17 @@ footer {
   background: $black;
 }
 
+button.disabled {
+  color: $greyLight !important;
+  background: lighten($greyDark, 10%) !important;
+  cursor: default !important;
+
+  &:hover {
+    border-radius: 0 !important;
+    transform: scale(1) !important;
+  }
+}
+
 .App {
   min-height: 100vh;
   display: flex;

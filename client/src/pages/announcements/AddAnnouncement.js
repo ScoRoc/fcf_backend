@@ -7,10 +7,16 @@ export default class AddAnnouncement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      allowTypingPastLimit: false,
       announcementText: '',
       charCount: 0,
+      charLimit: 150,
     }
   }
+
+  isTextLTEtoLimit = length => length <= this.state.charLimit;
+
+  isTextGTEtoLimit = length => length >= this.state.charLimit;
 
   handleErrors = data => {
     console.log('data: ', data);
@@ -27,8 +33,15 @@ export default class AddAnnouncement extends React.Component {
   }
 
   liftAnnouncementText = announcementText => {
-    announcementText.length <= 150  ? this.setState({ charCount: announcementText.length, announcementText: announcementText })
-                                    : this.setState({ charCount: announcementText.length - 1});
+    this.setState((prevState, props) => {
+      const { allowTypingPastLimit, charLimit } = prevState;
+      const newState  = allowTypingPastLimit
+                      ? { charCount: announcementText.length, announcementText: announcementText }
+                      : this.isTextLTEtoLimit(announcementText.length)
+                        ? { charCount: announcementText.length, announcementText: announcementText }
+                        : { charCount: announcementText.length - 1 };
+      return newState;
+    });
   }
 
   handleSubmit = e => {
@@ -41,15 +54,26 @@ export default class AddAnnouncement extends React.Component {
     });
   }
 
+  componentDidMount() {
+    this.setState((prevState, props) => {
+      const { allowTypingPastLimit, charLimit } = props;
+      return {
+        allowTypingPastLimit: false || allowTypingPastLimit,
+        charLimit: charLimit || 150,
+      };
+    });
+  }
+
   render() {
-    const { announcementText } = this.state;
+    const { announcementText, charLimit } = this.state;
+    const disabled = this.isTextLTEtoLimit(announcementText.length) ? '' : 'disabled';
     return (
       <section className='AddAnnouncement'>
         <form className='AddAnnouncement__form' onSubmit={this.handleSubmit}>
           <div className='AddAnnouncement__form__div'>
             <label htmlFor='new-manager-email'>Add Announcement</label>
             <TextAreaCharCount
-              charLimit={150}
+              charLimit={charLimit}
               id='new-manager-email'
               liftText={this.liftAnnouncementText}
               divClass='AddAnnouncement__form__text-wrap-div'
@@ -59,7 +83,7 @@ export default class AddAnnouncement extends React.Component {
               text={announcementText}
             />
             </div>
-          <button type='submit'>Add Announcement</button>
+          <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
         </form>
       </section>
     );
