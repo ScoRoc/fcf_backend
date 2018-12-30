@@ -94,8 +94,8 @@
     padding: .8em 0;
     display: flex;
     align-items: center;
-    border-top: 1px solid rgba($white, .4);
-    border-bottom: 1px solid rgba($white, .4);
+    border-top: 1px solid rgba($teal, .6);
+    border-bottom: 1px solid rgba($teal, .6);
 
     p {
       margin: 0;
@@ -112,21 +112,33 @@
     button {
       @extend %button;
       @extend %button--announcement-strip;
-      width: 35%;
-      margin: 0;
-      font-size: .8em;
+    }
+
+    .delete-btn {
+      // @extend %button--dark-red;
+      &:hover {
+        @extend %button--dark-red;
+      }
+
+      &:active {
+        @extend %button--dark-red;
+      }
     }
 
     .edit-btn {
       // @extend %button--teal;
+      &:hover {
+        @extend %button--teal;
+      }
+
+      &:active {
+        @extend %button--teal;
+      }
     }
 
     .done-btn {
       @extend %button--teal;
       @extend %button--announcement-strip;
-      width: 35%;
-      margin: 0;
-      font-size: .8em;
     }
   }
 }
@@ -176,13 +188,6 @@
         }
       }
     }
-
-    &__btn-div {
-      button {
-        width: 20%;
-        font-size: 1.1em;
-      }
-    }
   }
 }
 
@@ -211,13 +216,6 @@
         &__textarea {
           height: 2.7em;
         }
-      }
-    }
-
-    &__btn-div {
-      button {
-        width: 25%;
-        font-size: 1.1em;
       }
     }
   }
@@ -260,13 +258,6 @@
         }
       }
     }
-
-    &__btn-div {
-      button {
-        width: 25%;
-        font-size: 1em;
-      }
-    }
   }
 }
 
@@ -305,18 +296,7 @@
         }
       }
     }
-
-    &__btn-div {
-      button {
-        width: 30%;
-        font-size: 1em;
-      }
-    }
   }
-}
-
-@media screen and (max-width: 600px) {
-
 }
 
 @media screen and (min-width: 475px) and (max-width: 600px) {
@@ -329,12 +309,6 @@
         &__textarea {
           height: 4.92em;
         }
-      }
-    }
-
-    &__btn-div {
-      button {
-        font-size: .9em;
       }
     }
   }

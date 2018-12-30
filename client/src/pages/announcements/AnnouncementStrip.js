@@ -103,7 +103,7 @@ export default class AnnouncementStrip extends React.Component {
         </div>
         <div className='AnnouncementStrip__btn-div'>
           <button className={`${editDoneBtnClass} ${disabled}`} disabled={disabled} onClick={btnOnClick}>{btnText}</button>
-          <button onClick={() => deleteAnnouncement(id)}>Delete</button>
+          <button className='delete-btn' onClick={() => deleteAnnouncement(id)}>Delete</button>
         </div>
       </div>
     );

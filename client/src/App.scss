@@ -62,9 +62,10 @@ button.disabled {
   cursor: default !important;
 
   &:hover {
-    // background: 
+    // background:
     border-radius: 0 !important;
     transform: scale(1) !important;
+    box-shadow: none !important;
   }
 }
 

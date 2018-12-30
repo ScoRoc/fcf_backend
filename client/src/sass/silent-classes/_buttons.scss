@@ -2,15 +2,18 @@
 
 %btn-hover {
   color: $yellow;
-  background: darken($greyDark, 8%);
+  background: lighten($greyDark, 10%);
+  box-shadow: 0 0 .8em .2em rgba(darken($greyDark, 10%), .6) inset;
   border-radius: .5em;
-  transform: scale(1.04, 1.15);
+  transform: scale(1.04, 1.1);
 }
 
 %btn-active {
-  background: darken($greyDark, 15%);
+  color: $yellow;
+  background: darken($greyDark, 3%);
+  box-shadow: 0 0 .8em .2em rgba(darken($greyDark, 15%), .6) inset;
   border-radius: 0;
-  transform: scale(.9);
+  transform: scale(.95);
   transition: 125ms;
 }
 
@@ -36,21 +39,40 @@
 }
 
 %button--teal {
-  @extend %button;
   color: $yellow;
   background: $teal;
 
   &:hover {
-    background: lighten($teal, 5%);
+    background: lighten($teal, 8%);
+    box-shadow: 0 0 .8em .2em rgba(darken($teal, 15%), .6) inset;
   }
 
   &:active {
-    background: darken($teal, 10%);
+    background: darken($teal, 8%);
+    box-shadow: 0 0 .8em .2em rgba(darken($teal, 22%), .6) inset;
   }
 }
 
+%button--dark-red {
+  color: $yellow;
+  background: $redBtnBg;
+
+  &:hover {
+    background: lighten($redBtnBg, 6%);
+    box-shadow: 0 0 .8em .2em rgba(darken($redBtnBg, 10%), .6) inset;
+  }
+
+  &:active {
+    background: darken($redBtnBg, 4%);
+    box-shadow: 0 0 .8em .2em rgba(darken($redBtnBg, 15%), .6) inset;
+  }
+}
+
+
 %button--announcement-strip {
-  @extend %button;
+  width: 35%;
+  margin: 0;
+  font-size: .8em;
 
   @media screen and (min-width: 1200px) {
     width: 20%;
@@ -58,7 +80,7 @@
   }
 
   @media screen and (min-width: 900px) and (max-width: 1200px) {
-    width: 25% !important;
+    width: 25%;
     font-size: 1.1em;
   }
 
