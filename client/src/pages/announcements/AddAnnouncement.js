@@ -9,6 +9,7 @@ import { isLessThanOrEqual } from '../../utils/comparisons';
 export default class AddAnnouncement extends React.Component {
   constructor(props) {
     super(props);
+    this.url = React.createRef();
     this.state = {
       allowTypingPastLimit: false,
       announcementText: '',
@@ -44,7 +45,7 @@ export default class AddAnnouncement extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { announcementText } = this.state;
-    axios.post('/announcements', { announcementText }).then(result => {
+    axios.post('/announcements', { announcementText, url: this.url.current.value }).then(result => {
       const { data } = result;
       data.errors ? this.handleErrors(data) : this.handleSuccess(data);
       this.setState({ announcementText: '' });
@@ -67,19 +68,27 @@ export default class AddAnnouncement extends React.Component {
     return (
       <section className='AddAnnouncement'>
         <form className='AddAnnouncement__form' onSubmit={this.handleSubmit}>
-          <div className='AddAnnouncement__form__div'>
-            <label htmlFor='new-manager-email'>Add Announcement</label>
-            <TextAreaCharCount
-              allowTypingPastLimit={allowTypingPastLimit}
-              charLimit={charLimit}
-              id='new-manager-email'
-              liftText={this.liftAnnouncementText}
-              divClass='AddAnnouncement__form__text-wrap-div'
-              pClass='AddAnnouncement__form__text-wrap-div__p'
-              textareaClass='AddAnnouncement__form__text-wrap-div__textarea'
-              required
-              text={announcementText}
-            />
+          <div className='AddAnnouncement__form__announcement-wrap'>
+            <label htmlFor='new-announcement-text'>Announcement</label>
+              <TextAreaCharCount
+                allowTypingPastLimit={allowTypingPastLimit}
+                charLimit={charLimit}
+                id='new-announcement-text'
+                liftText={this.liftAnnouncementText}
+                divClass='AddAnnouncement__form__tacc-wrap-div'
+                pClass='AddAnnouncement__form__tacc-wrap-div__p'
+                textareaClass='AddAnnouncement__form__tacc-wrap-div__textarea'
+                required
+                text={announcementText}
+              />
+            </div>
+            <div className='AddAnnouncement__form__url-wrap'>
+              <label htmlFor='new-announcement-url'>URL</label>
+              <input
+                id='new-announcement-url'
+                ref={this.url}
+                type='text'
+              />
             </div>
           <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
         </form>

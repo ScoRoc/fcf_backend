@@ -12,6 +12,7 @@ import AnnouncementStrip from './AnnouncementStrip';
                               id={announcement._id}
                               key={announcement._id}
                               text={announcement.announcementText}
+                              url={announcement.url || 'no url'}
                             />
                           ))
                           : <p className='f'>'Loading...'</p>;

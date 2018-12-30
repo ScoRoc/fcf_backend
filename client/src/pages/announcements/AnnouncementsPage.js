@@ -4,7 +4,6 @@ import axios from 'axios';
 import './Announcements.min.css';
 import AddAnnouncement from './AddAnnouncement';
 import AllAnnouncements from './AllAnnouncements';
-// import SubNav from '../../components/SubNav';
 
 export default class AnnouncementsPage extends React.Component {
   constructor(props) {
@@ -40,15 +39,15 @@ export default class AnnouncementsPage extends React.Component {
     });
   }
 
-  editAnnouncement = (announcementText, id) => {
+  editAnnouncement = (announcementText, url, id) => {
     const announcements = this.state.announcements.slice(0);
     axios({
       url: '/announcements',
       method: 'put',
-      data: { announcementText, id },
+      data: { announcementText, url, id },
     }).then(result => {
       const { updatedAnnouncement } = result.data;
-      announcements[this.getIndexOfAnnouncement(updatedAnnouncement._id)] = updatedAnnouncement.announcementText;
+      // announcements[this.getIndexOfAnnouncement(updatedAnnouncement._id)] = updatedAnnouncement.announcementText;
       this.setState({ announcements });
     });
   }

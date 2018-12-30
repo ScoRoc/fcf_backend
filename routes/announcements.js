@@ -15,8 +15,8 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { announcementText } = req.body;
-  Announcement.create({ announcementText }, (err, announcement) => {
+  const { announcementText, url } = req.body;
+  Announcement.create({ announcementText, url }, (err, announcement) => {
     if (err) {
       console.log('err: ', err);
       res.send(err);
@@ -27,8 +27,8 @@ router.post('/', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-  const { announcementText, id  } = req.body;
-  Announcement.findByIdAndUpdate(id, { announcementText }, { new: true, runValidators: true }, (err, updatedAnnouncement) => {
+  const { announcementText, id, url  } = req.body;
+  Announcement.findByIdAndUpdate(id, { announcementText, url }, { new: true, runValidators: true }, (err, updatedAnnouncement) => {
     if (err) {
       console.log('err: ', err);
       res.send({ err });

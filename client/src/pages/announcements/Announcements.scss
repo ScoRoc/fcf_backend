@@ -28,22 +28,24 @@
     justify-content: space-between;
     font-size: 1.1em;
 
-    &__div {
+    &__announcement-wrap, &__url-wrap {
       display: flex;
       flex-direction: column;
-
       label {
-        margin-bottom: 1em;
         font-size: .9em;
-        font-weight: bold;
+      }
+    }
+
+    &__url-wrap {
+      input {
+        font-size: .8em;
       }
     }
 
     button {
       @extend %button;
-
       width: 50%;
-      margin: 0 auto;
+      margin: .7em auto 0;
       padding: 0 !important;
       font-size: 1em;
     }
@@ -90,10 +92,11 @@
     }
   }
 
-  &__likes-div {
+  &__info-div {
     padding: .8em 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
     border-top: 1px solid rgba($teal, .6);
     border-bottom: 1px solid rgba($teal, .6);
 
@@ -150,18 +153,19 @@
 @media screen and (min-width: 1200px) {
   .AddAnnouncement {
     &__form {
-      flex-direction: row;
-      align-items: center;
-
-      &__div {
-        flex: 1;
-
+      &__announcement-wrap, &__url-wrap {
         label {
           font-size: 1.2em;
         }
       }
 
-      &__text-wrap-div {
+      &__url-wrap {
+        input {
+          font-size: 1.2em;
+        }
+      }
+
+      &__tacc-wrap-div {
         &__textarea {
           width: 100% !important;
         }
@@ -169,8 +173,6 @@
 
       button {
         width: 15%;
-        margin-left: 1.5em;
-        margin-bottom: 1.2em;
         padding: .8em 0;
         align-self: flex-end;
       }
@@ -194,9 +196,15 @@
 @media screen and (min-width: 900px) and (max-width: 1200px) {
   .AddAnnouncement {
     &__form {
-      &__div {
+      &__announcement-wrap, &__url-wrap {
         label {
           font-size: 1.1em;
+        }
+      }
+
+      &__url-wrap {
+        input {
+          font-size: 1em;
         }
       }
 
@@ -234,9 +242,15 @@
     &__form {
       padding: .8em 1em;
 
-      &__div {
+      &__announcement-wrap, &__url-wrap {
         label {
           font-size: 1.1em;
+        }
+      }
+
+      &__url-wrap {
+        input {
+          font-size: 1em;
         }
       }
 
@@ -272,9 +286,15 @@
     &__form {
       padding: .7em 1em;
 
-      &__div {
+      &__announcement-wrap, &__url-wrap {
         label {
           font-size: 1em;
+        }
+      }
+
+      &__url-wrap {
+        input {
+          font-size: .9em;
         }
       }
 

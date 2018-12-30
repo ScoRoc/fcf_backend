@@ -11,9 +11,11 @@ export default class AnnouncementStrip extends React.Component {
     this.state = {
       allowTypingPastLimit: true,
       announcementText: '',
+      announcementUrl: '',
       charCount: 0,
       editable: false,
       initialText: '',
+      initialUrl: '',
     }
   }
 
@@ -23,9 +25,10 @@ export default class AnnouncementStrip extends React.Component {
 
   cancelChange = () => {
     this.setState((prevState, props) => {
-      const { initialText } = prevState;
+      const { initialText, initialUrl } = prevState;
       return {
         announcementText: initialText,
+        announcementUrl: initialUrl,
         charCount: initialText.length,
         editable: false,
       }
@@ -41,10 +44,10 @@ export default class AnnouncementStrip extends React.Component {
     this.setState({ editable: !this.state.editable });
   }
 
-  handleEditAnnouncement = (announcementText, id) => {
+  handleEditAnnouncement = (announcementText, url, id) => {
     this.toggleEdit();
-    this.props.editAnnouncement(announcementText, id);
-    this.setState({ initialText: announcementText });
+    this.props.editAnnouncement(announcementText, url, id);
+    this.setState({ initialText: announcementText, initialUrl: url });
   }
 
   liftAnnouncementText = announcementText => {
@@ -67,17 +70,27 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   componentDidMount() {
-    const { text } = this.props;
-    this.setState({ announcementText: text, charCount: text.length, initialText: text });
+    const { text, url } = this.props;
+    this.setState((prevState, props) => {
+      return {
+        announcementText: text,
+        announcementUrl: url,
+        charCount: text.length,
+        initialText: text,
+        initialUrl: url,
+      }
+    });
   }
 
   render() {
-    const { deleteAnnouncement, id } = this.props;
-    const { allowTypingPastLimit, announcementText, editable } = this.state;
+    const { deleteAnnouncement, id, url } = this.props;
+    const { allowTypingPastLimit, announcementText, announcementUrl, editable } = this.state;
     const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';
     const editDoneBtnClass = editable ? 'done-btn' : 'edit-btn';
-    const btnOnClick = editable ? () => this.handleEditAnnouncement(announcementText, id) : this.toggleEdit;
+    const btnOnClick  = editable
+                      ? () => this.handleEditAnnouncement(announcementText, announcementUrl, id)
+                      : this.toggleEdit;
     const announcement  = editable
                         ? <TextAreaCharCount
                             allowTypingPastLimit={allowTypingPastLimit}
@@ -93,12 +106,21 @@ export default class AnnouncementStrip extends React.Component {
                         : <p className='AnnouncementStrip__text-wrap__p'>
                             {announcementText}
                           </p>;
+    const displayUrl = editable
+                          ? <input
+                              onChange={e => this.setState({ announcementUrl: e.target.value })}
+                              onKeyUp={this.handleKeyUp}
+                              type='text'
+                              value={announcementUrl}
+                            />
+                          : <p>{announcementUrl}</p>;
     return (
       <div className='AnnouncementStrip'>
         <div className='AnnouncementStrip__text-wrap'>
           {announcement}
         </div>
-        <div className='AnnouncementStrip__likes-div'>
+        <div className='AnnouncementStrip__info-div'>
+          {displayUrl}
           <p>Likes: 1000</p>
         </div>
         <div className='AnnouncementStrip__btn-div'>
