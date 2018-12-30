@@ -55,7 +55,6 @@ export default class AnnouncementsPage extends React.Component {
 
   componentDidMount() {
     axios.get('/announcements').then(result => {
-      // console.log('result.data from AnnouncementsPage: ', result.data);
       this.setState({ announcements: result.data.announcements });
     });
   }

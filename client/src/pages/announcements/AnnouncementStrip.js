@@ -23,7 +23,7 @@ export default class AnnouncementStrip extends React.Component {
 
   cancelChange = () => {
     this.setState((prevState, props) => {
-      const { initialText } = this.prevState;
+      const { initialText } = prevState;
       return {
         announcementText: initialText,
         charCount: initialText.length,
@@ -44,15 +44,16 @@ export default class AnnouncementStrip extends React.Component {
   handleEditAnnouncement = (announcementText, id) => {
     this.toggleEdit();
     this.props.editAnnouncement(announcementText, id);
+    this.setState({ initialText: announcementText });
   }
 
   liftAnnouncementText = announcementText => {
     this.setState((prevState, props) => {
       const { allowTypingPastLimit } = prevState;
       const newState  = allowTypingPastLimit
-                      ? { charCount: announcementText.length, announcementText: announcementText }
+                      ? { charCount: announcementText.length, announcementText }
                       : this.isTextLTEtoLimit()(announcementText.length)
-                        ? { charCount: announcementText.length, announcementText: announcementText }
+                        ? { charCount: announcementText.length, announcementText }
                         : { charCount: announcementText.length - 1 };
       return newState;
     });
