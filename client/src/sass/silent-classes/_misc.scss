@@ -1,0 +1,23 @@
+@import '../_variables';
+
+%add-manager-wrappers {
+  width: 30vw;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: $greyMedium;
+  font-size: 1.1em;
+
+  button {
+    @extend %button;
+  }
+}
+
+%page {
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-around;
+  align-items: center;
+}
