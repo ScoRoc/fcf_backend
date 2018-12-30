@@ -3,6 +3,9 @@ import axios from 'axios';
 
 import TextAreaCharCount from '../../components/TextAreaCharCount';
 
+import { isLessThanOrEqual } from '../../utils/comparisons';
+
+
 export default class AddAnnouncement extends React.Component {
   constructor(props) {
     super(props);
@@ -14,9 +17,7 @@ export default class AddAnnouncement extends React.Component {
     }
   }
 
-  isTextLTEtoLimit = length => length <= this.state.charLimit;
-
-  isTextGTEtoLimit = length => length >= this.state.charLimit;
+  isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
 
   handleErrors = data => {
     console.log('data: ', data);
@@ -33,7 +34,7 @@ export default class AddAnnouncement extends React.Component {
       const { allowTypingPastLimit } = prevState;
       const newState  = allowTypingPastLimit
                       ? { charCount: announcementText.length, announcementText: announcementText }
-                      : this.isTextLTEtoLimit(announcementText.length)
+                      : this.isTextLTEtoLimit()(announcementText.length)
                         ? { charCount: announcementText.length, announcementText: announcementText }
                         : { charCount: announcementText.length - 1 };
       return newState;
@@ -62,7 +63,7 @@ export default class AddAnnouncement extends React.Component {
 
   render() {
     const { allowTypingPastLimit, announcementText, charLimit } = this.state;
-    const disabled = this.isTextLTEtoLimit(announcementText.length) ? '' : 'disabled';
+    const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     return (
       <section className='AddAnnouncement'>
         <form className='AddAnnouncement__form' onSubmit={this.handleSubmit}>

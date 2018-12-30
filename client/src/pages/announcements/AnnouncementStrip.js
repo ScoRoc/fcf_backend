@@ -2,6 +2,8 @@ import React from 'react';
 
 import TextAreaCharCount from '../../components/TextAreaCharCount';
 
+import { isEqual, isLessThanOrEqual } from '../../utils/comparisons';
+
 export default class AnnouncementStrip extends React.Component {
   constructor(props) {
     super(props);
@@ -11,12 +13,29 @@ export default class AnnouncementStrip extends React.Component {
       announcementText: '',
       charCount: 0,
       editable: false,
+      initialText: '',
     }
   }
 
-  isTextLTEtoLimit = length => length <= this.charLimit;
+  isEscapeKey = isEqual('Escape');
 
-  isTextGTEtoLimit = length => length >= this.charLimit;
+  isTextLTEtoLimit = () => isLessThanOrEqual(this.charLimit);
+
+  cancelChange = () => {
+    this.setState((prevState, props) => {
+      const { initialText } = this.prevState;
+      return {
+        announcementText: initialText,
+        charCount: initialText.length,
+        editable: false,
+      }
+    });
+  }
+
+  handleKeyUp = e => {
+    e.preventDefault();
+    if ( this.isEscapeKey(e.key) ) this.cancelChange();
+  }
 
   toggleEdit = () => {
     this.setState({ editable: !this.state.editable });
@@ -48,12 +67,13 @@ export default class AnnouncementStrip extends React.Component {
 
   componentDidMount() {
     const { text } = this.props;
-    this.setState({ announcementText: text, charCount: text.length })
+    this.setState({ announcementText: text, charCount: text.length, initialText: text });
   }
 
   render() {
     const { deleteAnnouncement, id } = this.props;
     const { allowTypingPastLimit, announcementText, editable } = this.state;
+    console.log('isLTE: ', this.isTextLTEtoLimit(announcementText.length) )
     const disabled = this.isTextLTEtoLimit(announcementText.length) ? '' : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';
     const btnOnClick = editable ? () => this.handleEditAnnouncement(announcementText, id) : this.toggleEdit;
@@ -61,6 +81,7 @@ export default class AnnouncementStrip extends React.Component {
                         ? <TextAreaCharCount
                             allowTypingPastLimit={allowTypingPastLimit}
                             charLimit={this.charLimit}
+                            handleKeyUp={this.handleKeyUp}
                             liftText={this.liftAnnouncementText}
                             text={announcementText}
                             divClass='AnnouncementStrip__text-wrap__div'

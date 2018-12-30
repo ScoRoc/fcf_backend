@@ -2,9 +2,13 @@ import React from 'react';
 
 import './TextAreaCharCount.min.css';
 
-export default class TextAreaCharCount extends React.Component {
+import { isLessThanOrEqual } from '../utils/comparisons';
+
+
+class TextAreaCharCount extends React.Component {
   constructor(props) {
     super(props);
+    this.textarea = React.createRef();
     this.state = {
       allowTypingPastLimit: false,
       charCount: 0,
@@ -14,25 +18,11 @@ export default class TextAreaCharCount extends React.Component {
     }
   }
 
-  isEqual = x => y => y === x;
-
-  isEscapeKey = this.isEqual('Escape');
-
-  foo = () => this.isEqual(this.state.text);
-
-  isNewText = text => text !== this.state.text;
-
-  isTextLTEtoLimit = length => length <= this.state.charLimit;
-
-  isTextGTEtoLimit = length => length >= this.state.charLimit;
-
-  cancelChange = () => {
-
-  }
+  isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
 
   handleKeyUp = e => {
     e.preventDefault();
-    this.isEscapeKey(e.key);
+    if (this.props.handleKeyUp) this.props.handleKeyUp(e);
   }
 
   handleChange = e => {
@@ -42,23 +32,12 @@ export default class TextAreaCharCount extends React.Component {
       const { allowTypingPastLimit } = prevState;
       const newState  = allowTypingPastLimit
                       ? { charCount: value.length, text: value }
-                      : this.isTextLTEtoLimit(value.length)
+                      : this.isTextLTEtoLimit()(value.length)
                         ? { charCount: value.length, text: value }
                         :  { charCount: value.length - 1 };
       props.liftText(value);
       return newState;
     });
-  }
-
-  componentDidUpdate() {
-    this.setState((prevState, props) => {
-      const { text } = props;
-      console.log( 'foo: ', this.foo(text)() )
-      console.log('isnew: ', this.isNewText(text))
-      if ( this.isNewText(text) ) {
-        return { charCount: text.length, text };
-      }
-    })
   }
 
   componentDidMount() {
@@ -69,14 +48,25 @@ export default class TextAreaCharCount extends React.Component {
         allowTypingPastLimit: pastLimit,
         charCount: text.length,
         charLimit,
+        text,
       };
     });
   }
 
   render() {
     const { charCount, text } = this.state;
-    const { allowTypingPastLimit, divClass, pClass, textareaClass, charLimit, liftText, ...rest } = this.props;
-    const turnRed = this.isTextLTEtoLimit(charCount) ? '' : 'warning-red';
+    const {
+      allowTypingPastLimit,
+      charLimit,
+      divClass,
+      handleKeyUp,
+      liftText,
+      pClass,
+      taccRef,
+      textareaClass,
+      ...rest
+    } = this.props;
+    const turnRed = this.isTextLTEtoLimit()(charCount) ? '' : 'warning-red';
     return (
       <div className={`TextAreaCharCount ${divClass}`}>
         <textarea
@@ -84,10 +74,15 @@ export default class TextAreaCharCount extends React.Component {
           rows='1'
           onChange={this.handleChange}
           onKeyUp={this.handleKeyUp}
-          value={text} {...rest}>
+          ref={taccRef}
+          value={text}
+          {...rest}
+          >
         </textarea>
         <p className={`char-count ${turnRed} ${pClass}`}>{charCount} / {charLimit}</p>
       </div>
     );
   }
 }
+
+export default React.forwardRef((props, ref) => <TextAreaCharCount taccRef={ref} {...props} />);
