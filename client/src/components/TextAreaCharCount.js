@@ -5,7 +5,7 @@ import './TextAreaCharCount.min.css';
 import { isLessThanOrEqual } from '../utils/comparisons';
 
 
-class TextAreaCharCount extends React.Component {
+export default class TextAreaCharCount extends React.Component {
   constructor(props) {
     super(props);
     this.textarea = React.createRef();
@@ -19,6 +19,10 @@ class TextAreaCharCount extends React.Component {
   }
 
   isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
+
+  focusTextarea = () => {
+    this.textarea.current.focus();
+  }
 
   handleKeyUp = e => {
     e.preventDefault();
@@ -42,6 +46,7 @@ class TextAreaCharCount extends React.Component {
 
   componentDidMount() {
     this.setState((prevState, props) => {
+      if (props.focusTextarea) this.focusTextarea();
       const { allowTypingPastLimit, charLimit, text } = props;
       const pastLimit = allowTypingPastLimit === undefined ? false : allowTypingPastLimit;
       return {
@@ -59,10 +64,10 @@ class TextAreaCharCount extends React.Component {
       allowTypingPastLimit,
       charLimit,
       divClass,
+      focusTextarea,
       handleKeyUp,
       liftText,
       pClass,
-      taccRef,
       textareaClass,
       ...rest
     } = this.props;
@@ -74,7 +79,7 @@ class TextAreaCharCount extends React.Component {
           rows='1'
           onChange={this.handleChange}
           onKeyUp={this.handleKeyUp}
-          ref={taccRef}
+          ref={this.textarea}
           value={text}
           {...rest}
           >
@@ -84,5 +89,3 @@ class TextAreaCharCount extends React.Component {
     );
   }
 }
-
-export default React.forwardRef((props, ref) => <TextAreaCharCount taccRef={ref} {...props} />);

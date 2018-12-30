@@ -51,7 +51,7 @@ export default class AnnouncementStrip extends React.Component {
       const { allowTypingPastLimit } = prevState;
       const newState  = allowTypingPastLimit
                       ? { charCount: announcementText.length, announcementText: announcementText }
-                      : this.isTextLTEtoLimit(announcementText.length)
+                      : this.isTextLTEtoLimit()(announcementText.length)
                         ? { charCount: announcementText.length, announcementText: announcementText }
                         : { charCount: announcementText.length - 1 };
       return newState;
@@ -73,14 +73,14 @@ export default class AnnouncementStrip extends React.Component {
   render() {
     const { deleteAnnouncement, id } = this.props;
     const { allowTypingPastLimit, announcementText, editable } = this.state;
-    console.log('isLTE: ', this.isTextLTEtoLimit(announcementText.length) )
-    const disabled = this.isTextLTEtoLimit(announcementText.length) ? '' : 'disabled';
+    const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';
     const btnOnClick = editable ? () => this.handleEditAnnouncement(announcementText, id) : this.toggleEdit;
     const announcement  = editable
                         ? <TextAreaCharCount
                             allowTypingPastLimit={allowTypingPastLimit}
                             charLimit={this.charLimit}
+                            focusTextarea={true}
                             handleKeyUp={this.handleKeyUp}
                             liftText={this.liftAnnouncementText}
                             text={announcementText}
