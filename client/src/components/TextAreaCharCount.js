@@ -14,11 +14,26 @@ export default class TextAreaCharCount extends React.Component {
     }
   }
 
+  isEqual = x => y => y === x;
+
+  isEscapeKey = this.isEqual('Escape');
+
+  foo = () => this.isEqual(this.state.text);
+
   isNewText = text => text !== this.state.text;
 
   isTextLTEtoLimit = length => length <= this.state.charLimit;
 
   isTextGTEtoLimit = length => length >= this.state.charLimit;
+
+  cancelChange = () => {
+
+  }
+
+  handleKeyUp = e => {
+    e.preventDefault();
+    this.isEscapeKey(e.key);
+  }
 
   handleChange = e => {
     e.preventDefault();
@@ -38,6 +53,8 @@ export default class TextAreaCharCount extends React.Component {
   componentDidUpdate() {
     this.setState((prevState, props) => {
       const { text } = props;
+      console.log( 'foo: ', this.foo(text)() )
+      console.log('isnew: ', this.isNewText(text))
       if ( this.isNewText(text) ) {
         return { charCount: text.length, text };
       }
@@ -66,6 +83,7 @@ export default class TextAreaCharCount extends React.Component {
           className={textareaClass}
           rows='1'
           onChange={this.handleChange}
+          onKeyUp={this.handleKeyUp}
           value={text} {...rest}>
         </textarea>
         <p className={`char-count ${turnRed} ${pClass}`}>{charCount} / {charLimit}</p>

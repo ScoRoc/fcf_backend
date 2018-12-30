@@ -55,13 +55,8 @@ export default class AnnouncementStrip extends React.Component {
     const { deleteAnnouncement, id } = this.props;
     const { allowTypingPastLimit, announcementText, editable } = this.state;
     const disabled = this.isTextLTEtoLimit(announcementText.length) ? '' : 'disabled';
-    const btn = editable
-              ? <button
-                  className={disabled}
-                  disabled={disabled}
-                  onClick={() => this.handleEditAnnouncement(announcementText, id)}
-                >Done</button>
-              : <button onClick={this.toggleEdit}>Edit</button>;
+    const btnText = editable ? 'Done' : 'Edit';
+    const btnOnClick = editable ? () => this.handleEditAnnouncement(announcementText, id) : this.toggleEdit;
     const announcement  = editable
                         ? <TextAreaCharCount
                             allowTypingPastLimit={allowTypingPastLimit}
@@ -84,7 +79,7 @@ export default class AnnouncementStrip extends React.Component {
           <p>Likes: 1000</p>
         </div>
         <div className='AnnouncementStrip__btn-div'>
-          {btn}
+          <button className={disabled} disabled={disabled} onClick={btnOnClick}>{btnText}</button>
           <button onClick={() => deleteAnnouncement(id)}>Delete</button>
         </div>
       </div>

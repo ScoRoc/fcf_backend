@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import './components.min.css';
+import './page-sections.min.css';
 
 const Nav = props => {
   const addManager  = props.manager.email === 'super@super.com'

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './components.min.css';
+import './page-sections.min.css';
 
 const Footer = props => {
   return (

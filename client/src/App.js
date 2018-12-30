@@ -10,9 +10,9 @@ import EventsPage from './pages/events/EventsPage';
 import WodPage from './pages/wod/WodPage';
 import AddManagerPage from './pages/new-manager/AddManagerPage';
 
-import Footer from './components/Footer';
-// import Main from './components/Main';
-import Header from './components/Header';
+import Footer from './page-sections/Footer';
+// import Main from './page-sections/Main';
+import Header from './page-sections/Header';
 import LoadingFirstPage from './components/LoadingFirstPage';
 
 class App extends Component {

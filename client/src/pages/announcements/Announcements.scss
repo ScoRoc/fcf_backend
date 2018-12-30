@@ -86,7 +86,7 @@
   background: $greyMediumDark;
 
   &__text-wrap {
-    min-height: 16.6vh;
+    min-height: 8.1em;
     width: 100%;
     padding-bottom: .5em;
     display: flex;
@@ -102,7 +102,7 @@
       width: 100%;
 
       &__textarea {
-        height: 11.5vh;
+        height: 5.9em;
         width: 100% !important;
       }
     }
@@ -134,10 +134,6 @@
       font-size: .8em;
     }
   }
-}
-
-.warning-red {
-  color: $redWarning;
 }
 
   ///////////////////
@@ -176,12 +172,12 @@
 
   .AnnouncementStrip {
     &__text-wrap {
-      min-height: 11vh;
+      min-height: 5.55em;
 
       &__div {
 
         &__textarea {
-          height: 5vh;
+          height: 2em;
         }
       }
     }
@@ -213,12 +209,12 @@
 
   .AnnouncementStrip {
     &__text-wrap {
-      min-height: 11vh;
+      min-height: 5.6em;
 
       &__div {
 
         &__textarea {
-          height: 5vh;
+          height: 2.7em;
         }
       }
     }
@@ -260,12 +256,12 @@
 
   .AnnouncementStrip {
     &__text-wrap {
-      min-height: 12vh;
+      min-height: 5.651em;
 
       &__div {
 
         &__textarea {
-          height: 5vh;
+          height: 2.7em;
         }
       }
     }
@@ -305,12 +301,12 @@
 
   .AnnouncementStrip {
     &__text-wrap {
-      min-height: 15vh;
+      min-height: 7.65em;
 
       &__div {
 
         &__textarea {
-          height: 9.5vh;
+          height: 4.405em;
         }
       }
     }
@@ -331,12 +327,12 @@
 @media screen and (min-width: 475px) and (max-width: 600px) {
   .AnnouncementStrip {
     &__text-wrap {
-      min-height: 15vh;
+      min-height: 7.77em;
 
       &__div {
 
         &__textarea {
-          height: 9.5vh;
+          height: 4.92em;
         }
       }
     }
