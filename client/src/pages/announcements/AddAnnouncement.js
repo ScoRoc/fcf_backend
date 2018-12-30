@@ -15,6 +15,7 @@ export default class AddAnnouncement extends React.Component {
       announcementText: '',
       charCount: 0,
       charLimit: 150,
+      imgUrl: '',
     }
   }
 
@@ -42,6 +43,21 @@ export default class AddAnnouncement extends React.Component {
     });
   }
 
+  // handleImgBtnClick = e => {
+  //   e.preventDefault()
+  // }
+
+  handleImgChange = e => {
+    const file = e.target.files[0]
+    console.log('file: ', file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.setState({ imgUrl: reader.result });
+    }
+    reader.readAsDataURL(file);
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     const { announcementText } = this.state;
@@ -63,7 +79,7 @@ export default class AddAnnouncement extends React.Component {
   }
 
   render() {
-    const { allowTypingPastLimit, announcementText, charLimit } = this.state;
+    const { allowTypingPastLimit, announcementText, charLimit, imgUrl } = this.state;
     const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     return (
       <section className='AddAnnouncement'>
@@ -89,6 +105,17 @@ export default class AddAnnouncement extends React.Component {
                 ref={this.url}
                 type='text'
               />
+            </div>
+            <div className='AddAnnouncement__form__img-wrap'>
+              <label htmlFor='new-announcement-img'>Image</label>
+              {/* <button onClick={this.handleImgBtnClick}>Choose an image</button> */}
+              <input
+                id='new-announcement-img'
+                onChange={this.handleImgChange}
+                ref={this.img}
+                type='file'
+              />
+              <img src={imgUrl} />
             </div>
           <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
         </form>

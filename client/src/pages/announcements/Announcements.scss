@@ -28,7 +28,15 @@
     justify-content: space-between;
     font-size: 1.1em;
 
-    &__announcement-wrap, &__url-wrap {
+    button {
+      @extend %button;
+      width: 50%;
+      margin: .7em auto 0;
+      padding: 0 !important;
+      font-size: 1em;
+    }
+
+    &__announcement-wrap, &__url-wrap, &__img-wrap {
       display: flex;
       flex-direction: column;
       label {
@@ -42,12 +50,21 @@
       }
     }
 
-    button {
-      @extend %button;
-      width: 50%;
-      margin: .7em auto 0;
-      padding: 0 !important;
-      font-size: 1em;
+    &__img-wrap {
+      margin-top: 1em;
+
+      label {
+        margin-bottom: .7em;
+      }
+
+      button {
+        @extend %button;
+        margin: 0;
+      }
+
+      img {
+        width: 10%;
+      }
     }
   }
 }
@@ -153,7 +170,7 @@
 @media screen and (min-width: 1200px) {
   .AddAnnouncement {
     &__form {
-      &__announcement-wrap, &__url-wrap {
+      &__announcement-wrap, &__url-wrap, &__img-wrap {
         label {
           font-size: 1.2em;
         }
@@ -196,7 +213,7 @@
 @media screen and (min-width: 900px) and (max-width: 1200px) {
   .AddAnnouncement {
     &__form {
-      &__announcement-wrap, &__url-wrap {
+      &__announcement-wrap, &__url-wrap, &__img-wrap {
         label {
           font-size: 1.1em;
         }
@@ -242,7 +259,7 @@
     &__form {
       padding: .8em 1em;
 
-      &__announcement-wrap, &__url-wrap {
+      &__announcement-wrap, &__url-wrap, &__img-wrap {
         label {
           font-size: 1.1em;
         }
@@ -286,7 +303,7 @@
     &__form {
       padding: .7em 1em;
 
-      &__announcement-wrap, &__url-wrap {
+      &__announcement-wrap, &__url-wrap, &__img-wrap {
         label {
           font-size: 1em;
         }
