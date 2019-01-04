@@ -51,6 +51,7 @@
     }
 
     &__img-wrap {
+      // min-height: 30vh;
       margin-top: 1em;
 
       label {
@@ -63,7 +64,7 @@
       }
 
       img {
-        width: 10%;
+        // width: 50%;
       }
     }
   }

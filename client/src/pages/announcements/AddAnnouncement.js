@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
+import ImgCrop from '../../components/ImgCrop';
 import TextAreaCharCount from '../../components/TextAreaCharCount';
 
 import { isLessThanOrEqual } from '../../utils/comparisons';
@@ -115,7 +116,10 @@ export default class AddAnnouncement extends React.Component {
                 ref={this.img}
                 type='file'
               />
-              <img src={imgUrl} />
+              {/* <img src={imgUrl} /> */}
+              {/* <div style={{ height: '30vh', background: 'green', }}> */}
+                <ImgCrop src={imgUrl} />
+              {/* </div> */}
             </div>
           <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
         </form>
