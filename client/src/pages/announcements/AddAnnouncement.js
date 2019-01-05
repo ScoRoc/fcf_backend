@@ -17,6 +17,7 @@ export default class AddAnnouncement extends React.Component {
       charCount: 0,
       charLimit: 150,
       imgUrl: '',
+      imgFoo: '', // how to get img to db/cloudinary ??
     }
   }
 
@@ -51,6 +52,7 @@ export default class AddAnnouncement extends React.Component {
   handleImgChange = e => {
     const file = e.target.files[0]
     console.log('file: ', file);
+    this.setState({ imgFoo: file }); // errr.....not working...yet...??
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -119,7 +121,7 @@ export default class AddAnnouncement extends React.Component {
               />
               {/* <img src={imgUrl} /> */}
               {/* <div style={{ height: '30vh', background: 'green', }}> */}
-                <ImgCrop src={imgUrl} />
+                <ImgCrop imgFoo={this.state.imgFoo} src={imgUrl} />
               {/* </div> */}
             </div>
           <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
