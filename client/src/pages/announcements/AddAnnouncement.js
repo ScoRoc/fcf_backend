@@ -112,6 +112,7 @@ export default class AddAnnouncement extends React.Component {
               {/* <button onClick={this.handleImgBtnClick}>Choose an image</button> */}
               <input
                 id='new-announcement-img'
+                name='imgFile'
                 onChange={this.handleImgChange}
                 ref={this.img}
                 type='file'

@@ -1,7 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const multer = require('multer');
+const upload = multer({ dest: './uploads' });
+
 const Announcement = require('../models/announcement');
+const cloudinary = require('cloudinary');
+const mongoose = require('mongoose');
+
+router.post('/cloudinarytest', upload.single('imgFile'), (req, res) => {
+  const { src } = req.body;
+  console.log('src: ', src);
+  cloudinary.uploader.upload(src, result => {
+    console.log('result: ', result);
+    res.send('yo')
+  });
+});
 
 router.get('/', (req, res) => {
   Announcement.find({}, (err, announcements) => {
