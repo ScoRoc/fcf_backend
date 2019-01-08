@@ -1,20 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const upload = multer({ dest: './uploads' });
+// const upload = multer({ dest: '../uploads' });
 
 const Announcement = require('../models/announcement');
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 const mongoose = require('mongoose');
 
-router.post('/cloudinarytest', upload.single('imgFile'), (req, res) => {
-  const { src } = req.body;
-  console.log('src: ', src);
-  cloudinary.uploader.upload(src, result => {
-    console.log('result: ', result);
-    res.send('yo')
-  });
+const storage = multer.diskStorage({
+  destination: './uploads',
+  filename: (req, file, cb) => {
+    cb(null, `${new Date()}-${path.extname(file.originalname)}`);
+  },
 });
+
+const upload = multer({ storage });
 
 router.get('/', (req, res) => {
   Announcement.find({}, (err, announcements) => {
@@ -27,15 +27,24 @@ router.get('/', (req, res) => {
   })
 });
 
-router.post('/', (req, res) => {
-  const { announcementText, url } = req.body;
-  Announcement.create({ announcementText, url }, (err, announcement) => {
-    if (err) {
-      console.log('err: ', err);
-      res.send(err);
-    } else {
-      res.json({ announcement });
-    }
+router.post('/', upload.single('file'), (req, res) => {
+  const { announcementText, file, foo, url } = req.body;
+  console.log('req body: ', req.body);
+  // console.log('file: ', file);
+  console.log('req.file: ', req.file);
+
+  // cloudinary.uploader.upload(file, (err, result) => {
+  cloudinary.uploader.upload('./uploads/imgTest.jpg', (err, result) => {
+    console.log('err: ', err);
+    console.log('result: ', result);
+    Announcement.create({ announcementText, url }, (err, announcement) => {
+      if (err) {
+        console.log('err: ', err);
+        res.send(err);
+      } else {
+        res.json({ announcement });
+      }
+    });
   });
 });
 

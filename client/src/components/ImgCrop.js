@@ -58,13 +58,6 @@ export default class ImgCrop extends React.Component {
   //   console.log('croppedImg: ', croppedImg);
   // }
 
-  testUpload = () => {
-    // console.log('src: ', this.props.src)
-    axios.post('/cloudinarytest', { src: this.props.src }).then(result => {
-      console.log('result: ', result);
-    });
-  }
-
   render() {
     const { src } = this.props;
     return (
@@ -78,7 +71,6 @@ export default class ImgCrop extends React.Component {
           src={src}
           style={{ width: '50%' }}
         />
-        <p onClick={this.testUpload}>click me to upload test</p>
       </>
     );
   }

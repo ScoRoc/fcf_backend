@@ -16,8 +16,8 @@ export default class AddAnnouncement extends React.Component {
       announcementText: '',
       charCount: 0,
       charLimit: 150,
+      file: '',
       imgUrl: '',
-      imgFoo: '', // how to get img to db/cloudinary ??
     }
   }
 
@@ -51,20 +51,39 @@ export default class AddAnnouncement extends React.Component {
 
   handleImgChange = e => {
     const file = e.target.files[0]
-    console.log('file: ', file);
-    this.setState({ imgFoo: file }); // errr.....not working...yet...??
+    // console.log('file: ', file);
+    this.setState({ file });
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      this.setState({ imgUrl: reader.result });
-    }
-    reader.readAsDataURL(file);
+    // const reader = new FileReader();
+    // reader.onloadend = () => {
+    //   // console.log('reader result: ', reader.result)
+    //   this.setState({ imgUrl: reader.result });
+    // }
+    // reader.readAsDataURL(file);
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { announcementText } = this.state;
-    axios.post('/announcements', { announcementText, url: this.url.current.value }).then(result => {
+    const { announcementText, file } = this.state;
+    // console.log('state file: ', file);
+    let foo = new FormData();
+    foo.append('file', file);
+    foo.append('name', 'tester name hereeee');
+    // for (let [key, value] of foo.entries()) {
+    //   console.log('key: ', key, '----value: ', value)
+    // }
+    console.log('foo.values: ', foo.values());
+    for (let value of foo.values()) {
+      console.log('value: ', value)
+    }
+    // console.log('foo.file: ', foo.file);
+    axios.post('/announcements', {
+      announcementText,
+      // file: foo,
+      foo,
+      file,
+      url: this.url.current.value
+    }).then(result => {
       const { data } = result;
       data.errors ? this.handleErrors(data) : this.handleSuccess(data);
       this.setState({ announcementText: '' });
@@ -86,7 +105,7 @@ export default class AddAnnouncement extends React.Component {
     const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     return (
       <section className='AddAnnouncement'>
-        <form className='AddAnnouncement__form' onSubmit={this.handleSubmit}>
+        <form encType="multipart/form-data" className='AddAnnouncement__form' onSubmit={this.handleSubmit}>
           <div className='AddAnnouncement__form__announcement-wrap'>
             <label htmlFor='new-announcement-text'>Announcement</label>
               <TextAreaCharCount
@@ -121,7 +140,7 @@ export default class AddAnnouncement extends React.Component {
               />
               {/* <img src={imgUrl} /> */}
               {/* <div style={{ height: '30vh', background: 'green', }}> */}
-                <ImgCrop imgFoo={this.state.imgFoo} src={imgUrl} />
+                <ImgCrop src={imgUrl} />
               {/* </div> */}
             </div>
           <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
