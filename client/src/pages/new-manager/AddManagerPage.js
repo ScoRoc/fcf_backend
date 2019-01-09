@@ -14,28 +14,37 @@ class AddManagerPage extends Component {
       email: '',
       firstName: '',
       lastName: '',
+      superUser: false,
       password: '',
     }
   }
 
   clearManagerData = e => {
-    this.setState({email: '', firstName: '', lastName: '', password: '', successfulAdd: false});
+    this.setState({
+      email: '',
+      firstName: '',
+      lastName: '',
+      superUser: false,
+      password: '',
+      successfulAdd: false
+    });
   }
 
   updateSuccessfulManager = ({manager, managerPassword}) => {
-    const { email, firstName, lastName } = manager;
-    this.setState({email, firstName, lastName, password: managerPassword, successfulAdd: true});
+    const { email, firstName, lastName, superUser } = manager;
+    this.setState({email, firstName, lastName, superUser, password: managerPassword, successfulAdd: true});
   }
 
   render() {
     if (!this.props.manager) return <Redirect to='/signin' />;
-    const { email, firstName, lastName, password, successfulAdd } = this.state;
+    const { email, firstName, lastName, superUser, password, successfulAdd } = this.state;
     const newManager  = successfulAdd
                       ? <SuccessfulNewManager
                           clearManagerData={this.clearManagerData}
                           email={email}
                           firstName={firstName}
                           lastName={lastName}
+                          superUser={superUser}
                           password={password}
                         />
                       : <div className='placeholder'>

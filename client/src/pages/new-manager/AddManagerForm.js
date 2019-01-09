@@ -19,12 +19,14 @@ export default class AddManagerForm extends React.Component {
     const email = this.email.value.toLowerCase();
     const firstName = this.firstName.value.toLowerCase();
     const lastName = this.lastName.value.toLowerCase();
+    const superUser = this.superUser.checked;
     const password = this.password.value;
-    axios.post('/manager/addmanager', { email, firstName, lastName, password }).then(result => {
+    axios.post('/manager/addmanager', { email, firstName, lastName, superUser, password }).then(result => {
       result.data.errors ? this.handleErrors(result.data._message) : this.handleSuccess(result.data);
       this.email.value = '';
       this.firstName.value = '';
       this.lastName.value = '';
+      this.superUser.checked = false;
       this.password.value = '';
     });
   }
@@ -44,6 +46,16 @@ export default class AddManagerForm extends React.Component {
         <label htmlFor='add-manager-email'>Email
           <br />
           <input id='add-manager-email' type='email' ref={ input => {this.email = input}} required />
+        </label>
+        <label htmlFor='add-manager-super-user'>Super User
+          <br />
+          <input
+            id='add-manager-super-user'
+            name='super-user'
+            ref={ input => {this.superUser = input}}
+            type='checkbox'
+            value={true}
+          />
         </label>
         <label htmlFor='add-manager-password'>Password
           <br />

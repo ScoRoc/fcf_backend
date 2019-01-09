@@ -23,6 +23,10 @@ const managerSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
+  superUser: {
+    type: Boolean,
+    required: true,
+  },
   password: {
     type: String,
     required: true,

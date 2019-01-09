@@ -36,13 +36,14 @@ router.post('/addmanager', async (req, res) => {
   if ( await findManagerByEmail(req.body.email) ) {
     res.send({errors: true, _message: 'There is already a user with that email.'});
   } else {
-    const { email, firstName, lastName, password } = req.body;
+    const { email, firstName, lastName, superUser, password } = req.body;
     Manager.create(
       {
         firstName: firstName.toLowerCase(),
         lastName: lastName.toLowerCase(),
         email: email.toLowerCase(),
-        password: password,
+        superUser,
+        password,
       }, (err, manager) => {
         if (err) {
           console.log('err: ', err);
