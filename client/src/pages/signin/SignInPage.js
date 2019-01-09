@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { login } from '../../redux/actions/actions';
+import { login } from '../../redux/modules/auth';
 
 import './SignIn.min.css';
 
