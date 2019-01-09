@@ -9,6 +9,12 @@ const announcementSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
+  likes: {
+    type: Number,
+    default: 0,
+    min: 0,
+    required: true,
+  },
   url: {
     type: String,
     required: false,

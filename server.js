@@ -27,10 +27,12 @@ app.get('/test', (req, res) => {
 
 const announcements = require('./routes/announcements');
 const auth = require('./routes/auth');
+const events = require('./routes/events');
 const manager = require('./routes/manager');
 
 app.use('/announcements', announcements);
 app.use('/auth', auth);
+app.use('/events', events);
 app.use('/manager', manager);
 
 if (process.env.NODE_ENV === 'production') {

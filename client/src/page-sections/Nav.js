@@ -8,9 +8,8 @@ import { setPage } from '../redux/modules/pages';
 import './page-sections.min.css';
 
 const Nav = props => {
-  console.log('props: ', props)
-  const email = props.manager ? props.manager.email : '';
-  const addManager  = email === 'super@super.com'
+  const superUser = props.manager ? props.manager.superUser : false;
+  const addManager  = superUser
                     ? <NavLink to='/addmanager' onClick={() => props.setPage('/addmanager')}  activeClassName='selected-nav-link'>
                         <span id='add-manager-span-wrapper'><span>Add </span><span>Manager</span></span>
                       </NavLink>

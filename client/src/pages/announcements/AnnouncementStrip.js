@@ -83,7 +83,7 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   render() {
-    const { deleteAnnouncement, id, url } = this.props;
+    const { deleteAnnouncement, id, likes, url } = this.props;
     const { allowTypingPastLimit, announcementText, announcementUrl, editable } = this.state;
     const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';
@@ -121,7 +121,7 @@ export default class AnnouncementStrip extends React.Component {
         </div>
         <div className='AnnouncementStrip__info-div'>
           {displayUrl}
-          <p>Likes: 1000</p>
+          <p>Likes: {likes || 'none'}</p>
         </div>
         <div className='AnnouncementStrip__btn-div'>
           <button className={`${editDoneBtnClass} ${disabled}`} disabled={disabled} onClick={btnOnClick}>{btnText}</button>

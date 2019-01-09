@@ -11,6 +11,7 @@ import AnnouncementStrip from './AnnouncementStrip';
                               editAnnouncement={editAnnouncement}
                               id={announcement._id}
                               key={announcement._id}
+                              likes={announcement.likes}
                               text={announcement.announcementText}
                               url={announcement.url || 'no url'}
                             />
