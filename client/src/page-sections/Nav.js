@@ -13,9 +13,12 @@ const Nav = props => {
                         <span id='add-manager-span-wrapper'><span>Add </span><span>Manager</span></span>
                       </NavLink>
                     : '';
+  const foo = () => {
+    console.log('foo')
+  }
   return (
     <nav>
-      <NavLink to='/home' activeClassName='selected-nav-link'>Home</NavLink>
+      <NavLink to='/home' onClick={foo} activeClassName='selected-nav-link'>Home</NavLink>
       <NavLink to='/announcements' activeClassName='selected-nav-link'>Announcements</NavLink>
       <NavLink to='/events' activeClassName='selected-nav-link'>Events</NavLink>
       <NavLink to='/wod' activeClassName='selected-nav-link'>Wod</NavLink>

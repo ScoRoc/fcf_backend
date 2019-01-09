@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './AddManager.min.css';
 import AddManagerForm from './AddManagerForm';
 import SuccessfulNewManager from './SuccessfulNewManager';
 
-export default class AddManagerPage extends Component {
+class AddManagerPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -26,6 +28,7 @@ export default class AddManagerPage extends Component {
   }
 
   render() {
+    if (!this.props.manager) return <Redirect to='/signin' />;
     const { email, firstName, lastName, password, successfulAdd } = this.state;
     const newManager  = successfulAdd
                       ? <SuccessfulNewManager
@@ -49,3 +52,11 @@ export default class AddManagerPage extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    manager: state.auth.manager,
+  };
+};
+
+export default connect(mapStateToProps)(AddManagerPage);

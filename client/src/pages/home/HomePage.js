@@ -5,7 +5,7 @@ import './Home.min.css';
 
 class HomePage extends React.Component {
   render() {
-    // if (!this.props.manager) return <Redirect to='/signin' />;
+    if (!this.props.manager) return <Redirect to='/signin' />;
     return (
       <div className='Home'>
         <p>home</p>

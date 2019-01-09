@@ -16,8 +16,6 @@ class SignInPage extends React.Component {
   handleSuccess = data => {
     console.log('success: ', data);
     const { manager, token } = data;
-    // localStorage.setItem('fcf_backend', data.token);
-    // this.props.liftManager(data);
     this.props.login(manager, token);
   }
 
