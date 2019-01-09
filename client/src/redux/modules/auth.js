@@ -11,7 +11,7 @@ export function login(manager, token) {
     type: LOGIN,
     manager,
     token,
-  }
+  };
 };
 
 export function logout() {
@@ -23,12 +23,10 @@ export default function auth(state = initialState, action = {}) {
     case LOGIN:
       localStorage.setItem('fcf_backend', action.token);
       return {...state, token: action.token, manager: action.manager};
-      break;
     case LOGOUT:
       localStorage.removeItem('fcf_backend');
       return {...initialState};
-      break;
     default:
       return state;
-  };
+  }
 };

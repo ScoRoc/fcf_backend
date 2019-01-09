@@ -1,20 +1,41 @@
-import React from 'react';
-import { Redirect, Route, withRouter } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import './page-sections.min.css';
+import '../App.min.css';
 import HomePage from '../pages/home/HomePage';
 import SignInPage from '../pages/signin/SignInPage';
+import AnnouncementsPage from '../pages/announcements/AnnouncementsPage';
+import EventsPage from '../pages/events/EventsPage';
+import WodPage from '../pages/wod/WodPage';
+import AddManagerPage from '../pages/new-manager/AddManagerPage';
 
-const Main = props => {
-  const { history, liftManager, manager } = props;
-  // const goTo = manager ? <Redirect to='/home' /> : <Redirect to='/signin' />;
-  return (
-    <main className='main flex1'>
-      {/* {goTo} */}
-      <Route path='/home' render={() => <HomePage manager={manager} />} />
-      <Route path='/signin' render={() => <SignInPage manager={manager} liftManager={liftManager} />} />
-    </main>
-  )
+import LoadingFirstPage from '../components/LoadingFirstPage';
+
+class Main extends Component {
+
+  render() {
+    return (
+      <main className='main flex1'>
+        {/* <AddManagerPage /> */}
+        {/* <Main manager={manager} liftManager={this.liftManager} /> */}
+        <Route exact path='/' render={() => <LoadingFirstPage />} />
+        <Route path='/home' render={() => <HomePage />} />
+        <Route path='/announcements' render={() => <AnnouncementsPage />} />
+        <Route path='/events' render={() => <EventsPage />} />
+        <Route path='/wod' render={() => <WodPage />} />
+        <Route path='/addmanager' render={() => <AddManagerPage />} />
+        <Route path='/signin' render={() => <SignInPage />} />
+      </main>
+    );
+  }
 }
 
-export default withRouter(Main);
+const mapStateToProps = state => {
+  return {
+    manager: state.auth.manager,
+    token: state.auth.token,
+  };
+};
+
+export default connect(mapStateToProps)(Main);

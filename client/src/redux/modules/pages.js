@@ -10,7 +10,7 @@ export default function pages(state = initialState, action = {}) {
       return {...state, page: action.page};
     default:
       return state;
-  };
+  }
 };
 
 export function setPage(page) {

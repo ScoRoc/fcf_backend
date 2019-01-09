@@ -18,14 +18,15 @@ import Header from './page-sections/Header';
 import LoadingFirstPage from './components/LoadingFirstPage';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   componentDidMount() {
     const token = localStorage.getItem('fcf_backend');
     if (token === 'undefined' || !token) {
       this.props.logout();
+
     } else {
       axios.post('/manager/validate', {token}).then(result => {
         const { data } = result;
@@ -36,7 +37,6 @@ class App extends Component {
   }
 
   render() {
-    const { manager } = this.props;
     return (
       <Router>
         <div className="App">
@@ -44,7 +44,7 @@ class App extends Component {
           {/* <AddManagerPage /> */}
           {/* <Main manager={manager} liftManager={this.liftManager} /> */}
           <main className='main flex1'>
-            {/* <Route exact path='/' render={() => <LoadingFirstPage manager={manager} />} /> */}
+            <Route exact path='/' render={() => <LoadingFirstPage />} />
             <Route path='/home' render={() => <HomePage />} />
             <Route path='/announcements' render={() => <AnnouncementsPage />} />
             <Route path='/events' render={() => <EventsPage />} />
@@ -52,6 +52,7 @@ class App extends Component {
             <Route path='/addmanager' render={() => <AddManagerPage />} />
             <Route path='/signin' render={() => <SignInPage />} />
           </main>
+          {/* <Main /> */}
           <Footer />
         </div>
       </Router>

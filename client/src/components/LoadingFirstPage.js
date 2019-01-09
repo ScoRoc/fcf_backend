@@ -1,8 +1,12 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const LoadingFirstPage = props => {
-  const goTo = props.manager ? <Redirect to='/home' /> : <Redirect to='/signin' />;
+  // history.push('/addmanager')
+  const goTo  = props.manager
+              ? <Redirect to={props.page} />
+              : <Redirect to='/signin' />;
   return (
     <>
       {goTo}
@@ -11,4 +15,11 @@ const LoadingFirstPage = props => {
   );
 }
 
-export default LoadingFirstPage;
+const mapStateToProps = state => {
+  return {
+    manager: state.auth.manager,
+    page: state.pages.page,
+  };
+};
+
+export default withRouter( connect(mapStateToProps)(LoadingFirstPage) );
