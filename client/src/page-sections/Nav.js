@@ -1,10 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../redux/actions/actions';
 
 import './page-sections.min.css';
 
 const Nav = props => {
-  const addManager  = props.manager.email === 'super@super.com'
+  console.log('props: ', props)
+  const email = props.manager ? props.manager.email : '';
+  const addManager  = email === 'super@super.com'
                     ? <NavLink to='/addmanager' activeClassName='selected-nav-link'>
                         <span id='add-manager-span-wrapper'><span>Add </span><span>Manager</span></span>
                       </NavLink>
@@ -21,4 +25,17 @@ const Nav = props => {
   );
 }
 
-export default Nav;
+const mapStateToProps = state => {
+  return {
+    manager: state.auth.manager,
+    token: state.auth.token,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

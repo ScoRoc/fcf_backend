@@ -1,20 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-// const upload = multer({ dest: '../uploads' });
 
-const Announcement = require('../models/announcement');
 const cloudinary = require('cloudinary').v2;
 const mongoose = require('mongoose');
+const multer = require('multer');
+const upload = multer({ dest: './uploads' });
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, './uploads')
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// });
+// const upload = multer({ storage });
 
-const storage = multer.diskStorage({
-  destination: './uploads',
-  filename: (req, file, cb) => {
-    cb(null, `${new Date()}-${path.extname(file.originalname)}`);
-  },
-});
+const Announcement = require('../models/announcement');
 
-const upload = multer({ storage });
 
 router.get('/', (req, res) => {
   Announcement.find({}, (err, announcements) => {
@@ -27,16 +29,19 @@ router.get('/', (req, res) => {
   })
 });
 
-router.post('/', upload.single('file'), (req, res) => {
-  const { announcementText, file, foo, url } = req.body;
+router.post('/', upload.single('imgFile'), (req, res) => {
+  // const { announcementText, file, foo, url } = req.body;
+  const { announcementText, foo, url } = req.body;
   console.log('req body: ', req.body);
   // console.log('file: ', file);
   console.log('req.file: ', req.file);
+  console.log('req files: ', req.files);
+  console.log('foo: ', foo);
 
   // cloudinary.uploader.upload(file, (err, result) => {
-  cloudinary.uploader.upload('./uploads/imgTest.jpg', (err, result) => {
-    console.log('err: ', err);
-    console.log('result: ', result);
+  // cloudinary.uploader.upload('./uploads/imgTest.jpg', (err, result) => {
+  //   console.log('err: ', err);
+  //   console.log('result: ', result);
     Announcement.create({ announcementText, url }, (err, announcement) => {
       if (err) {
         console.log('err: ', err);
@@ -45,7 +50,7 @@ router.post('/', upload.single('file'), (req, res) => {
         res.json({ announcement });
       }
     });
-  });
+  // });
 });
 
 router.put('/', (req, res) => {

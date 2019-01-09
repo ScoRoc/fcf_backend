@@ -1,10 +1,12 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { login } from '../../redux/actions/actions';
 
 import './SignIn.min.css';
 
-export default class SignInPage extends React.Component {
+class SignInPage extends React.Component {
 
   handleErrors = data => {
     console.log('data: ', data);
@@ -13,8 +15,10 @@ export default class SignInPage extends React.Component {
 
   handleSuccess = data => {
     console.log('success: ', data);
-    localStorage.setItem('fcf_backend', data.token);
-    this.props.liftManager(data);
+    const { manager, token } = data;
+    // localStorage.setItem('fcf_backend', data.token);
+    // this.props.liftManager(data);
+    this.props.login(manager, token);
   }
 
   handleSubmit = e => {
@@ -47,3 +51,18 @@ export default class SignInPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    manager: state.auth.manager,
+    token: state.auth.token,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (manager, token) => dispatch(login(manager, token))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);

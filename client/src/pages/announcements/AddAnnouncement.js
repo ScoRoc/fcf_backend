@@ -67,12 +67,12 @@ export default class AddAnnouncement extends React.Component {
     const { announcementText, file } = this.state;
     // console.log('state file: ', file);
     let foo = new FormData();
-    foo.append('file', file);
+    foo.append('imgFile', file);
     foo.append('name', 'tester name hereeee');
     // for (let [key, value] of foo.entries()) {
     //   console.log('key: ', key, '----value: ', value)
     // }
-    console.log('foo.values: ', foo.values());
+    // console.log('foo.values: ', foo.values());
     for (let value of foo.values()) {
       console.log('value: ', value)
     }
@@ -81,7 +81,7 @@ export default class AddAnnouncement extends React.Component {
       announcementText,
       // file: foo,
       foo,
-      file,
+      // file,
       url: this.url.current.value
     }).then(result => {
       const { data } = result;

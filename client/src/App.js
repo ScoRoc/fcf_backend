@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { login, logout } from './redux/actions/actions';
 
 import './App.min.css';
 import HomePage from './pages/home/HomePage';
@@ -18,53 +20,37 @@ import LoadingFirstPage from './components/LoadingFirstPage';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.defaultState = {
-      manager: null,
-      token: null,
-    };
-    this.state = this.defaultState;
-  }
-
-  liftManager = data => {
-    const { manager, token } = data;
-    this.setState({ manager, token });
-  }
-
-  logout = () => {
-    localStorage.removeItem('fcf_backend');
-    this.setState(this.defaultState);
   }
 
   componentDidMount() {
     const token = localStorage.getItem('fcf_backend');
     if (token === 'undefined' || !token) {
-      localStorage.removeItem('fcf_backend');
-      this.logout();
+      this.props.logout();
     } else {
       axios.post('/manager/validate', {token}).then(result => {
         const { data } = result;
-        localStorage.setItem('fcf_backend', data.token);
-        this.setState({ manager: data.manager, token: data.token });
+        const { manager, token } = data;
+        this.props.login(manager, token);
       }).catch(err => console.log('err: ', err));
     }
   }
 
   render() {
-    const { manager } = this.state;
+    const { manager } = this.props;
     return (
       <Router>
         <div className="App">
-          <Header logout={this.logout} manager={manager} />
+          <Header />
           {/* <AddManagerPage /> */}
           {/* <Main manager={manager} liftManager={this.liftManager} /> */}
           <main className='main flex1'>
-            <Route exact path='/' render={() => <LoadingFirstPage />} />
+            {/* <Route exact path='/' render={() => <LoadingFirstPage manager={manager} />} /> */}
             <Route path='/home' render={() => <HomePage />} />
             <Route path='/announcements' render={() => <AnnouncementsPage />} />
             <Route path='/events' render={() => <EventsPage />} />
             <Route path='/wod' render={() => <WodPage />} />
             <Route path='/addmanager' render={() => <AddManagerPage />} />
-            <Route path='/signin' render={() => <SignInPage manager={manager} liftManager={this.liftManager} />} />
+            <Route path='/signin' render={() => <SignInPage />} />
           </main>
           <Footer />
         </div>
@@ -73,4 +59,18 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    manager: state.auth.manager,
+    token: state.auth.token,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (manager, token) => dispatch(login(manager, token)),
+    logout: () => dispatch(logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
