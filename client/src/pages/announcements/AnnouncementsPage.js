@@ -9,6 +9,7 @@ import AllAnnouncements from './AllAnnouncements';
 
 import { getIndex, addItemToStateArr } from '../../utils/helpers';
 import useAxios from '../../utils/axios-helpers';
+
 const path = '/announcements';
 const { deleteWithAxios, editWithAxios } = useAxios(path);
 
@@ -45,7 +46,7 @@ class AnnouncementsPage extends React.Component {
 
   componentDidMount() {
     if (this.props.manager) {
-      axios.get('/announcements').then(result => {
+      axios.get(path).then(result => {
         this.setState({ announcements: result.data.announcements });
       });
     }

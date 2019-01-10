@@ -6,8 +6,8 @@ import axios from 'axios';
 import AddEvent from './AddEvent';
 
 import { getIndex, addItemToStateArr } from '../../utils/helpers';
-// import { deleteWithAxios, editWithAxios } from '../../utils/axios-helpers';
 import useAxios from '../../utils/axios-helpers';
+
 const path = '/events';
 const { deleteWithAxios, editWithAxios } = useAxios(path);
 
@@ -47,7 +47,7 @@ class EventsPage extends React.Component {
 
   componentDidMount() {
     if (this.props.manager) {
-      axios.get('/events').then(result => {
+      axios.get(path).then(result => {
         this.setState({ events: result.data.events });
       });
     }
