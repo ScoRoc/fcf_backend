@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import axios from 'axios';
 
 import AddEvent from './AddEvent';
+import AllEvents from './AllEvents';
 
 import { getIndex, addItemToStateArr } from '../../utils/helpers';
 import useAxios from '../../utils/axios-helpers';
 
 const path = '/events';
-const { deleteWithAxios, editWithAxios } = useAxios(path);
+const { deleteWithAxios, getWithAxios, putWithAxios } = useAxios(path);
 
 class EventsPage extends React.Component {
   constructor(props) {
@@ -35,9 +35,9 @@ class EventsPage extends React.Component {
     });
   }
 
-  editAnnouncement = (eventText, id, startDate, type, url, throughDate) => {
+  editEvent = (eventText, id, startDate, type, url, throughDate) => {
     const events = this.state.events.slice(0);
-    editWithAxios({
+    putWithAxios({
       eventText, id, startDate, type, url, throughDate
     }).then(result => {
       // const { updatedEvent } = result.data;
@@ -47,7 +47,7 @@ class EventsPage extends React.Component {
 
   componentDidMount() {
     if (this.props.manager) {
-      axios.get(path).then(result => {
+      getWithAxios().then(result => {
         this.setState({ events: result.data.events });
       });
     }
@@ -55,6 +55,7 @@ class EventsPage extends React.Component {
 
   render() {
     if (!this.props.manager) return <Redirect to='/signin' />;
+    const { events } = this.state;
     return (
       <section>
         <h1>Events</h1>
@@ -62,6 +63,11 @@ class EventsPage extends React.Component {
           addEvent={this.addEvent}
           allowTypingPastLimit={true}
           charLimit={25}
+        />
+        <AllEvents
+          events={events}
+          deleteEvent={this.deleteEvent}
+          editEvent={this.editEvent}
         />
       </section>
     );

@@ -1,137 +1,158 @@
 import React from 'react';
 import axios from 'axios';
 
+import CheckboxWrapper from '../../components/CheckboxWrapper';
 import TextAreaCharCount from '../../components/TextAreaCharCount';
 
 import { isLessThanOrEqual } from '../../utils/comparisons';
+import { addItemToStateArr, removeItemFromStateArr } from '../../utils/helpers';
+import useAxios from '../../utils/axios-helpers';
 
+const path = '/events';
+const { postWithAxios } = useAxios(path);
+
+const checkboxes = () => {
+  const values = {
+    community: {
+      name: 'Community',
+      type: 'community'
+    },
+    competition: {
+      name: 'Competition',
+      type: 'competition'
+    },
+    social: {
+      name: 'Social',
+      type: 'social'
+    },
+  }
+  return {
+    allCheckboxes: (() => values)(),
+  }
+}
+const { allCheckboxes } = checkboxes();
 
 export default class AddEvent extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.url = React.createRef();
-  //   this.state = {
-  //     allowTypingPastLimit: false,
-  //     announcementText: '',
-  //     charCount: 0,
-  //     charLimit: 150,
-  //     file: '',
-  //     imgUrl: '',
-  //   }
-  // }
-  //
-  // isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
-  //
-  // handleErrors = data => {
-  //   console.log('data: ', data);
-  //   console.log('err: ', data._message)
-  // }
-  //
-  // handleSuccess = data => {
-  //   console.log('success: ', data);
-  //   this.props.addAnnouncement(data.announcement);
-  // }
-  //
-  // liftAnnouncementText = announcementText => {
-  //   this.setState((prevState, props) => {
-  //     const { allowTypingPastLimit } = prevState;
-  //     const newState  = allowTypingPastLimit
-  //                     ? { charCount: announcementText.length, announcementText: announcementText }
-  //                     : this.isTextLTEtoLimit()(announcementText.length)
-  //                       ? { charCount: announcementText.length, announcementText: announcementText }
-  //                       : { charCount: announcementText.length - 1 };
-  //     return newState;
-  //   });
-  // }
-  //
-  // // handleImgBtnClick = e => {
-  // //   e.preventDefault()
-  // // }
-  //
-  // handleImgChange = e => {
-  //   const file = e.target.files[0]
-  //   // console.log('file: ', file);
-  //   this.setState({ file });
-  //
-  //   // const reader = new FileReader();
-  //   // reader.onloadend = () => {
-  //   //   // console.log('reader result: ', reader.result)
-  //   //   this.setState({ imgUrl: reader.result });
-  //   // }
-  //   // reader.readAsDataURL(file);
-  // }
-  //
-  // handleSubmit = e => {
-  //   e.preventDefault();
-  //   const { announcementText, file } = this.state;
-  //   axios.post('/announcements', {
-  //     announcementText,
-  //     foo,
-  //     url: this.url.current.value
-  //   }).then(result => {
-  //     const { data } = result;
-  //     data.errors ? this.handleErrors(data) : this.handleSuccess(data);
-  //     this.setState({ announcementText: '' });
-  //   });
-  // }
-  //
-  // componentDidMount() {
-  //   this.setState((prevState, props) => {
-  //     const { allowTypingPastLimit, charLimit } = props;
-  //     return {
-  //       allowTypingPastLimit: false || allowTypingPastLimit,
-  //       charLimit: charLimit || 150,
-  //     };
-  //   });
-  // }
+  constructor(props) {
+    super(props);
+    this.startDate = React.createRef();
+    this.url = React.createRef();
+    this.state = {
+      allowTypingPastLimit: false,
+      eventText: '',
+      charCount: 0,
+      charLimit: 25,
+      types: [],
+    }
+  }
+
+  isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
+
+  handleErrors = data => {
+    console.log('data: ', data);
+    console.log('err: ', data._message)
+  }
+
+  handleSuccess = data => {
+    console.log('success: ', data);
+    this.props.addEvent(data.event);
+  }
+
+  liftEventText = eventText => {
+    this.setState((prevState, props) => {
+      const { allowTypingPastLimit } = prevState;
+      const newState  = allowTypingPastLimit
+                      ? { charCount: eventText.length, eventText: eventText }
+                      : this.isTextLTEtoLimit()(eventText.length)
+                        ? { charCount: eventText.length, eventText: eventText }
+                        : { charCount: eventText.length - 1 };
+      return newState;
+    });
+  }
+
+  liftInput = e => {
+    const { checked, value } = e.target;
+    this.setState(prevState => {
+      const newState  = checked
+                      ? addItemToStateArr(value, prevState, 'types')
+                      : removeItemFromStateArr(value, prevState, 'types');
+      return newState;
+    });
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    const { eventText, types } = this.state;
+    const startDate = this.startDate.current.value;
+    const url = this.url.current.value;
+    postWithAxios({ eventText, startDate, types, url }).then(result => {
+      const { data } = result;
+      data.errors ? this.handleErrors(data) : this.handleSuccess(data);
+      this.setState({ eventText: '' });
+    });
+  }
+
+  componentDidMount() {
+    this.setState((prevState, props) => {
+      const { allowTypingPastLimit, charLimit } = props;
+      return {
+        allowTypingPastLimit: false || allowTypingPastLimit,
+        charLimit: charLimit || 50,
+      };
+    });
+  }
 
   render() {
-    // const { allowTypingPastLimit, announcementText, charLimit, imgUrl } = this.state;
-    // const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
+    const { allowTypingPastLimit, eventText, charLimit } = this.state;
+    const disabled = this.isTextLTEtoLimit()(eventText.length) ? '' : 'disabled';
+    const inputs = Object.entries(allCheckboxes).map((entry, i) => {
+      const [ key, value ] = entry;
+      return  <CheckboxWrapper
+                inputId={`new-event-type--${value.type}`}
+                inputName='type'
+                key={i}
+                liftInput={this.liftInput}
+                name={value.name}
+                value={value.type}
+                wrapperClassName={`AddEvent__form__type-wrap__${value.type}`}
+              />
+
+    })
     return (
-      <p>yo</p>
-      // <section className='AddAnnouncement'>
-      //   <form encType="multipart/form-data" className='AddAnnouncement__form' onSubmit={this.handleSubmit}>
-      //     <div className='AddAnnouncement__form__announcement-wrap'>
-      //       <label htmlFor='new-announcement-text'>Announcement</label>
-      //         <TextAreaCharCount
-      //           allowTypingPastLimit={allowTypingPastLimit}
-      //           charLimit={charLimit}
-      //           id='new-announcement-text'
-      //           liftText={this.liftAnnouncementText}
-      //           divClass='AddAnnouncement__form__tacc-wrap-div'
-      //           pClass='AddAnnouncement__form__tacc-wrap-div__p'
-      //           textareaClass='AddAnnouncement__form__tacc-wrap-div__textarea'
-      //           required
-      //           text={announcementText}
-      //         />
-      //       </div>
-      //       <div className='AddAnnouncement__form__url-wrap'>
-      //         <label htmlFor='new-announcement-url'>URL</label>
-      //         <input
-      //           id='new-announcement-url'
-      //           ref={this.url}
-      //           type='text'
-      //         />
-      //       </div>
-      //       <div className='AddAnnouncement__form__img-wrap'>
-      //         <label htmlFor='new-announcement-img'>Image</label>
-      //         {/* <button onClick={this.handleImgBtnClick}>Choose an image</button> */}
-      //         <input
-      //           id='new-announcement-img'
-      //           name='imgFile'
-      //           onChange={this.handleImgChange}
-      //           ref={this.img}
-      //           type='file'
-      //         />
-      //         {/* <img src={imgUrl} /> */}
-      //         {/* <div style={{ height: '30vh', background: 'green', }}> */}
-      //           <ImgCrop src={imgUrl} />
-      //         {/* </div> */}
-      //       </div>
-      //     <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
-      //   </form>
-      // </section>
+      <section className='AddEvent'>
+        <form encType="multipart/form-data" className='AddEvent__form' onSubmit={this.handleSubmit}>
+          <div className='AddEvent__form__event-wrap'>
+            <label htmlFor='new-event-text'>Event</label>
+              <TextAreaCharCount
+                allowTypingPastLimit={allowTypingPastLimit}
+                charLimit={charLimit}
+                id='new-event-text'
+                liftText={this.liftEventText}
+                divClass='AddEvent__form__tacc-wrap-div'
+                pClass='AddEvent__form__tacc-wrap-div__p'
+                textareaClass='AddEvent__form__tacc-wrap-div__textarea'
+                required
+                text={eventText}
+              />
+            </div>
+            <div className='AddEvent__form__url-wrap'>
+              <label htmlFor='new-event-url'>URL</label>
+              <input
+                id='new-event-url'
+                ref={this.url}
+                type='text'
+              />
+            </div>
+            <div className='AddEvent__form__type-wrap'>
+              {inputs}
+            </div>
+            <div className='AddEvent__form__start-date-wrap'>
+              <label htmlFor='new-event-start-date'>Start Date</label>
+              <input id='new-event-start-date' ref={this.startDate} type='date' />
+            </div>
+          <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
+        </form>
+      </section>
     );
   }
 }

@@ -15,17 +15,18 @@ router.get('/', (req, res) => {
   })
 });
 
-// router.post('/', upload.single('imgFile'), (req, res) => {
-//   const { announcementText, foo, url } = req.body;
-//     Announcement.create({ announcementText, url }, (err, announcement) => {
-//       if (err) {
-//         console.log('err: ', err);
-//         res.send(err);
-//       } else {
-//         res.json({ announcement });
-//       }
-//     });
-// });
+router.post('/', (req, res) => {
+  const { eventText, startDate, types, url } = req.body;
+  const throughDate = req.body.throughDate || null;
+    Event.create({ eventText, startDate, throughDate, types, url }, (err, event) => {
+      if (err) {
+        console.log('err: ', err);
+        res.send(err);
+      } else {
+        res.json({ event });
+      }
+    });
+});
 
 // router.put('/', (req, res) => {
 //   const { announcementText, id, url  } = req.body;

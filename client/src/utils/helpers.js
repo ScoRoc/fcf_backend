@@ -7,3 +7,9 @@ export const addItemToStateArr = (item, prevState, arr) => {
   withNewItem.push(item);
   return { [arr]: withNewItem }
 }
+
+export const removeItemFromStateArr = (item, prevState, arr) => {
+  const withNewItem = prevState[arr].slice(0);
+  withNewItem.splice( withNewItem.indexOf(item), 1 );
+  return { [arr]: withNewItem }
+}

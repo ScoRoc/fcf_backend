@@ -5,6 +5,10 @@ import ImgCrop from '../../components/ImgCrop';
 import TextAreaCharCount from '../../components/TextAreaCharCount';
 
 import { isLessThanOrEqual } from '../../utils/comparisons';
+import useAxios from '../../utils/axios-helpers';
+
+const path = '/announcements';
+const { postWithAxios } = useAxios(path);
 
 
 export default class AddAnnouncement extends React.Component {
@@ -77,7 +81,7 @@ export default class AddAnnouncement extends React.Component {
       console.log('value: ', value)
     }
     // console.log('foo.file: ', foo.file);
-    axios.post('/announcements', {
+    postWithAxios({
       announcementText,
       // file: foo,
       foo,

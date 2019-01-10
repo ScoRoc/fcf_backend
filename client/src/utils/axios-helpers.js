@@ -4,7 +4,9 @@ const useAxios = url => {
   const fixedUrl = (data, method) => axios({ url, data, method });
   return {
     deleteWithAxios: data => fixedUrl(data, 'delete'),
-    editWithAxios: data => fixedUrl(data, 'put'),
+    putWithAxios: data => fixedUrl(data, 'put'),
+    getWithAxios: () => fixedUrl(null, 'get'),
+    postWithAxios: data => fixedUrl(data, 'post'),
   }
 }
 

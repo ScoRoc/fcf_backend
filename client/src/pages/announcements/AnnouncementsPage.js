@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -11,7 +10,7 @@ import { getIndex, addItemToStateArr } from '../../utils/helpers';
 import useAxios from '../../utils/axios-helpers';
 
 const path = '/announcements';
-const { deleteWithAxios, editWithAxios } = useAxios(path);
+const { deleteWithAxios, getWithAxios, putWithAxios } = useAxios(path);
 
 class AnnouncementsPage extends React.Component {
   constructor(props) {
@@ -38,7 +37,7 @@ class AnnouncementsPage extends React.Component {
 
   editAnnouncement = (announcementText, url, id) => {
     const announcements = this.state.announcements.slice(0);
-    editWithAxios({ announcementText, url, id }).then(result => {
+    putWithAxios({ announcementText, url, id }).then(result => {
       // const { updatedAnnouncement } = result.data;
       this.setState({ announcements });
     });
@@ -46,7 +45,7 @@ class AnnouncementsPage extends React.Component {
 
   componentDidMount() {
     if (this.props.manager) {
-      axios.get(path).then(result => {
+      getWithAxios().then(result => {
         this.setState({ announcements: result.data.announcements });
       });
     }
