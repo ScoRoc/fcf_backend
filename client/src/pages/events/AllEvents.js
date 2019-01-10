@@ -3,27 +3,31 @@ import React from 'react';
 import EventStrip from './EventStrip';
 
  const AllEvents = props => {
-  const { announcements, deleteAnnouncement, editAnnouncement } = props;
-  const allAnnouncements  = announcements
-                          ? announcements.slice(0).reverse().map(announcement => (
+  const { events, deleteEvent, editEvent } = props;
+  const allEvents  = events
+                          ? events.slice(0).reverse().map(event => (
                             <EventStrip
-                              deleteAnnouncement={deleteAnnouncement}
-                              editAnnouncement={editAnnouncement}
-                              id={announcement._id}
-                              key={announcement._id}
-                              likes={announcement.likes}
-                              text={announcement.announcementText}
-                              url={announcement.url || 'no url'}
+                              allowTypingPastLimit={true}
+                              charLimit={25}
+                              deleteEvent={deleteEvent}
+                              editEvent={editEvent}
+                              id={event._id}
+                              key={event._id}
+                              likes={event.likes}
+                              text={event.eventText}
+                              startDate={event.startDate}
+                              throughDate={event.throughDate}
+                              types={event.types}
+                              url={event.url || 'no url'}
                             />
                           ))
                           : <p className='f'>'Loading...'</p>;
   return (
     <>
-    <h3 id='h3-AllEvents'>Current Events</h3>
-    <section className='AllEvents'>
-      {/* {allAnnouncements} */}
-      <p>yo all events yo</p>
-    </section>
+      <h3 id='h3-AllEvents'>Current Events</h3>
+      <section className='AllEvents'>
+        {allEvents}
+      </section>
     </>
   );
 }

@@ -19,10 +19,10 @@ import AnnouncementStrip from './AnnouncementStrip';
                           : <p className='f'>'Loading...'</p>;
   return (
     <>
-    <h3 id='h3-AllAnnouncements'>Current Announcements</h3>
-    <section className='AllAnnouncements'>
-      {allAnnouncements}
-    </section>
+      <h3 id='h3-AllAnnouncements'>Current Announcements</h3>
+      <section className='AllAnnouncements'>
+        {allAnnouncements}
+      </section>
     </>
   );
 }

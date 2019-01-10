@@ -70,8 +70,8 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   componentDidMount() {
-    const { text, url } = this.props;
     this.setState((prevState, props) => {
+      const { text, url } = this.props;
       return {
         announcementText: text,
         announcementUrl: url,

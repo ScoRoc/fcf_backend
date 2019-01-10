@@ -35,10 +35,17 @@ class EventsPage extends React.Component {
     });
   }
 
-  editEvent = (eventText, id, startDate, type, url, throughDate) => {
+  editEvent = ({eventText, id, startDate, types, url, throughDate}) => {
+    console.log('eventText: ', eventText)
+    console.log('id: ', id)
+    console.log('startDate: ', startDate)
+    console.log('types: ', types)
+    console.log('url: ', url)
+    console.log('throughDate: ', throughDate)
+
     const events = this.state.events.slice(0);
     putWithAxios({
-      eventText, id, startDate, type, url, throughDate
+      eventText, id, startDate, types, url, throughDate
     }).then(result => {
       // const { updatedEvent } = result.data;
       this.setState({ events });
