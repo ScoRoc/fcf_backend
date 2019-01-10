@@ -83,7 +83,7 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   render() {
-    const { deleteAnnouncement, id, likes, url } = this.props;
+    const { deleteAnnouncement, id, likes } = this.props;
     const { allowTypingPastLimit, announcementText, announcementUrl, editable } = this.state;
     const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';

@@ -7,7 +7,10 @@ import './Announcements.min.css';
 import AddAnnouncement from './AddAnnouncement';
 import AllAnnouncements from './AllAnnouncements';
 
-import { getIndex } from '../../utils/helpers';
+import { getIndex, addItemToStateArr } from '../../utils/helpers';
+import useAxios from '../../utils/axios-helpers';
+const path = '/announcements';
+const { deleteWithAxios, editWithAxios } = useAxios(path);
 
 class AnnouncementsPage extends React.Component {
   constructor(props) {
@@ -19,19 +22,13 @@ class AnnouncementsPage extends React.Component {
 
   addAnnouncement = announcement => {
     this.setState(prevState => {
-      const withNewAnnouncement = prevState.announcements;
-      withNewAnnouncement.push(announcement);
-      return { announcements: withNewAnnouncement };
+      return addItemToStateArr(announcement, prevState, 'announcements');
     });
   }
 
   deleteAnnouncement = id => {
     const announcements = this.state.announcements.slice(0);
-    axios({
-      url: '/announcements',
-      method: 'delete',
-      data: { id },
-    }).then(result => {
+    deleteWithAxios({ id }).then(result => {
       // console.log('result: ', result);
       announcements.splice(getIndex(id, announcements), 1);
       this.setState({ announcements });
@@ -40,13 +37,8 @@ class AnnouncementsPage extends React.Component {
 
   editAnnouncement = (announcementText, url, id) => {
     const announcements = this.state.announcements.slice(0);
-    axios({
-      url: '/announcements',
-      method: 'put',
-      data: { announcementText, url, id },
-    }).then(result => {
-      const { updatedAnnouncement } = result.data;
-      // announcements[this.getIndexOfAnnouncement(updatedAnnouncement._id)] = updatedAnnouncement.announcementText;
+    editWithAxios({ announcementText, url, id }).then(result => {
+      // const { updatedAnnouncement } = result.data;
       this.setState({ announcements });
     });
   }
