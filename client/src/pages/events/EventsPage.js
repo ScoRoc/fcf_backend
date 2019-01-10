@@ -8,9 +8,10 @@ import AddEvent from './AddEvent';
 class EventsPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-
+    this.initialState = {
+      announcements: null,
     }
+    this.state = {...this.initialState}
   }
 
   componentDidMount() {

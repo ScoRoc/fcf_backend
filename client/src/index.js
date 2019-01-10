@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './redux/store/store';
 // import storeExport from './redux/store/store';
-import { PersistGate } from 'redux-persist/integration/react';
+// import { PersistGate } from 'redux-persist/integration/react';
 
 // const { persistor, store } = storeExport;
 

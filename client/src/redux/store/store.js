@@ -1,7 +1,7 @@
 import { combineReducers, createStore } from 'redux';
 // import { persistStore, persistReducer } from 'redux-persist';
 // import { persistStore, persistCombineReducers } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+// import storage from 'redux-persist/lib/storage';
 import auth from '../modules/auth';
 import pages from '../modules/pages';
 

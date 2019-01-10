@@ -7,17 +7,14 @@ import './Announcements.min.css';
 import AddAnnouncement from './AddAnnouncement';
 import AllAnnouncements from './AllAnnouncements';
 
+import { getIndex } from '../../utils/helpers';
+
 class AnnouncementsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       announcements: null,
     }
-  }
-
-  getIndexOfAnnouncement = id => {
-    const { announcements } = this.state;
-    return announcements.indexOf(announcements.find(announcement => announcement.id === id));
   }
 
   addAnnouncement = announcement => {
@@ -36,7 +33,7 @@ class AnnouncementsPage extends React.Component {
       data: { id },
     }).then(result => {
       // console.log('result: ', result);
-      announcements.splice(this.getIndexOfAnnouncement(id), 1);
+      announcements.splice(getIndex(id, announcements), 1);
       this.setState({ announcements });
     });
   }
