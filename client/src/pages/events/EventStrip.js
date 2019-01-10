@@ -86,8 +86,8 @@ export default class EventStrip extends React.Component {
 
   render() {
     const { deleteEvent, id, likes, startDate, throughDate, types } = this.props;
-    const formattedStartDate = new Date(startDate).toLocaleDateString();
-    const formattedThroughDate = throughDate ? new Date(throughDate).toLocaleDateString() : 'None';
+    const formattedStartDate = new Date(startDate).toLocaleDateString('en-US', {timeZone: 'UTC'});
+    const formattedThroughDate = throughDate ? new Date(throughDate).toLocaleDateString('en-US', {timeZone: 'UTC'}) : 'None';
     const { allowTypingPastLimit, eventText, eventUrl, editable } = this.state;
     const disabled = this.isTextLTEtoLimit()(eventText.length) ? '' : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';
