@@ -36,6 +36,7 @@ export default class AddEvent extends React.Component {
   constructor(props) {
     super(props);
     this.startDate = React.createRef();
+    this.throughDate = React.createRef();
     this.url = React.createRef();
     this.state = {
       allowTypingPastLimit: false,
@@ -84,8 +85,9 @@ export default class AddEvent extends React.Component {
     e.preventDefault();
     const { eventText, types } = this.state;
     const startDate = this.startDate.current.value;
+    const throughDate = this.throughDate.current.value;
     const url = this.url.current.value;
-    postWithAxios({ eventText, startDate, types, url }).then(result => {
+    postWithAxios({ eventText, startDate, throughDate, types, url }).then(result => {
       const { data } = result;
       data.errors ? this.handleErrors(data) : this.handleSuccess(data);
       this.setState({ eventText: '' });
@@ -149,6 +151,10 @@ export default class AddEvent extends React.Component {
             <div className='AddEvent__form__start-date-wrap'>
               <label htmlFor='new-event-start-date'>Start Date</label>
               <input id='new-event-start-date' ref={this.startDate} type='date' />
+            </div>
+            <div className='AddEvent__form__through-date-wrap'>
+              <label htmlFor='new-event-through-date'>Through Date</label>
+              <input id='new-event-through-date' ref={this.throughDate} type='date' />
             </div>
           <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
         </form>

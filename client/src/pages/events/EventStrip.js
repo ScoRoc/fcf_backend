@@ -86,6 +86,8 @@ export default class EventStrip extends React.Component {
 
   render() {
     const { deleteEvent, id, likes, startDate, throughDate, types } = this.props;
+    const formattedStartDate = new Date(startDate).toLocaleDateString();
+    const formattedThroughDate = throughDate ? new Date(throughDate).toLocaleDateString() : 'None';
     const { allowTypingPastLimit, eventText, eventUrl, editable } = this.state;
     const disabled = this.isTextLTEtoLimit()(eventText.length) ? '' : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';
@@ -126,6 +128,8 @@ export default class EventStrip extends React.Component {
           {displayUrl}
           <p>Likes: {likes || 'none'}</p>
           {displayTypes}
+          <p>Start Date: {formattedStartDate}</p>
+          <p>Through Date: {formattedThroughDate}</p>
         </div>
         <div className='EventStrip__btn-div'>
           <button className={`${editDoneBtnClass} ${disabled}`} disabled={disabled} onClick={btnOnClick}>{btnText}</button>
