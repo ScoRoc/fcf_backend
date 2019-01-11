@@ -7,29 +7,11 @@ import TextAreaCharCount from '../../components/TextAreaCharCount';
 import { isLessThanOrEqual } from '../../utils/comparisons';
 import { addItemToStateArr, removeItemFromStateArr } from '../../utils/helpers';
 import useAxios from '../../utils/axios-helpers';
+import checkboxes from './event-types';
 
 const path = '/events';
 const { postWithAxios } = useAxios(path);
 
-const checkboxes = () => {
-  const values = {
-    community: {
-      name: 'Community',
-      type: 'community'
-    },
-    competition: {
-      name: 'Competition',
-      type: 'competition'
-    },
-    social: {
-      name: 'Social',
-      type: 'social'
-    },
-  }
-  return {
-    allCheckboxes: (() => values)(),
-  }
-}
 const { allCheckboxes } = checkboxes();
 
 export default class AddEvent extends React.Component {
@@ -120,7 +102,7 @@ export default class AddEvent extends React.Component {
                 wrapperClassName={`AddEvent__form__type-wrap__${value.type}`}
               />
 
-    })
+    });
     return (
       <section className='AddEvent'>
         <form encType="multipart/form-data" className='AddEvent__form' onSubmit={this.handleSubmit}>

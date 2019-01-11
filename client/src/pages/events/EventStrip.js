@@ -1,27 +1,32 @@
 import React from 'react';
 
+import EventCheckboxes from './EventCheckboxes';
 import TextAreaCharCount from '../../components/TextAreaCharCount';
 
-import { isEqual, isLessThanOrEqual } from '../../utils/comparisons';
+import { addItemToStateArr, removeItemFromStateArr } from '../../utils/helpers';
+import { isEqual, isGreaterThan, isLessThanOrEqual } from '../../utils/comparisons';
 
 export default class EventStrip extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       allowTypingPastLimit: true,
-      eventText: '',
-      eventUrl: '',
       charCount: 0,
       charLimit: 25,
       editable: false,
+      eventText: '',
+      eventUrl: '',
+      types: [],
+
       initialText: '',
+      initialTypes: [],
       initialUrl: '',
     }
   }
 
   isEscapeKey = isEqual('Escape');
-
   isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
+  isTypesNotEmpty = () => isGreaterThan(0);
 
   cancelChange = () => {
     this.setState((prevState, props) => {
@@ -50,6 +55,16 @@ export default class EventStrip extends React.Component {
     this.setState({ initialText: eventText, initialUrl: url });
   }
 
+  liftInput = e => {
+    const { checked, value } = e.target;
+    this.setState(prevState => {
+      const newState  = checked
+                      ? addItemToStateArr(value, prevState, 'types')
+                      : removeItemFromStateArr(value, prevState, 'types');
+      return newState;
+    });
+  }
+
   liftEventText = eventText => {
     this.setState((prevState, props) => {
       const { allowTypingPastLimit } = prevState;
@@ -74,25 +89,29 @@ export default class EventStrip extends React.Component {
       const { allowTypingPastLimit, charLimit, event } = this.props;
       return {
         allowTypingPastLimit: false || allowTypingPastLimit,
+        charCount: event.eventText.length,
         charLimit: charLimit || 25,
         eventText: event.eventText,
         eventUrl: event.url,
-        charCount: event.eventText.length,
+        types: event.types,
         initialText: event.eventText,
+        initialTypes: event.types,
         initialUrl: event.url,
       }
     });
   }
 
   render() {
-    const { allowTypingPastLimit, eventText, eventUrl, editable } = this.state;
+    const { allowTypingPastLimit, eventText, eventUrl, editable, types } = this.state;
     const { deleteEvent, event } = this.props;
-    const { likes, startDate, throughDate, types } = event;
+    const { likes, startDate, throughDate } = event;
     const id = event._id;
     const url = event.url || 'no url'
     const formattedStartDate = new Date(startDate).toLocaleDateString('en-US', {timeZone: 'UTC'});
     const formattedThroughDate = throughDate ? new Date(throughDate).toLocaleDateString('en-US', {timeZone: 'UTC'}) : 'None';
-    const disabled = this.isTextLTEtoLimit()(eventText.length) ? '' : 'disabled';
+    const disabled  = this.isTextLTEtoLimit()(eventText.length) && this.isTypesNotEmpty()(types.length)
+                    ? ''
+                    : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';
     const editDoneBtnClass = editable ? 'done-btn' : 'edit-btn';
     const btnOnClick  = editable
@@ -121,7 +140,9 @@ export default class EventStrip extends React.Component {
                               value={eventUrl}
                             />
                           : <p>{eventUrl}</p>;
-    const displayTypes = types.map((type, i) => <p key={i}>{type}</p>)
+    const displayTypes  = editable
+                        ? <EventCheckboxes liftInput={this.liftInput} types={types} />
+                        : types.map((type, i) => <p key={i}>{type}</p>);
     return (
       <div className='EventStrip'>
         <div className='EventStrip__text-wrap'>
