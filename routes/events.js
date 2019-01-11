@@ -30,10 +30,9 @@ router.post('/', (req, res) => {
 
 router.put('/', (req, res) => {
   console.log('req body: ', req.body)
-  const { eventText, id, startDate, types, url, throughDate  } = req.body;
-  Event.findByIdAndUpdate(id, {
+  const { eventText, _id, startDate, types, url, throughDate  } = req.body;
+  Event.findByIdAndUpdate(_id, {
     eventText,
-    id,
     startDate,
     types,
     url,

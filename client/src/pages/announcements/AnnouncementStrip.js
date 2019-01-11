@@ -1,6 +1,7 @@
 import React from 'react';
 
 import TextAreaCharCount from '../../components/TextAreaCharCount';
+import AnnouncementTwoButtons from './AnnouncementTwoButtons';
 
 import { isEqual, isLessThanOrEqual } from '../../utils/comparisons';
 
@@ -86,11 +87,6 @@ export default class AnnouncementStrip extends React.Component {
     const { deleteAnnouncement, id, likes } = this.props;
     const { allowTypingPastLimit, announcementText, announcementUrl, editable } = this.state;
     const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
-    const btnText = editable ? 'Done' : 'Edit';
-    const editDoneBtnClass = editable ? 'done-btn' : 'edit-btn';
-    const btnOnClick  = editable
-                      ? () => this.handleEditAnnouncement(announcementText, announcementUrl, id)
-                      : this.toggleEdit;
     const announcement  = editable
                         ? <TextAreaCharCount
                             allowTypingPastLimit={allowTypingPastLimit}
@@ -123,10 +119,14 @@ export default class AnnouncementStrip extends React.Component {
           {displayUrl}
           <p>Likes: {likes || 'none'}</p>
         </div>
-        <div className='AnnouncementStrip__btn-div'>
-          <button className={`${editDoneBtnClass} ${disabled}`} disabled={disabled} onClick={btnOnClick}>{btnText}</button>
-          <button className='delete-btn' onClick={() => deleteAnnouncement(id)}>Delete</button>
-        </div>
+        <AnnouncementTwoButtons
+          cancelOnClick={this.cancelChange}
+          disabled={disabled}
+          deleteOnClick={() => deleteAnnouncement(id)}
+          doneOnClick={() => this.handleEditAnnouncement(announcementText, announcementUrl, id)}
+          editOnClick={this.toggleEdit}
+          useFirstState={!editable}
+        />
       </div>
     );
   }

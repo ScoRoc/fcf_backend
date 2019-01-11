@@ -2,6 +2,7 @@ import React from 'react';
 
 import EventCheckboxes from './EventCheckboxes';
 import TextAreaCharCount from '../../components/TextAreaCharCount';
+import EventTwoButtons from './EventTwoButtons';
 
 import { addItemToStateArr, removeItemFromStateArr } from '../../utils/helpers';
 import { isEqual, isGreaterThan, isLessThanOrEqual } from '../../utils/comparisons';
@@ -26,16 +27,17 @@ export default class EventStrip extends React.Component {
 
   isEscapeKey = isEqual('Escape');
   isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
-  isTypesNotEmpty = () => isGreaterThan(0);
+  hasTypes = () => isGreaterThan(0);
 
   cancelChange = () => {
     this.setState((prevState, props) => {
-      const { initialText, initialUrl } = prevState;
+      const { initialText, initialTypes, initialUrl } = prevState;
       return {
-        eventText: initialText,
-        eventUrl: initialUrl,
         charCount: initialText.length,
         editable: false,
+        eventText: initialText,
+        eventUrl: initialUrl,
+        types: initialTypes,
       }
     });
   }
@@ -49,10 +51,10 @@ export default class EventStrip extends React.Component {
     this.setState({ editable: !this.state.editable });
   }
 
-  handleEditEvent = (eventText, url, id) => {
+  handleEditEvent = ({eventText, _id, startDate, types, url, throughDate}) => {
     this.toggleEdit();
-    this.props.editEvent(eventText, url, id);
-    this.setState({ initialText: eventText, initialUrl: url });
+    this.props.editEvent({eventText, _id, startDate, types, url, throughDate});
+    this.setState({ initialText: eventText, initialTypes: types, initialUrl: url });
   }
 
   liftInput = e => {
@@ -104,19 +106,12 @@ export default class EventStrip extends React.Component {
   render() {
     const { allowTypingPastLimit, eventText, eventUrl, editable, types } = this.state;
     const { deleteEvent, event } = this.props;
-    const { likes, startDate, throughDate } = event;
-    const id = event._id;
-    const url = event.url || 'no url'
+    const { _id, likes, startDate, throughDate } = event;
     const formattedStartDate = new Date(startDate).toLocaleDateString('en-US', {timeZone: 'UTC'});
     const formattedThroughDate = throughDate ? new Date(throughDate).toLocaleDateString('en-US', {timeZone: 'UTC'}) : 'None';
-    const disabled  = this.isTextLTEtoLimit()(eventText.length) && this.isTypesNotEmpty()(types.length)
+    const disabled  = this.isTextLTEtoLimit()(eventText.length) && this.hasTypes()(types.length)
                     ? ''
                     : 'disabled';
-    const btnText = editable ? 'Done' : 'Edit';
-    const editDoneBtnClass = editable ? 'done-btn' : 'edit-btn';
-    const btnOnClick  = editable
-                      ? () => this.handleEditEvent({eventText, id, startDate, types, url: eventUrl, throughDate})
-                      : this.toggleEdit;
     const text  = editable
                         ? <TextAreaCharCount
                             allowTypingPastLimit={allowTypingPastLimit}
@@ -155,10 +150,14 @@ export default class EventStrip extends React.Component {
           <p>Start Date: {formattedStartDate}</p>
           <p>Through Date: {formattedThroughDate}</p>
         </div>
-        <div className='EventStrip__btn-div'>
-          <button className={`${editDoneBtnClass} ${disabled}`} disabled={disabled} onClick={btnOnClick}>{btnText}</button>
-          <button className='delete-btn' onClick={() => deleteEvent(id)}>Delete</button>
-        </div>
+        <EventTwoButtons
+          cancelOnClick={this.cancelChange}
+          disabled={disabled}
+          deleteOnClick={() => deleteEvent(_id)}
+          doneOnClick={() => this.handleEditEvent({eventText, _id, startDate, types, url: eventUrl, throughDate})}
+          editOnClick={this.toggleEdit}
+          useFirstState={!editable}
+        />
       </div>
     );
   }
