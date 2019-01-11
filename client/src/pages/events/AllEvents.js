@@ -11,14 +11,8 @@ import EventStrip from './EventStrip';
                               charLimit={25}
                               deleteEvent={deleteEvent}
                               editEvent={editEvent}
-                              id={event._id}
+                              event={event}
                               key={event._id}
-                              likes={event.likes}
-                              text={event.eventText}
-                              startDate={event.startDate}
-                              throughDate={event.throughDate}
-                              types={event.types}
-                              url={event.url || 'no url'}
                             />
                           ))
                           : <p className='f'>'Loading...'</p>;

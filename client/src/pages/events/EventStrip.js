@@ -71,31 +71,34 @@ export default class EventStrip extends React.Component {
 
   componentDidMount() {
     this.setState((prevState, props) => {
-      const { allowTypingPastLimit, charLimit, text, url } = this.props;
+      const { allowTypingPastLimit, charLimit, event } = this.props;
       return {
         allowTypingPastLimit: false || allowTypingPastLimit,
         charLimit: charLimit || 25,
-        eventText: text,
-        eventUrl: url,
-        charCount: text.length,
-        initialText: text,
-        initialUrl: url,
+        eventText: event.eventText,
+        eventUrl: event.url,
+        charCount: event.eventText.length,
+        initialText: event.eventText,
+        initialUrl: event.url,
       }
     });
   }
 
   render() {
-    const { deleteEvent, id, likes, startDate, throughDate, types } = this.props;
+    const { allowTypingPastLimit, eventText, eventUrl, editable } = this.state;
+    const { deleteEvent, event } = this.props;
+    const { likes, startDate, throughDate, types } = event;
+    const id = event._id;
+    const url = event.url || 'no url'
     const formattedStartDate = new Date(startDate).toLocaleDateString('en-US', {timeZone: 'UTC'});
     const formattedThroughDate = throughDate ? new Date(throughDate).toLocaleDateString('en-US', {timeZone: 'UTC'}) : 'None';
-    const { allowTypingPastLimit, eventText, eventUrl, editable } = this.state;
     const disabled = this.isTextLTEtoLimit()(eventText.length) ? '' : 'disabled';
     const btnText = editable ? 'Done' : 'Edit';
     const editDoneBtnClass = editable ? 'done-btn' : 'edit-btn';
     const btnOnClick  = editable
                       ? () => this.handleEditEvent({eventText, id, startDate, types, url: eventUrl, throughDate})
                       : this.toggleEdit;
-    const event  = editable
+    const text  = editable
                         ? <TextAreaCharCount
                             allowTypingPastLimit={allowTypingPastLimit}
                             charLimit={this.state.charLimit}
@@ -122,7 +125,7 @@ export default class EventStrip extends React.Component {
     return (
       <div className='EventStrip'>
         <div className='EventStrip__text-wrap'>
-          {event}
+          {text}
         </div>
         <div className='EventStrip__info-div'>
           {displayUrl}

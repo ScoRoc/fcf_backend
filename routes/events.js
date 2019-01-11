@@ -28,23 +28,32 @@ router.post('/', (req, res) => {
     });
 });
 
-// router.put('/', (req, res) => {
-//   const { announcementText, id, url  } = req.body;
-//   Announcement.findByIdAndUpdate(id, { announcementText, url }, { new: true, runValidators: true }, (err, updatedAnnouncement) => {
-//     if (err) {
-//       console.log('err: ', err);
-//       res.send({ err });
-//     } else {
-//       res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
-//     }
-//   });
-// });
+router.put('/', (req, res) => {
+  console.log('req body: ', req.body)
+  const { eventText, id, startDate, types, url, throughDate  } = req.body;
+  Event.findByIdAndUpdate(id, {
+    eventText,
+    id,
+    startDate,
+    types,
+    url,
+    throughDate
+  }, { new: true, runValidators: true }, (err, updatedEvent) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send({ err });
+    } else {
+      res.send({ msg: 'Successfully updated the event', updatedEvent});
+    }
+  });
+});
 
-// router.delete('/', (req, res) => {
-//   Announcement.findByIdAndDelete(req.body.id).exec((err, deletedAnnouncement) => {
-//     console.log('deletedAnnouncement: ', deletedAnnouncement);
-//     res.send({ msg: 'Successfully deleted announcement', deletedAnnouncement });
-//   });
-// });
+router.delete('/', (req, res) => {
+  console.log('req body id: ', req.body.id)
+  Event.findByIdAndDelete(req.body.id).exec((err, deletedEvent) => {
+    console.log('deletedEvent: ', deletedEvent);
+    res.send({ msg: 'Successfully deleted event', deletedEvent });
+  });
+});
 
 module.exports = router;
