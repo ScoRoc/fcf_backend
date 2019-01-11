@@ -1,19 +1,20 @@
 import React from 'react';
 
-import TextAreaCharCount from '../../components/TextAreaCharCount';
 import AnnouncementTwoButtons from './AnnouncementTwoButtons';
+import TwoStateTextInput from '../../components/TwoStateTextInput';
+import TwoStateTextTACC from '../../components/TwoStateTextTACC';
 
 import { isEqual, isLessThanOrEqual } from '../../utils/comparisons';
 
 export default class AnnouncementStrip extends React.Component {
   constructor(props) {
     super(props);
-    this.charLimit = 150;
     this.state = {
       allowTypingPastLimit: true,
       announcementText: '',
       announcementUrl: '',
       charCount: 0,
+      charLimit: 150,
       editable: false,
       initialText: '',
       initialUrl: '',
@@ -22,7 +23,7 @@ export default class AnnouncementStrip extends React.Component {
 
   isEscapeKey = isEqual('Escape');
 
-  isTextLTEtoLimit = () => isLessThanOrEqual(this.charLimit);
+  isLTEtoCharLimit = () => isLessThanOrEqual(this.state.charLimit);
 
   cancelChange = () => {
     this.setState((prevState, props) => {
@@ -56,18 +57,11 @@ export default class AnnouncementStrip extends React.Component {
       const { allowTypingPastLimit } = prevState;
       const newState  = allowTypingPastLimit
                       ? { charCount: announcementText.length, announcementText }
-                      : this.isTextLTEtoLimit()(announcementText.length)
+                      : this.isLTEtoCharLimit()(announcementText.length)
                         ? { charCount: announcementText.length, announcementText }
                         : { charCount: announcementText.length - 1 };
       return newState;
     });
-  }
-
-  handleChange = e => {
-    e.preventDefault();
-    const { value } = e.target;
-    value.length <= this.charLimit ? this.setState({ charCount: value.length, text: value })
-                        : this.setState({ charCount: value.length - 1});
   }
 
   componentDidMount() {
@@ -86,37 +80,31 @@ export default class AnnouncementStrip extends React.Component {
   render() {
     const { deleteAnnouncement, id, likes } = this.props;
     const { allowTypingPastLimit, announcementText, announcementUrl, editable } = this.state;
-    const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
-    const announcement  = editable
-                        ? <TextAreaCharCount
-                            allowTypingPastLimit={allowTypingPastLimit}
-                            charLimit={this.charLimit}
-                            focusTextarea={true}
-                            handleKeyUp={this.handleKeyUp}
-                            liftText={this.liftAnnouncementText}
-                            text={announcementText}
-                            divClass='AnnouncementStrip__text-wrap__div'
-                            pClass='AnnouncementStrip__text-wrap__div__p'
-                            textareaClass='AnnouncementStrip__text-wrap__div__textarea'
-                          />
-                        : <p className='AnnouncementStrip__text-wrap__p'>
-                            {announcementText}
-                          </p>;
-    const displayUrl = editable
-                          ? <input
-                              onChange={e => this.setState({ announcementUrl: e.target.value })}
-                              onKeyUp={this.handleKeyUp}
-                              type='text'
-                              value={announcementUrl}
-                            />
-                          : <p>{announcementUrl}</p>;
+    const disabled = this.isLTEtoCharLimit()(announcementText.length) ? '' : 'disabled';
     return (
       <div className='AnnouncementStrip'>
-        <div className='AnnouncementStrip__text-wrap'>
-          {announcement}
-        </div>
+        <TwoStateTextTACC
+          allowTypingPastLimit={allowTypingPastLimit}
+          charLimit={this.state.charLimit}
+          focusTextarea={true}
+          handleKeyUp={this.handleKeyUp}
+          liftText={this.liftAnnouncementText}
+          pClass='AnnouncementStrip__text-wrap__p'
+          taccDivClass='AnnouncementStrip__text-wrap__div'
+          taccPClass='AnnouncementStrip__text-wrap__div__p'
+          taccTextareaClass='AnnouncementStrip__text-wrap__div__textarea'
+          text={announcementText}
+          useTACC={editable}
+          wrapperClass='AnnouncementStrip__text-wrap'
+        />
         <div className='AnnouncementStrip__info-div'>
-          {displayUrl}
+          <TwoStateTextInput
+            onChange={e => this.setState({ announcementUrl: e.target.value })}
+            onKeyUp={this.handleKeyUp}
+            pClass=''
+            useInput={editable}
+            value={announcementUrl}
+          />
           <p>Likes: {likes || 'none'}</p>
         </div>
         <AnnouncementTwoButtons
