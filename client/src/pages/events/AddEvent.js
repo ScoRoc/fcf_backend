@@ -84,6 +84,7 @@ export default class AddEvent extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { eventText, types } = this.state;
+    // MAKE SURE TYPES HAS SOME TYPE ON IT
     const startDate = this.startDate.current.value;
     const throughDate = this.throughDate.current.value;
     const url = this.url.current.value;

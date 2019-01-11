@@ -22,6 +22,9 @@ import EventStrip from './EventStrip';
                             />
                           ))
                           : <p className='f'>'Loading...'</p>;
+  // FILTER BY CURRENT AND PAST EVENTS
+  // MAKE FILTER LIKE EVENTS ON APP
+  // SORT BY DATE
   return (
     <>
       <h3 id='h3-AllEvents'>Current Events</h3>

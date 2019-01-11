@@ -6,6 +6,7 @@ const WodPage = props => {
   if (!props.manager) return <Redirect to='/signin' />;
   return (
     <p>wod</p>
+    // CAP # OF LINES AT 16
   );
 }
 
