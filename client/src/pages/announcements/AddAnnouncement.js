@@ -20,7 +20,7 @@ export default class AddAnnouncement extends React.Component {
       announcementText: '',
       charCount: 0,
       charLimit: 150,
-      file: '',
+      imgFile: '',
       imgUrl: '',
     }
   }
@@ -54,9 +54,9 @@ export default class AddAnnouncement extends React.Component {
   // }
 
   handleImgChange = e => {
-    const file = e.target.files[0]
+    const imgFile = e.target.files[0]
     // console.log('file: ', file);
-    this.setState({ file });
+    this.setState({ imgFile });
 
     // const reader = new FileReader();
     // reader.onloadend = () => {
@@ -68,28 +68,17 @@ export default class AddAnnouncement extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { announcementText, file } = this.state;
-    // console.log('state file: ', file);
-    let foo = new FormData();
-    foo.append('imgFile', file);
-    foo.append('name', 'tester name hereeee');
-    // for (let [key, value] of foo.entries()) {
-    //   console.log('key: ', key, '----value: ', value)
-    // }
-    // console.log('foo.values: ', foo.values());
-    for (let value of foo.values()) {
-      console.log('value: ', value)
-    }
-    // console.log('foo.file: ', foo.file);
-    postWithAxios({
-      announcementText,
-      // file: foo,
-      foo,
-      // file,
-      url: this.url.current.value
-    }).then(result => {
+    const { announcementText, imgFile } = this.state;
+    const formData = new FormData();
+    formData.set('announcementText', announcementText);
+    formData.append('imgFile', imgFile);
+    formData.set('url', this.url.current.value);
+    const config = {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    };
+    postWithAxios(formData, config).then(result => {
       const { data } = result;
-      data.errors ? this.handleErrors(data) : this.handleSuccess(data);
+      // data.errors ? this.handleErrors(data) : this.handleSuccess(data);
       this.setState({ announcementText: '' });
     });
   }

@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 const useAxios = url => {
-  const fixedUrl = (data, method) => axios({ url, data, method });
+  const fixedUrl = (data, method, config) => axios({ url, data, method, config });
   return {
-    deleteWithAxios: data => fixedUrl(data, 'delete'),
-    putWithAxios: data => fixedUrl(data, 'put'),
-    getWithAxios: () => fixedUrl(null, 'get'),
-    postWithAxios: data => fixedUrl(data, 'post'),
+    deleteWithAxios: (data, config) => fixedUrl(data, 'delete'),
+    putWithAxios: (data, config) => fixedUrl(data, 'put'),
+    getWithAxios: config => fixedUrl(null, 'get', config),
+    postWithAxios: (data, config) => fixedUrl(data, 'post', config),
   }
 }
 

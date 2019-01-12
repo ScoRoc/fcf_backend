@@ -31,25 +31,22 @@ router.get('/', (req, res) => {
 
 router.post('/', upload.single('imgFile'), (req, res) => {
   // const { announcementText, file, foo, url } = req.body;
-  const { announcementText, foo, url } = req.body;
+  const { announcementText, imgFile, url } = req.body;
   console.log('req body: ', req.body);
-  // console.log('file: ', file);
   console.log('req.file: ', req.file);
-  console.log('req files: ', req.files);
-  console.log('foo: ', foo);
-
+  res.send('yo')
   // cloudinary.uploader.upload(file, (err, result) => {
   // cloudinary.uploader.upload('./uploads/imgTest.jpg', (err, result) => {
   //   console.log('err: ', err);
   //   console.log('result: ', result);
-    Announcement.create({ announcementText, url }, (err, announcement) => {
-      if (err) {
-        console.log('err: ', err);
-        res.send(err);
-      } else {
-        res.json({ announcement });
-      }
-    });
+    // Announcement.create({ announcementText, url }, (err, announcement) => {
+    //   if (err) {
+    //     console.log('err: ', err);
+    //     res.send(err);
+    //   } else {
+    //     res.json({ announcement });
+    //   }
+    // });
   // });
 });
 
