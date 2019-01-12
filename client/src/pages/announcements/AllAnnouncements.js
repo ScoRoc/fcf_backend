@@ -7,14 +7,15 @@ import AnnouncementStrip from './AnnouncementStrip';
   const allAnnouncements  = announcements
                           ? announcements.slice(0).reverse().map(announcement => (
                             <AnnouncementStrip
+                              announcement={announcement}
                               deleteAnnouncement={deleteAnnouncement}
                               editAnnouncement={editAnnouncement}
-                              id={announcement._id}
-                              imgUrl={announcement.imgUrl}
+                              // id={announcement._id}
+                              // imgUrl={announcement.imgUrl}
                               key={announcement._id}
-                              likes={announcement.likes}
-                              text={announcement.announcementText}
-                              url={announcement.url || 'no url'}
+                              // likes={announcement.likes}
+                              // text={announcement.announcementText}
+                              // url={announcement.url || 'no url'}
                             />
                           ))
                           : <p className='f'>'Loading...'</p>;

@@ -45,7 +45,8 @@ router.post('/', upload.single('imgFile'), (req, res) => {
   }, async (err, result) => {
     await unlinkAsync(req.file.path);
     const imgUrl = result.eager[0].url;
-    Announcement.create({ announcementText, imgUrl, url }, (err, announcement) => {
+    const { public_id } = result;
+    Announcement.create({ announcementText, imgUrl, public_id, url }, (err, announcement) => {
       if (err) {
         console.log('err: ', err);
         res.send(err);
@@ -71,7 +72,10 @@ router.put('/', (req, res) => {
 router.delete('/', (req, res) => {
   Announcement.findByIdAndDelete(req.body.id).exec((err, deletedAnnouncement) => {
     console.log('deletedAnnouncement: ', deletedAnnouncement);
-    res.send({ msg: 'Successfully deleted announcement', deletedAnnouncement });
+    cloudinary.v2.api.delete_resources([req.body.public_id], (err, result) => {
+      console.log('result: ', result);
+      res.send({ msg: 'Successfully deleted announcement', deletedAnnouncement });
+    });
   });
 });
 

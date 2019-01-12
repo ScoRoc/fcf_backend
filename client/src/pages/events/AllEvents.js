@@ -4,6 +4,11 @@ import EventStrip from './EventStrip';
 
  const AllEvents = props => {
   const { events, deleteEvent, editEvent } = props;
+  if (events) {
+    events.forEach(event => {
+      console.log('startDate: ', event.startDate)
+    })
+  }
   const allEvents  = events
                           ? events.slice(0).reverse().map(event => (
                             <EventStrip

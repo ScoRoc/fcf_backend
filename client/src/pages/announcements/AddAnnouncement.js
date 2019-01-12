@@ -15,7 +15,7 @@ export default class AddAnnouncement extends React.Component {
   constructor(props) {
     super(props);
     this.img = React.createRef();
-    this.initialState = {
+    this.state = {
       allowTypingPastLimit: false,
       announcementText: '',
       charCount: 0,
@@ -25,7 +25,6 @@ export default class AddAnnouncement extends React.Component {
       liftedCrop: {},
       url: '',
     }
-    this.state = this.initialState;
   }
 
   isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
@@ -37,7 +36,14 @@ export default class AddAnnouncement extends React.Component {
 
   handleSuccess = data => {
     console.log('success: ', data);
-    this.setState(this.initialState);
+    this.setState({
+      announcementText: '',
+      charCount: 0,
+      imgFile: '',
+      imgUrl: '',
+      liftedCrop: {},
+      url: '',
+    });
     this.img.current.value = '';
     this.props.addAnnouncement(data.announcement);
   }

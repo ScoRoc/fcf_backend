@@ -18,6 +18,9 @@ const announcementSchema = new mongoose.Schema({
     min: 0,
     required: true,
   },
+  public_id: {
+    type: String,
+  },
   url: {
     type: String,
     required: false,

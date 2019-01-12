@@ -66,19 +66,22 @@ export default class AnnouncementStrip extends React.Component {
 
   componentDidMount() {
     this.setState((prevState, props) => {
-      const { text, url } = this.props;
+      const { announcement } = this.props;
+      const { announcementText } = announcement;
+      const url = announcement.url || 'no url';
       return {
-        announcementText: text,
+        announcementText,
         announcementUrl: url,
-        charCount: text.length,
-        initialText: text,
+        charCount: announcementText.length,
+        initialText: announcementText,
         initialUrl: url,
       }
     });
   }
 
   render() {
-    const { deleteAnnouncement, id, imgUrl, likes } = this.props;
+    const { announcement, deleteAnnouncement } = this.props;
+    const { _id, imgUrl, likes, public_id } = announcement;
     const { allowTypingPastLimit, announcementText, announcementUrl, editable } = this.state;
     const disabled = this.isLTEtoCharLimit()(announcementText.length) ? '' : 'disabled';
     return (
@@ -111,8 +114,8 @@ export default class AnnouncementStrip extends React.Component {
         <AnnouncementTwoButtons
           cancelOnClick={this.cancelChange}
           disabled={disabled}
-          deleteOnClick={() => deleteAnnouncement(id)}
-          doneOnClick={() => this.handleEditAnnouncement(announcementText, announcementUrl, id)}
+          deleteOnClick={() => deleteAnnouncement(_id, public_id)}
+          doneOnClick={() => this.handleEditAnnouncement(announcementText, announcementUrl, _id)}
           editOnClick={this.toggleEdit}
           useFirstState={!editable}
         />
