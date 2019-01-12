@@ -9,6 +9,9 @@ const announcementSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
+  imgUrl: {
+    type: String,
+  },
   likes: {
     type: Number,
     default: 0,
@@ -18,7 +21,6 @@ const announcementSchema = new mongoose.Schema({
   url: {
     type: String,
     required: false,
-    minlength: 11,
     lowercase: true,
     trim: true,
   }

@@ -18,7 +18,10 @@ export default class ImgCrop extends React.Component {
 
   handleOnChange = crop => {
     // console.log('crop: ', crop);
-    this.setState({ crop });
+    this.setState((prevState, props) => {
+      props.liftCrop(crop);
+      return { crop }
+    });
   }
 
   // getCroppedImg(image, pixelCrop, fileName) {

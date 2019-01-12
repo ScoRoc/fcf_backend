@@ -78,7 +78,7 @@ export default class AnnouncementStrip extends React.Component {
   }
 
   render() {
-    const { deleteAnnouncement, id, likes } = this.props;
+    const { deleteAnnouncement, id, imgUrl, likes } = this.props;
     const { allowTypingPastLimit, announcementText, announcementUrl, editable } = this.state;
     const disabled = this.isLTEtoCharLimit()(announcementText.length) ? '' : 'disabled';
     return (
@@ -106,6 +106,7 @@ export default class AnnouncementStrip extends React.Component {
             value={announcementUrl}
           />
           <p>Likes: {likes || 'none'}</p>
+          <img src={imgUrl} />
         </div>
         <AnnouncementTwoButtons
           cancelOnClick={this.cancelChange}

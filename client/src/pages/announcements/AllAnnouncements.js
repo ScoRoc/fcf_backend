@@ -10,6 +10,7 @@ import AnnouncementStrip from './AnnouncementStrip';
                               deleteAnnouncement={deleteAnnouncement}
                               editAnnouncement={editAnnouncement}
                               id={announcement._id}
+                              imgUrl={announcement.imgUrl}
                               key={announcement._id}
                               likes={announcement.likes}
                               text={announcement.announcementText}

@@ -14,15 +14,18 @@ const { postWithAxios } = useAxios(path);
 export default class AddAnnouncement extends React.Component {
   constructor(props) {
     super(props);
-    this.url = React.createRef();
-    this.state = {
+    this.img = React.createRef();
+    this.initialState = {
       allowTypingPastLimit: false,
       announcementText: '',
       charCount: 0,
       charLimit: 150,
       imgFile: '',
       imgUrl: '',
+      liftedCrop: {},
+      url: '',
     }
+    this.state = this.initialState;
   }
 
   isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
@@ -34,6 +37,8 @@ export default class AddAnnouncement extends React.Component {
 
   handleSuccess = data => {
     console.log('success: ', data);
+    this.setState(this.initialState);
+    this.img.current.value = '';
     this.props.addAnnouncement(data.announcement);
   }
 
@@ -49,6 +54,10 @@ export default class AddAnnouncement extends React.Component {
     });
   }
 
+  liftCrop = crop => {
+    this.setState({ crop });
+  }
+
   // handleImgBtnClick = e => {
   //   e.preventDefault()
   // }
@@ -58,27 +67,32 @@ export default class AddAnnouncement extends React.Component {
     // console.log('file: ', file);
     this.setState({ imgFile });
 
-    // const reader = new FileReader();
-    // reader.onloadend = () => {
-    //   // console.log('reader result: ', reader.result)
-    //   this.setState({ imgUrl: reader.result });
-    // }
-    // reader.readAsDataURL(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      // console.log('reader result: ', reader.result)
+      this.setState({ imgUrl: reader.result });
+    }
+    reader.readAsDataURL(imgFile);
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { announcementText, imgFile } = this.state;
+    const { announcementText, crop, imgFile, url } = this.state;
+    const { height, width, x, y } = crop;
     const formData = new FormData();
     formData.set('announcementText', announcementText);
+      formData.set('height', height);
+    formData.set('width', width);
+    formData.set('x', x);
+    formData.set('y', y);
     formData.append('imgFile', imgFile);
-    formData.set('url', this.url.current.value);
+    formData.set('url', url);
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' }
     };
     postWithAxios(formData, config).then(result => {
       const { data } = result;
-      // data.errors ? this.handleErrors(data) : this.handleSuccess(data);
+      data.errors ? this.handleErrors(data) : this.handleSuccess(data);
       this.setState({ announcementText: '' });
     });
   }
@@ -94,7 +108,7 @@ export default class AddAnnouncement extends React.Component {
   }
 
   render() {
-    const { allowTypingPastLimit, announcementText, charLimit, imgUrl } = this.state;
+    const { allowTypingPastLimit, announcementText, charLimit, imgUrl, url } = this.state;
     const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     return (
       <section className='AddAnnouncement'>
@@ -117,8 +131,10 @@ export default class AddAnnouncement extends React.Component {
               <label htmlFor='new-announcement-url'>URL</label>
               <input
                 id='new-announcement-url'
-                ref={this.url}
+                name='imgUrl'
+                onChange={e => this.setState({url: e.target.value})}
                 type='text'
+                value={url}
               />
             </div>
             <div className='AddAnnouncement__form__img-wrap'>
@@ -133,7 +149,7 @@ export default class AddAnnouncement extends React.Component {
               />
               {/* <img src={imgUrl} /> */}
               {/* <div style={{ height: '30vh', background: 'green', }}> */}
-                <ImgCrop src={imgUrl} />
+                <ImgCrop liftCrop={this.liftCrop} src={imgUrl} />
               {/* </div> */}
             </div>
           <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>

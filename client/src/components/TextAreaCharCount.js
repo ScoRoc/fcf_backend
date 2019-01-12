@@ -44,6 +44,17 @@ export default class TextAreaCharCount extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.text !== prevProps.text && this.props.text === '') {
+      this.textarea.current.value = this.props.text;
+      this.setState({
+        charCount: this.props.text.length,
+        text: this.props.text
+      });
+      this.focusTextarea();
+    }
+  }
+
   componentDidMount() {
     this.setState((prevState, props) => {
       if (props.focusTextarea) this.focusTextarea();
