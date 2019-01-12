@@ -10,15 +10,10 @@ import AnnouncementStrip from './AnnouncementStrip';
                               announcement={announcement}
                               deleteAnnouncement={deleteAnnouncement}
                               editAnnouncement={editAnnouncement}
-                              // id={announcement._id}
-                              // imgUrl={announcement.imgUrl}
                               key={announcement._id}
-                              // likes={announcement.likes}
-                              // text={announcement.announcementText}
-                              // url={announcement.url || 'no url'}
                             />
                           ))
-                          : <p className='f'>'Loading...'</p>;
+                          : <p>'Loading...'</p>;
   return (
     <>
       <h3 id='h3-AllAnnouncements'>Current Announcements</h3>

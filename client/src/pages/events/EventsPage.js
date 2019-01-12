@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
+import './Events.min.css';
 import AddEvent from './AddEvent';
 import AllEvents from './AllEvents';
 
@@ -16,8 +17,40 @@ class EventsPage extends React.Component {
     super(props)
     this.initialState = {
       events: null,
+      showCurrentEvents: true,
+      showPastEvents: true,
     }
     this.state = {...this.initialState}
+  }
+
+  toggleShowEvents = type => {
+    this.setState({ [type]: !this.state[type] });
+  }
+
+  filterEvents = arr => {
+    const { showCurrentEvents, showPastEvents } = this.state;
+    const events = arr || [];
+    const today = new Date();
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const month = now.getUTCMonth();
+    const date = now.getUTCDate();
+    const t = new Date( Date.UTC(year, month, date) ).toISOString();
+    console.log( 't: ', t);
+    const pastEvents = events.filter(event => event.startDate < today);
+    const currentEvents = events.filter(event => event.startDate >= today);
+    const filteredEvents  = showPastEvents && showCurrentEvents
+                          ? events
+                          : !showPastEvents && showCurrentEvents
+                            ? currentEvents
+                            : showPastEvents && !showCurrentEvents
+                              ? pastEvents
+                              : [];
+    for (let evt of events) {
+      console.log('startDate: ', evt.startDate)
+    }
+    console.log('today: ', today)
+    return filteredEvents;
   }
 
   addEvent = event => {
@@ -36,13 +69,6 @@ class EventsPage extends React.Component {
   }
 
   editEvent = ({eventText, _id, startDate, types, url, throughDate}) => {
-    console.log('eventText: ', eventText)
-    console.log('id: ', _id)
-    console.log('startDate: ', startDate)
-    console.log('types: ', types)
-    console.log('url: ', url)
-    console.log('throughDate: ', throughDate)
-
     const events = this.state.events.slice(0);
     putWithAxios({
       eventText, _id, startDate, types, url, throughDate
@@ -63,6 +89,7 @@ class EventsPage extends React.Component {
   render() {
     if (!this.props.manager) return <Redirect to='/signin' />;
     const { events } = this.state;
+    const displayedEvents = this.filterEvents(events);
     return (
       <section>
         <h1>Events</h1>
@@ -72,9 +99,12 @@ class EventsPage extends React.Component {
           charLimit={25}
         />
         <AllEvents
-          events={events}
+          events={displayedEvents}
           deleteEvent={this.deleteEvent}
           editEvent={this.editEvent}
+          showCurrentEvents={this.state.showCurrentEvents}
+          showPastEvents={this.state.showPastEvents}
+          toggleShowEvents={this.toggleShowEvents}
         />
       </section>
     );

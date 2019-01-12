@@ -1,0 +1,15 @@
+@import '../../sass/variables';
+@import '../../sass/silent-classes/misc';
+@import '../../sass/silent-classes/buttons';
+
+.filter-on {
+  color: $yellow;
+}
+
+.filter-off {
+  color: $greyMediumLight;
+}
+
+.foo-p-foo {
+  cursor: pointer;
+}

@@ -10,6 +10,13 @@ router.get('/', (req, res) => {
       console.log('err: ', err);
       res.send(err);
     } else {
+      events.sort((a, b) => {
+        return a.startDate === b.startDate
+                            ? 0
+                            : a.startDate < b.startDate
+                              ? -1
+                              : 1;
+      });
       res.json({ events });
     }
   })

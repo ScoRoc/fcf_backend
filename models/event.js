@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const eventSchema = new mongoose.Schema({
   eventText: {
     type: String,
-    lowercase: true,
     minlength: 1,
     maxlength: 25,
     required: true,
