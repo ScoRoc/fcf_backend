@@ -46,7 +46,7 @@ class EventsPage extends React.Component {
 
   filterEvents = arr => {
     const { showCurrentEvents, showPastEvents } = this.state;
-    const events = arr || [];
+    const events = Array.isArray(arr) ? [...arr] : [];
     const today = moment().startOf('day')._d;
     const pastEvents = events.filter(event => this.isPastDate(event.startDate._d));
     const currentEvents = events.filter(event => {
@@ -84,15 +84,20 @@ class EventsPage extends React.Component {
   }
 
   editEvent = ({eventText, _id, startDate, types, url, throughDate}) => {
-    const events = this.state.events.slice(0);
     putWithAxios({
       eventText, _id, startDate, types, url, throughDate
     }).then(result => {
-      // const { updatedEvent } = result.data;
-      this.setState({ events });
+      const { updatedEvent } = result.data;
+      const keysToChange = ['startDate', 'throughDate'];
+      const updatedEventWithMoment = mapDateStringToMomentObj(updatedEvent, keysToChange)[0];
+      this.setState(prevState => {
+        const events = prevState.events.slice(0);
+        events.splice( getIndex(updatedEventWithMoment._id, events), 1, updatedEventWithMoment );
+        const sorted = this.sortByDate(events);
+        return { events: sorted };
+      })
     });
   }
-
 
   componentDidMount() {
     if (this.props.manager) {
