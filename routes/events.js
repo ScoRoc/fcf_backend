@@ -2,7 +2,17 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Event = require('../models/event');
+const moment = require('moment');
 
+const sortByDate = arr => {
+  return arr.sort((a, b) => {
+    return a.startDate === b.startDate
+                        ? 0
+                        : a.startDate < b.startDate
+                          ? -1
+                          : 1;
+  });
+}
 
 router.get('/', (req, res) => {
   Event.find({}, (err, events) => {
@@ -10,21 +20,15 @@ router.get('/', (req, res) => {
       console.log('err: ', err);
       res.send(err);
     } else {
-      events.sort((a, b) => {
-        return a.startDate === b.startDate
-                            ? 0
-                            : a.startDate < b.startDate
-                              ? -1
-                              : 1;
-      });
-      res.json({ events });
+      res.json({ events: sortByDate(events) });
     }
   })
 });
 
 router.post('/', (req, res) => {
-  const { eventText, startDate, types, url } = req.body;
-  const throughDate = req.body.throughDate || null;
+  const { eventText, types, url } = req.body;
+  const startDate = moment(req.body.startDate)._d;
+  const throughDate = req.body.throughDate ? moment(req.body.throughDate) : null;
     Event.create({ eventText, startDate, throughDate, types, url }, (err, event) => {
       if (err) {
         console.log('err: ', err);

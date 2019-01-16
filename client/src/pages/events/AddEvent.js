@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
 import CheckboxWrapper from '../../components/CheckboxWrapper';
 import TextAreaCharCount from '../../components/TextAreaCharCount';
@@ -67,8 +68,8 @@ export default class AddEvent extends React.Component {
     e.preventDefault();
     const { eventText, types } = this.state;
     // MAKE SURE TYPES HAS SOME TYPE ON IT
-    const startDate = this.startDate.current.value;
-    const throughDate = this.throughDate.current.value;
+    const startDate = moment(this.startDate.current.value)._d;
+    const throughDate = moment(this.throughDate.current.value)._d;
     const url = this.url.current.value;
     postWithAxios({ eventText, startDate, throughDate, types, url }).then(result => {
       const { data } = result;

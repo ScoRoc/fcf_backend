@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import moment from 'moment';
 
 import './Events.min.css';
 import AddEvent from './AddEvent';
 import AllEvents from './AllEvents';
 
 import { getIndex, addItemToStateArr } from '../../utils/helpers';
+import { isGreaterThanOrEqual, isLessThan } from '../../utils/comparisons';
 import useAxios from '../../utils/axios-helpers';
 
 const path = '/events';
@@ -27,18 +29,30 @@ class EventsPage extends React.Component {
     this.setState({ [type]: !this.state[type] });
   }
 
+  isPastDate = isLessThan( moment().startOf('day')._d );
+
+  isCurrentDate = isGreaterThanOrEqual( moment().startOf('day')._d );
+
+  stringToMomentDate = str => moment(str);
+
+  mapEventsStringToDateObj = events => {
+    return events.map(event => {
+      return {
+        ...event,
+        startDate: this.stringToMomentDate(event.startDate),
+        throughDate: event.throughDate !== null
+                        ? this.stringToMomentDate(event.through)
+                        : null,
+      };
+    });
+  }
+
   filterEvents = arr => {
     const { showCurrentEvents, showPastEvents } = this.state;
     const events = arr || [];
-    const today = new Date();
-    const now = new Date();
-    const year = now.getUTCFullYear();
-    const month = now.getUTCMonth();
-    const date = now.getUTCDate();
-    const t = new Date( Date.UTC(year, month, date) ).toISOString();
-    console.log( 't: ', t);
-    const pastEvents = events.filter(event => event.startDate < today);
-    const currentEvents = events.filter(event => event.startDate >= today);
+    const today = moment().startOf('day')._d;
+    const pastEvents = events.filter(event => this.isPastDate(event.startDate._d));
+    const currentEvents = events.filter(event => this.isCurrentDate(event.startDate._d));
     const filteredEvents  = showPastEvents && showCurrentEvents
                           ? events
                           : !showPastEvents && showCurrentEvents
@@ -46,10 +60,6 @@ class EventsPage extends React.Component {
                             : showPastEvents && !showCurrentEvents
                               ? pastEvents
                               : [];
-    for (let evt of events) {
-      console.log('startDate: ', evt.startDate)
-    }
-    console.log('today: ', today)
     return filteredEvents;
   }
 
@@ -78,10 +88,13 @@ class EventsPage extends React.Component {
     });
   }
 
+
   componentDidMount() {
     if (this.props.manager) {
       getWithAxios().then(result => {
-        this.setState({ events: result.data.events });
+        this.setState({
+          events: this.mapEventsStringToDateObj(result.data.events),
+        });
       });
     }
   }
