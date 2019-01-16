@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const { eventText, types, url } = req.body;
   const startDate = moment(req.body.startDate)._d;
-  const throughDate = req.body.throughDate ? moment(req.body.throughDate) : null;
+  const throughDate = req.body.throughDate ? moment(req.body.throughDate)._d : null;
     Event.create({ eventText, startDate, throughDate, types, url }, (err, event) => {
       if (err) {
         console.log('err: ', err);

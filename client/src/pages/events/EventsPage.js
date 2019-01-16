@@ -41,7 +41,7 @@ class EventsPage extends React.Component {
         ...event,
         startDate: this.stringToMomentDate(event.startDate),
         throughDate: event.throughDate !== null
-                        ? this.stringToMomentDate(event.through)
+                        ? this.stringToMomentDate(event.throughDate)
                         : null,
       };
     });
