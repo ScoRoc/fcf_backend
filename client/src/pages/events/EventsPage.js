@@ -9,6 +9,7 @@ import AllEvents from './AllEvents';
 
 import { getIndex, addItemToStateArr } from '../../utils/helpers';
 import { isGreaterThanOrEqual, isLessThan } from '../../utils/comparisons';
+import { mapDateStringToMomentObj } from '../../utils/date-helpers';
 import useAxios from '../../utils/axios-helpers';
 
 const path = '/events';
@@ -27,9 +28,9 @@ class EventsPage extends React.Component {
 
   sortByDate = arr => {
     return arr.sort((a, b) => {
-      return a.startDate === b.startDate
+      return a.startDate._d === b.startDate._d
                           ? 0
-                          : a.startDate < b.startDate
+                          : a.startDate._d < b.startDate._d
                             ? -1
                             : 1;
     });
@@ -38,20 +39,6 @@ class EventsPage extends React.Component {
   isPastDate = isLessThan( moment().startOf('day')._d );
 
   isCurrentDate = isGreaterThanOrEqual( moment().startOf('day')._d );
-
-  stringToMomentDate = str => moment(str);
-
-  mapEventsStringToDateObj = events => {
-    return events.map(event => {
-      return {
-        ...event,
-        startDate: this.stringToMomentDate(event.startDate),
-        throughDate: event.throughDate !== null
-                        ? this.stringToMomentDate(event.throughDate)
-                        : null,
-      };
-    });
-  }
 
   toggleShowEvents = type => {
     this.setState({ [type]: !this.state[type] });
@@ -78,11 +65,12 @@ class EventsPage extends React.Component {
   }
 
   addEvent = event => {
-    ////////////////
-    // FIX THIS SO IT SORTS 
-    ////////////////
     this.setState(prevState => {
-      return addItemToStateArr(event, prevState, 'events');
+      const keysToChange = ['startDate', 'throughDate'];
+      const eventWithMoment = mapDateStringToMomentObj(event, keysToChange)[0];
+      const events = addItemToStateArr(eventWithMoment, prevState, 'events');
+      const sorted = this.sortByDate(events.events);
+      return { events: sorted };
     });
   }
 
@@ -109,8 +97,9 @@ class EventsPage extends React.Component {
   componentDidMount() {
     if (this.props.manager) {
       getWithAxios().then(result => {
+        const keysToChange = ['startDate', 'throughDate'];
         this.setState({
-          events: this.mapEventsStringToDateObj(result.data.events),
+          events: mapDateStringToMomentObj( result.data.events, keysToChange),
         });
       });
     }

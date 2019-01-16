@@ -39,6 +39,7 @@ export default class AddEvent extends React.Component {
 
   handleSuccess = data => {
     console.log('success: ', data);
+    console.log('');
     this.props.addEvent(data.event);
   }
 
