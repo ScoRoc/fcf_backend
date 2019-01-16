@@ -52,7 +52,11 @@ class EventsPage extends React.Component {
     const events = arr || [];
     const today = moment().startOf('day')._d;
     const pastEvents = events.filter(event => this.isPastDate(event.startDate._d));
-    const currentEvents = events.filter(event => this.isCurrentDate(event.startDate._d));
+    const currentEvents = events.filter(event => {
+      return event.throughDate
+                    ? this.isCurrentDate(event.throughDate._d)
+                    : this.isCurrentDate(event.startDate._d);
+    });
     const filteredEvents  = showPastEvents && showCurrentEvents
                           ? events
                           : !showPastEvents && showCurrentEvents
