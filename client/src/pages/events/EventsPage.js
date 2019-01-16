@@ -25,8 +25,14 @@ class EventsPage extends React.Component {
     this.state = {...this.initialState}
   }
 
-  toggleShowEvents = type => {
-    this.setState({ [type]: !this.state[type] });
+  sortByDate = arr => {
+    return arr.sort((a, b) => {
+      return a.startDate === b.startDate
+                          ? 0
+                          : a.startDate < b.startDate
+                            ? -1
+                            : 1;
+    });
   }
 
   isPastDate = isLessThan( moment().startOf('day')._d );
@@ -45,6 +51,10 @@ class EventsPage extends React.Component {
                         : null,
       };
     });
+  }
+
+  toggleShowEvents = type => {
+    this.setState({ [type]: !this.state[type] });
   }
 
   filterEvents = arr => {
@@ -68,6 +78,9 @@ class EventsPage extends React.Component {
   }
 
   addEvent = event => {
+    ////////////////
+    // FIX THIS SO IT SORTS 
+    ////////////////
     this.setState(prevState => {
       return addItemToStateArr(event, prevState, 'events');
     });
