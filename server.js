@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
 
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
-  })
+  });
 }
 
 // npm run dev to run in dev mode
