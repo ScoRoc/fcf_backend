@@ -29,11 +29,13 @@ const announcements = require('./routes/announcements');
 const auth = require('./routes/auth');
 const events = require('./routes/events');
 const manager = require('./routes/manager');
+const wod = require('./routes/wod');
 
 app.use('/announcements', announcements);
 app.use('/auth', auth);
 app.use('/events', events);
 app.use('/manager', manager);
+app.use('/wod', wod);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));

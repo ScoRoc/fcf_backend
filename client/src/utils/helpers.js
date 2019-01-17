@@ -1,5 +1,6 @@
-export const getIndex = (id, arr) => {
-  return arr.indexOf(arr.find(item => item._id === id));
+export const getIndex = (findBy, arr, match) => {
+  const value = match || findBy;
+  return arr.indexOf(arr.find(item => item[findBy] === value));
 }
 
 export const addItemToStateArr = (item, prevState, arr) => {
