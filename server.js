@@ -41,30 +41,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// dummy route to add super user
-app.get('/super', async (req, res) => {
-  const superInfo = {
-    firstName: 'super',
-    lastName: 'user',
-    email: 'super@super.com',
-    superUser: true,
-    password: 'password',
-  };
-  if ( await findManagerByEmail(superInfo.email) ) {
-    res.send({errors: true, _message: 'There is already a user with that email.'});
-  } else {
-    Manager.create(superInfo, (err, manager) => {
-      if (err) {
-        console.log('err: ', err);
-        res.send(err);
-      } else {
-        res.send('created');
-        // res.json({ manager: manager.toObject(), managerPassword: password });
-      }
-    });
-  }
-});
-
 // npm run dev to run in dev mode
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
