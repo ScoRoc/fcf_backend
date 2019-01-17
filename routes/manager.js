@@ -58,18 +58,17 @@ router.post('/addmanager', async (req, res) => {
 
 // delete
 router.post('/super', async (req, res) => {
-  if ( await findManagerByEmail(req.body.email) ) {
+  const superInfo = {
+    firstName: 'super',
+    lastName: 'user',
+    email: 'super@super.com',
+    superUser: true,
+    password: 'password',
+  };
+  if ( await findManagerByEmail(superInfo.email) ) {
     res.send({errors: true, _message: 'There is already a user with that email.'});
   } else {
-    const { email, firstName, lastName, superUser, password } = req.body;
-    Manager.create(
-      {
-        firstName: 'super',
-        lastName: 'user',
-        email: 'super@super.com',
-        superUser: true,
-        password: 'password',
-      }, (err, manager) => {
+    Manager.create(superInfo, (err, manager) => {
         if (err) {
           console.log('err: ', err);
           res.send(err);
