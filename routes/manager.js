@@ -56,31 +56,6 @@ router.post('/addmanager', async (req, res) => {
   }
 });
 
-// delete
-router.post('/super', async (req, res) => {
-  const superInfo = {
-    firstName: 'super',
-    lastName: 'user',
-    email: 'super@super.com',
-    superUser: true,
-    password: 'password',
-  };
-  if ( await findManagerByEmail(superInfo.email) ) {
-    res.send({errors: true, _message: 'There is already a user with that email.'});
-  } else {
-    Manager.create(superInfo, (err, manager) => {
-        if (err) {
-          console.log('err: ', err);
-          res.send(err);
-        } else {
-          res.json({ manager: manager.toObject(), managerPassword: password });
-        }
-      }
-    )
-  }
-});
-
-
 router.post('/validate', (req, res) => {
   const token = req.body.token;
   if (!token) {
