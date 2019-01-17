@@ -36,7 +36,7 @@ class AddManagerPage extends Component {
   }
 
   render() {
-    // if (!this.props.manager) return <Redirect to='/signin' />;
+    if (!this.props.manager) return <Redirect to='/signin' />;
     const { email, firstName, lastName, superUser, password, successfulAdd } = this.state;
     const newManager  = successfulAdd
                       ? <SuccessfulNewManager
