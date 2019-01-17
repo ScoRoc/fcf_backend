@@ -19,11 +19,14 @@ const daysOfWeek = [
   'Friday',
   'Saturday',
   'Sunday',
-]
+];
 
 class WodPage extends React.Component {
   constructor(props) {
     super(props);
+    this.text = React.createRef();
+    this.day = React.createRef();
+    this.date = React.createRef();
     this.state = {
       initialWeekOf: '',
       weekOf: '',
@@ -62,6 +65,16 @@ class WodPage extends React.Component {
     }
   }
 
+  addWod = () => {
+    axios.post('/wod', {
+      text: this.text.current.value,
+      day: this.day.current.value,
+      date: moment(this.date.current.value)._d,
+    }).then(result => {
+      console.log('result.data: ', result.data);
+    });
+  }
+
   render() {
     if (!this.props.manager) return <Redirect to='/signin' />;
     const { initialWeekOf, weekOf, wods } = this.state;
@@ -89,6 +102,13 @@ class WodPage extends React.Component {
         <section>
           {days}
         </section>
+
+        <input ref={this.text} type='text' />text
+        <input ref={this.day} type='text' />day
+        <input ref={this.date} type='date' />date
+        <button onClick={this.addWod}>add wod</button>
+
+
       </section>
     );
   }

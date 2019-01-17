@@ -32,17 +32,17 @@ router.put('/', (req, res) => {
   });
 });
 
-// router.post('/', (req, res) => {
-//   const { text } = req.body;
-//   const date = moment(req.body.date)._d;
-//     Wod.create({ date, text }, (err, wod) => {
-//       if (err) {
-//         console.log('err: ', err);
-//         res.send(err);
-//       } else {
-//         res.json({ wod });
-//       }
-//     });
-// });
+router.post('/', (req, res) => {
+  const { text } = req.body;
+  const date = moment(req.body.date)._d;
+    Wod.create({ date, text }, (err, wod) => {
+      if (err) {
+        console.log('err: ', err);
+        res.send(err);
+      } else {
+        res.json({ wod });
+      }
+    });
+});
 
 module.exports = router;
