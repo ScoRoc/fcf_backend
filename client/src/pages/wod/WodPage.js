@@ -9,7 +9,7 @@ import { getIndex } from '../../utils/helpers';
 import useAxios from '../../utils/axios-helpers';
 
 const path = '/wod';
-const { deleteWithAxios, getWithAxios, putWithAxios } = useAxios(path);
+const { deleteWithAxios, getWithAxios, putWithAxios, postWithAxios } = useAxios(path);
 
 const daysOfWeek = [
   'Monday',
@@ -66,7 +66,7 @@ class WodPage extends React.Component {
   }
 
   addWod = () => {
-    axios.post('/wod', {
+    postWithAxios({
       text: this.text.current.value,
       day: this.day.current.value,
       date: moment(this.date.current.value)._d,
