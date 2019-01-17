@@ -21,10 +21,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.get('/test', (req, res) => {
-  res.send('working')
-});
-
 const announcements = require('./routes/announcements');
 const auth = require('./routes/auth');
 const events = require('./routes/events');
@@ -38,10 +34,10 @@ app.use('/manager', manager);
 app.use('/wod', wod);
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(express.static(path.join(__dirname, 'client/public')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
   })
 }
 
