@@ -78,7 +78,7 @@ class EventsPage extends React.Component {
     const events = this.state.events.slice(0);
     deleteWithAxios({ id }).then(result => {
       // console.log('result: ', result);
-      events.splice(getIndex(id, events), 1);
+      events.splice(getIndex('_id', events, id), 1);
       this.setState({ events });
     });
   }
@@ -92,7 +92,7 @@ class EventsPage extends React.Component {
       const updatedEventWithMoment = mapDateStringToMomentObj(updatedEvent, keysToChange)[0];
       this.setState(prevState => {
         const events = prevState.events.slice(0);
-        events.splice( getIndex(updatedEventWithMoment._id, events), 1, updatedEventWithMoment );
+        events.splice( getIndex('_id', events, updatedEventWithMoment._id), 1, updatedEventWithMoment );
         const sorted = this.sortByDate(events);
         return { events: sorted };
       })

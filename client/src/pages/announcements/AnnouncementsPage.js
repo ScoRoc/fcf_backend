@@ -30,7 +30,7 @@ class AnnouncementsPage extends React.Component {
     const announcements = this.state.announcements.slice(0);
     deleteWithAxios({ id, public_id }).then(result => {
       // console.log('result: ', result);
-      announcements.splice(getIndex(id, announcements), 1);
+      announcements.splice(getIndex('_id', announcements, id), 1);
       this.setState({ announcements });
     });
   }

@@ -62,11 +62,10 @@ export default class WodStrip extends React.Component {
     this.setState({ editable: !this.state.editable });
   }
 
-  handleDone = ({ date, text }) => {
+  handleUpdateWod = ({ date, _id, text }) => {
     this.toggleEdit();
-    axios.post('/wod', { date, text }).then(result => {
-      console.log('result.data: ', result.data);
-    });
+    this.props.updateWod({ date, _id, text });
+    this.setState({ date, initialText: text, text });
   }
 
   componentDidUpdate(prevProps) {
@@ -80,16 +79,16 @@ export default class WodStrip extends React.Component {
   componentDidMount() {
     this.setState((prevState, props) => {
       const { date, text } = props.wod;
-      console.log('date: ', date)
       return { date, initialText: text, text, wod: props.wod }
     });
   }
 
   render() {
+      /////////////////////////
+     // HANDLE CAPPING TEXT //
+    /////////////////////////
     const { date, editable, text } = this.state;
-    console.log('wod: ', this.props.wod);
     const formattedDate = moment(date).format('MM/DD');
-    console.log('render date: ', date)
     const disabled  = this.isLTEtoCharLimit()(text.length)
                     ? ''
                     : 'disabled';
@@ -108,7 +107,7 @@ export default class WodStrip extends React.Component {
       secondState: {
         btnClass: 'done-btn',
         // btnOnClick: doneOnClick,
-        btnOnClick: () => this.handleDone({ date: date._d, text }),
+        btnOnClick: () => this.handleUpdateWod({ date: date._d, _id: this.props.wod._id, text }),
         btnText: 'Done',
       },
     }

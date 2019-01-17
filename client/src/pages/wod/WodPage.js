@@ -31,6 +31,18 @@ class WodPage extends React.Component {
     }
   }
 
+  updateWod = ({ date, _id, text }) => {
+    putWithAxios({ date, _id, text }).then(result => {
+      console.log('result.data: ', result.data);
+      const { updatedWod } = result.data;
+      const wods = this.state.wods.slice(0);
+      const thisWod = wods[ getIndex('_id', wods, _id) ];
+      thisWod.date = date;
+      thisWod.text = text;
+      this.setState({ wods });
+    });
+  }
+
   handleSetWeek = e => {
     const weekOf = moment(e.target.value);
     this.setState({ weekOf });
@@ -58,7 +70,13 @@ class WodPage extends React.Component {
                 ? daysOfWeek.map((day, i) => {
                   const date = moment(weekOf).add(i, 'days');
                   const wod = wods[ getIndex('day', wods, day) ];
-                  return <WodStrip day={day} key={i} selectedDate={date} wod={wod} />
+                  return <WodStrip
+                    day={day}
+                    key={i}
+                    selectedDate={date}
+                    updateWod={this.updateWod}
+                    wod={wod}
+                  />
                 })
                 : '';
     return (
