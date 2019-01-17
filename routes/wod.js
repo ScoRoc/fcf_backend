@@ -17,10 +17,9 @@ router.get('/', (req, res) => {
 
 router.put('/', (req, res) => {
   console.log('req body: ', req.body)
-  const { _id, day, text  } = req.body;
+  const { _id, text  } = req.body;
   const date = moment(req.body.date)._d;
   Wod.findByIdAndUpdate(_id, {
-    day,
     date,
     text,
   }, { new: true, runValidators: true }, (err, updatedWod) => {
@@ -34,9 +33,9 @@ router.put('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { text } = req.body;
+  const { day, text } = req.body;
   const date = moment(req.body.date)._d;
-    Wod.create({ date, text }, (err, wod) => {
+    Wod.create({ day, date, text }, (err, wod) => {
       if (err) {
         console.log('err: ', err);
         res.send(err);
