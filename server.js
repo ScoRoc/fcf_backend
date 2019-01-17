@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // dummy route to add super user
-app.post('/super', async (req, res) => {
+app.get('/super', async (req, res) => {
   const superInfo = {
     firstName: 'super',
     lastName: 'user',
