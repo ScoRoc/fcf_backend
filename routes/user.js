@@ -48,7 +48,7 @@ router.post('/create', async (req, res) => {
           console.log('err: ', err);
           res.send(err);
         } else {
-          res.json({ user: user.toObject(), userPassword: password });
+          res.json({ user: user.toObject(), token: createToken(user) });
         }
       }
     )
