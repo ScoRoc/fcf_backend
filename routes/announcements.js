@@ -79,4 +79,16 @@ router.delete('/', (req, res) => {
   });
 });
 
+router.put('/like', (req, res) => {
+  const { annoucnementId, userId } = req.body;
+  Announcement.findByIdAndUpdate(annoucnementId, { $push: {likes: userId} }, { new: true }, (err, updatedAnnouncement) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send({ err });
+    } else {
+      res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
+    }
+  });
+});
+
 module.exports = router;
