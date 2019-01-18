@@ -108,7 +108,7 @@ export default class AnnouncementStrip extends React.Component {
             useInput={editable}
             value={announcementUrl}
           />
-          <p>Likes: {likes || 'none'}</p>
+          <p>Likes: {likes.length || 'none'}</p>
           <img src={imgUrl} />
         </div>
         <AnnouncementTwoButtons
