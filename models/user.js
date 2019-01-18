@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-  name: {
+  firstName: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 99
+  },
+  lastName: {
     type: String,
     required: true,
     minlength: 1,
@@ -28,12 +34,6 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.authenticated = function(password, cb) {
   bcrypt.compare(password, this.password, function(err, res) {
     err ? cb(err) : cb(null, res ? this : false);
-    // if (err) {
-    //   console.log(err)
-    //   cb(err)
-    // } else {
-    //   cb(null, res ? this : false)
-    // }
   })
 }
 

@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 
 const wodSchema = new mongoose.Schema({
   attended: {
-    type: Number,
-    default: 0,
-    min: 0,
+    type: [String],
     required: true,
   },
   text: {
@@ -14,9 +12,7 @@ const wodSchema = new mongoose.Schema({
     required: true,
   },
   likes: {
-    type: Number,
-    default: 0,
-    min: 0,
+    type: [String],
     required: true,
   },
   date: {

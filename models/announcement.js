@@ -13,9 +13,7 @@ const announcementSchema = new mongoose.Schema({
     type: String,
   },
   likes: {
-    type: Number,
-    default: 0,
-    min: 0,
+    type: [String],
     required: true,
   },
   public_id: {

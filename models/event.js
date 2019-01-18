@@ -9,9 +9,7 @@ const eventSchema = new mongoose.Schema({
     trim: true,
   },
   likes: {
-    type: Number,
-    default: 0,
-    min: 0,
+    type: [String],
     required: true,
   },
   startDate: {
