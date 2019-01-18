@@ -79,9 +79,11 @@ router.delete('/', (req, res) => {
   });
 });
 
-router.put('/like', (req, res) => {
-  const { annoucnementId, userId } = req.body;
-  Announcement.findByIdAndUpdate(annoucnementId, { $push: {likes: userId} }, { new: true }, (err, updatedAnnouncement) => {
+router.put('/like', async (req, res) => {
+  const { announcementId, userId } = req.body;
+  const foundAnnouncement = await Announcement.findById(announcementId).lean();
+  const operation = foundAnnouncement.likes.includes(userId) ? '$pull' : '$push';
+  Announcement.findByIdAndUpdate(announcementId, { [operation]: {likes: userId} }, { new: true }, (err, updatedAnnouncement) => {
     if (err) {
       console.log('err: ', err);
       res.send({ err });
@@ -89,6 +91,23 @@ router.put('/like', (req, res) => {
       res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
     }
   });
+  // foundAnnouncement.likes.includes(userId)
+  //   ? Announcement.findByIdAndUpdate(announcementId, { $pull: {likes: userId} }, { new: true }, (err, updatedAnnouncement) => {
+  //       if (err) {
+  //         console.log('err: ', err);
+  //         res.send({ err });
+  //       } else {
+  //         res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
+  //       }
+  //     });
+  //   : Announcement.findByIdAndUpdate(announcementId, { $push: {likes: userId} }, { new: true }, (err, updatedAnnouncement) => {
+  //       if (err) {
+  //         console.log('err: ', err);
+  //         res.send({ err });
+  //       } else {
+  //         res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
+  //       }
+  //     });
 });
 
 module.exports = router;
