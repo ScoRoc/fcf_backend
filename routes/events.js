@@ -66,4 +66,18 @@ router.delete('/', (req, res) => {
   });
 });
 
+router.put('/like', async (req, res) => {
+  const { eventId, userId } = req.body;
+  const foundEvent = await Event.findById(eventId).lean();
+  const operation = foundEvent.likes.includes(userId) ? '$pull' : '$push';
+  Event.findByIdAndUpdate(eventId, { [operation]: {likes: userId} }, { new: true }, (err, updatedEvent) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send({ err });
+    } else {
+      res.send({ msg: 'Successfully updated the event', updatedEvent});
+    }
+  });
+});
+
 module.exports = router;

@@ -91,23 +91,6 @@ router.put('/like', async (req, res) => {
       res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
     }
   });
-  // foundAnnouncement.likes.includes(userId)
-  //   ? Announcement.findByIdAndUpdate(announcementId, { $pull: {likes: userId} }, { new: true }, (err, updatedAnnouncement) => {
-  //       if (err) {
-  //         console.log('err: ', err);
-  //         res.send({ err });
-  //       } else {
-  //         res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
-  //       }
-  //     });
-  //   : Announcement.findByIdAndUpdate(announcementId, { $push: {likes: userId} }, { new: true }, (err, updatedAnnouncement) => {
-  //       if (err) {
-  //         console.log('err: ', err);
-  //         res.send({ err });
-  //       } else {
-  //         res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
-  //       }
-  //     });
 });
 
 module.exports = router;
