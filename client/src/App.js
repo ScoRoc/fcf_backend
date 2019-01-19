@@ -47,7 +47,7 @@ class App extends Component {
             <Route exact path='/' render={() => <LoadingFirstPage />} />
             <Route path='/home' render={() => <HomePage />} />
             <Route path='/announcements' render={() => <AnnouncementsPage />} />
-            <Route path='/events' render={() => <EventsPage />} />
+            <Route exact path='/events' render={() => <EventsPage />} />
             <Route path='/wod' render={() => <WodPage />} />
             <Route path='/addmanager' render={() => <AddManagerPage />} />
             <Route path='/signin' render={() => <SignInPage />} />

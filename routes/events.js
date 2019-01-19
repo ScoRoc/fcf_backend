@@ -66,6 +66,101 @@ router.delete('/', (req, res) => {
   });
 });
 
+router.get('/bymonth', (req, res) => {
+  Event.find({}, (err, events) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send(err);
+    } else {
+      console.log('events: ', events);
+        ////////////////////////////////////
+       // Breakdown of each data section //
+      ////////////////////////////////////
+      const eventsArrEx = [];
+      const eventsYearEx = {
+        year: 'year',
+        months: [],
+      };
+      const eventsMonthsEx = [];
+      const eventsMonthEx = {
+        month: 'month',
+        events: [],
+      };
+      ////////////////////////////////////
+
+      const findBy = (item, arr, unit) => {
+        arr.find( idx => idx[unit] === moment(item)[unit]() );
+      }
+
+      const yearFactory = year => {
+        return { year, months: [] };
+      }
+      const monthFactory = month => {
+        return { month, events: [] };
+      }
+
+      const sortedEvents = [];
+      // events.forEach(event => {
+      //   const yearIdx = sortedEvents.find(sortedEvent => {
+      //     sortedEvent.year === moment(event).year();
+      //   })
+      // });
+
+      // not working
+      events.forEach(event => {
+        const yearIdx = sortedEvents.indexOf( findBy(event, sortedEvents, 'year') );
+        yearIdx >= 0 ? sortedEvents[yearIdx].push(event) : sortedEvents.push( yearFactory( moment(event).year() ) );
+      });
+
+      console.log('sortedEvents: ', sortedEvents);
+
+      const eventsArr = [
+        {
+          year: 2019,
+          months: [
+            {
+              month: 'jan',
+              events: [
+                {title: 'title', startDate: 'num'},
+                {title: 'title', startDate: 'num'},
+              ],
+            },
+            {
+              month: 'feb',
+              events: [
+                {title: 'title', startDate: 'num'},
+                {title: 'title', startDate: 'num'},
+              ],
+            },
+          ]
+        },
+        {
+          year: 2020,
+          months: [
+            {
+              month: 'jan',
+              events: [
+                {title: 'title', startDate: 'num'},
+                {title: 'title', startDate: 'num'},
+              ],
+            },
+            {
+              month: 'feb',
+              events: [
+                {title: 'title', startDate: 'num'},
+                {title: 'title', startDate: 'num'},
+              ],
+            },
+          ]
+        },
+      ];
+      res.json({eventsArr: eventsArr})
+      // res.json({events: events})
+      // res.json({ events: sortByDate(events) });
+    }
+  })
+});
+
 router.put('/like', async (req, res) => {
   const { eventId, userId } = req.body;
   const foundEvent = await Event.findById(eventId).lean();
