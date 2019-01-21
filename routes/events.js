@@ -72,91 +72,55 @@ router.get('/bymonth', (req, res) => {
       console.log('err: ', err);
       res.send(err);
     } else {
-      console.log('events: ', events);
-        ////////////////////////////////////
-       // Breakdown of each data section //
-      ////////////////////////////////////
-      const eventsArrEx = [];
-      const eventsYearEx = {
-        year: 'year',
-        months: [],
-      };
-      const eventsMonthsEx = [];
-      const eventsMonthEx = {
-        month: 'month',
-        events: [],
-      };
-      ////////////////////////////////////
+      const formatted = unit => {
+        const formats = {
+          month: month => moment().month(month).format('MMMM'),
+          year: year => moment().year(year).format('YYYY'),
+        }
+        return {
+          getFormatted: event => formats[unit](event),
+        }
+      }
+      const getFormattedMonth = formatted('month').getFormatted;
+      const getFormattedYear = formatted('year').getFormatted;
 
       const findBy = (item, arr, unit) => {
-        arr.find( idx => idx[unit] === moment(item)[unit]() );
+        const momented = moment(item)[unit]();
+        const formattedDateMap = {
+          month: getFormattedMonth(momented),
+          year: parseInt( getFormattedYear(momented) )
+        }
+        const formattedDate = formattedDateMap[unit];
+        return arr.find( idx => idx[unit] === formattedDate );
+      }
+      const findByMonth = (item, arr) => findBy(item, arr, 'month');
+      const findByYear = (item, arr) => findBy(item, arr, 'year');
+
+      const monthFactory = event => {
+        const month = moment(event).month();
+        return { month: getFormattedMonth(month), events: [ event ] };
       }
 
-      const yearFactory = year => {
-        return { year, months: [] };
-      }
-      const monthFactory = month => {
-        return { month, events: [] };
+      const yearFactory = event => {
+        const year = moment(event).year();
+        return { year, months: [ monthFactory(event) ] };
       }
 
       const sortedEvents = [];
-      // events.forEach(event => {
-      //   const yearIdx = sortedEvents.find(sortedEvent => {
-      //     sortedEvent.year === moment(event).year();
-      //   })
-      // });
-
-      // not working
       events.forEach(event => {
-        const yearIdx = sortedEvents.indexOf( findBy(event, sortedEvents, 'year') );
-        yearIdx >= 0 ? sortedEvents[yearIdx].push(event) : sortedEvents.push( yearFactory( moment(event).year() ) );
+        const yearIdx = sortedEvents.indexOf( findByYear(event, sortedEvents) );
+        const year = yearIdx >= 0 ? sortedEvents[yearIdx] : null;
+        const monthIdx = year
+                        ? year.months.indexOf( findByMonth(event, year.months) )
+                        : -1;
+        const month = monthIdx >= 0 ? year.months[monthIdx] : null
+        year
+          ? month
+            ? month.events.push(event)
+            : year.months.push( monthFactory(event) )
+          : sortedEvents.push( yearFactory(event) );
       });
-
-      console.log('sortedEvents: ', sortedEvents);
-
-      const eventsArr = [
-        {
-          year: 2019,
-          months: [
-            {
-              month: 'jan',
-              events: [
-                {title: 'title', startDate: 'num'},
-                {title: 'title', startDate: 'num'},
-              ],
-            },
-            {
-              month: 'feb',
-              events: [
-                {title: 'title', startDate: 'num'},
-                {title: 'title', startDate: 'num'},
-              ],
-            },
-          ]
-        },
-        {
-          year: 2020,
-          months: [
-            {
-              month: 'jan',
-              events: [
-                {title: 'title', startDate: 'num'},
-                {title: 'title', startDate: 'num'},
-              ],
-            },
-            {
-              month: 'feb',
-              events: [
-                {title: 'title', startDate: 'num'},
-                {title: 'title', startDate: 'num'},
-              ],
-            },
-          ]
-        },
-      ];
-      res.json({eventsArr: eventsArr})
-      // res.json({events: events})
-      // res.json({ events: sortByDate(events) });
+      res.json({sortedEvents});
     }
   })
 });

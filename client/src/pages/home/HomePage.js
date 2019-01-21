@@ -10,7 +10,7 @@ class HomePage extends React.Component {
   byMonth = () => {
     axios.get('/events/bymonth').then(result => {
       // console.log('result data: ', result.data);
-      console.log('result data eventsArr: ', result.data.eventsArr);
+      console.log('result data sortedEvents: ', result.data.sortedEvents);
     });
   }
 
