@@ -114,7 +114,6 @@ router.get('/bymonth', (req, res) => {
                         ? year.months.indexOf( findByMonth(event, year.months) )
                         : -1;
         const month = monthIdx >= 0 ? year.months[monthIdx] : null
-        console.log('month: ', month)
         year
           ? month
             ? month.events.push(event)
@@ -122,11 +121,11 @@ router.get('/bymonth', (req, res) => {
           : arrangedEvents.push( yearFactory(event) );
       });
       const sortedEvents = arrangedEvents.slice(0);
-      // sortedEvents.forEach(year => {
-      //   year.months.forEach(month => {
-      //     month.events = sortByDate(month.events);
-      //   });
-      // });
+      sortedEvents.forEach(year => {
+        year.months.forEach(month => {
+          month.events = sortByDate(month.events);
+        });
+      });
       res.json({sortedEvents});
     }
   })
