@@ -66,46 +66,60 @@ router.delete('/', (req, res) => {
   });
 });
 
+router.put('/like', async (req, res) => {
+  const { eventId, userId } = req.body;
+  const foundEvent = await Event.findById(eventId).lean();
+  const operation = foundEvent.likes.includes(userId) ? '$pull' : '$push';
+  Event.findByIdAndUpdate(eventId, { [operation]: {likes: userId} }, { new: true }, (err, updatedEvent) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send({ err });
+    } else {
+      res.send({ msg: 'Successfully updated the event', updatedEvent});
+    }
+  });
+});
+
+const longFormatted = unit => {
+  const formats = {
+    month: month => moment().month(month).format('MMMM'),
+    year: year => moment().year(year).format('YYYY'),
+  }
+  return {
+    getFormatted: event => formats[unit](event),
+  }
+}
+const getLongFormattedMonth = longFormatted('month').getFormatted;
+const getLongFormattedYear = longFormatted('year').getFormatted;
+
+const findBy = (item, arr, unit) => {
+  const momented = moment(item.startDate)[unit]();
+  const formattedDateMap = {
+    month: getLongFormattedMonth(momented),
+    year: parseInt( getLongFormattedYear(momented) )
+  }
+  const formattedDate = formattedDateMap[unit];
+  return arr.find( idx => idx[unit] === formattedDate );
+}
+const findByMonth = (item, arr) => findBy(item, arr, 'month');
+const findByYear = (item, arr) => findBy(item, arr, 'year');
+
+const monthFactory = event => {
+  const month = moment(event.startDate).month();
+  return { month: getLongFormattedMonth(month), events: [ event ] };
+}
+
+const yearFactory = event => {
+  const year = moment(event.startDate).year();
+  return { year, months: [ monthFactory(event) ] };
+}
+
 router.get('/bymonth', (req, res) => {
   Event.find({}, (err, events) => {
     if (err) {
       console.log('err: ', err);
       res.send(err);
     } else {
-      const formatted = unit => {
-        const formats = {
-          month: month => moment().month(month).format('MMMM'),
-          year: year => moment().year(year).format('YYYY'),
-        }
-        return {
-          getFormatted: event => formats[unit](event),
-        }
-      }
-      const getFormattedMonth = formatted('month').getFormatted;
-      const getFormattedYear = formatted('year').getFormatted;
-
-      const findBy = (item, arr, unit) => {
-        const momented = moment(item.startDate)[unit]();
-        const formattedDateMap = {
-          month: getFormattedMonth(momented),
-          year: parseInt( getFormattedYear(momented) )
-        }
-        const formattedDate = formattedDateMap[unit];
-        return arr.find( idx => idx[unit] === formattedDate );
-      }
-      const findByMonth = (item, arr) => findBy(item, arr, 'month');
-      const findByYear = (item, arr) => findBy(item, arr, 'year');
-
-      const monthFactory = event => {
-        const month = moment(event.startDate).month();
-        return { month: getFormattedMonth(month), events: [ event ] };
-      }
-
-      const yearFactory = event => {
-        const year = moment(event.startDate).year();
-        return { year, months: [ monthFactory(event) ] };
-      }
-
       const arrangedEvents = [];
       events.forEach(event => {
         const yearIdx = arrangedEvents.indexOf( findByYear(event, arrangedEvents) );
@@ -129,20 +143,6 @@ router.get('/bymonth', (req, res) => {
       res.json({sortedEvents});
     }
   })
-});
-
-router.put('/like', async (req, res) => {
-  const { eventId, userId } = req.body;
-  const foundEvent = await Event.findById(eventId).lean();
-  const operation = foundEvent.likes.includes(userId) ? '$pull' : '$push';
-  Event.findByIdAndUpdate(eventId, { [operation]: {likes: userId} }, { new: true }, (err, updatedEvent) => {
-    if (err) {
-      console.log('err: ', err);
-      res.send({ err });
-    } else {
-      res.send({ msg: 'Successfully updated the event', updatedEvent});
-    }
-  });
 });
 
 module.exports = router;
