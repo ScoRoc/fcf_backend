@@ -85,7 +85,7 @@ router.get('/bymonth', (req, res) => {
       const getFormattedYear = formatted('year').getFormatted;
 
       const findBy = (item, arr, unit) => {
-        const momented = moment(item)[unit]();
+        const momented = moment(item.startDate)[unit]();
         const formattedDateMap = {
           month: getFormattedMonth(momented),
           year: parseInt( getFormattedYear(momented) )
@@ -97,29 +97,36 @@ router.get('/bymonth', (req, res) => {
       const findByYear = (item, arr) => findBy(item, arr, 'year');
 
       const monthFactory = event => {
-        const month = moment(event).month();
+        const month = moment(event.startDate).month();
         return { month: getFormattedMonth(month), events: [ event ] };
       }
 
       const yearFactory = event => {
-        const year = moment(event).year();
+        const year = moment(event.startDate).year();
         return { year, months: [ monthFactory(event) ] };
       }
 
-      const sortedEvents = [];
+      const arrangedEvents = [];
       events.forEach(event => {
-        const yearIdx = sortedEvents.indexOf( findByYear(event, sortedEvents) );
-        const year = yearIdx >= 0 ? sortedEvents[yearIdx] : null;
+        const yearIdx = arrangedEvents.indexOf( findByYear(event, arrangedEvents) );
+        const year = yearIdx >= 0 ? arrangedEvents[yearIdx] : null;
         const monthIdx = year
                         ? year.months.indexOf( findByMonth(event, year.months) )
                         : -1;
         const month = monthIdx >= 0 ? year.months[monthIdx] : null
+        console.log('month: ', month)
         year
           ? month
             ? month.events.push(event)
             : year.months.push( monthFactory(event) )
-          : sortedEvents.push( yearFactory(event) );
+          : arrangedEvents.push( yearFactory(event) );
       });
+      const sortedEvents = arrangedEvents.slice(0);
+      // sortedEvents.forEach(year => {
+      //   year.months.forEach(month => {
+      //     month.events = sortByDate(month.events);
+      //   });
+      // });
       res.json({sortedEvents});
     }
   })
