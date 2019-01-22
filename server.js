@@ -9,6 +9,9 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/fcf_backend', { useNewUrlParser: true, useCreateIndex: true }); // for local dev
 // mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true });  // for heroku deployment
 
+// add this in client package.json
+// "proxy": "http://localhost:3001",
+
 const app = express();
 
 app.use(bodyParser.json());
