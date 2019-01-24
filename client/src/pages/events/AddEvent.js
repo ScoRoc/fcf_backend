@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 
-import MultiInputWrapper from '../../components/MultiInputWrapper';
+import EventRadioButtons from './EventRadioButtons';
 import TextAreaCharCount from '../../components/TextAreaCharCount';
 
 import { isLessThanOrEqual } from '../../utils/comparisons';
@@ -84,24 +84,8 @@ export default class AddEvent extends React.Component {
   }
 
   render() {
-    const { allowTypingPastLimit, eventText, charLimit } = this.state;
+    const { allowTypingPastLimit, eventText, charLimit, type } = this.state;
     const disabled = this.isTextLTEtoLimit()(eventText.length) ? '' : 'disabled';
-    const inputs = Object.entries(allCheckboxes).map((entry, i) => {
-      const [ key, value ] = entry;
-      const checked = value.type === this.defaultType ? true : false;
-      return  <MultiInputWrapper
-                defaultChecked={checked}
-                inputId={`new-event-type--${value.type}`}
-                key={i}
-                label={value.name}
-                name='event-type'
-                type='radio'
-                handleOnChange={this.updateType}
-                value={value.type}
-                wrapperClassName={`AddEvent__form__type-wrap__${value.type}`}
-              />
-
-    });
     return (
       <section className='AddEvent'>
         <form encType="multipart/form-data" className='AddEvent__form' onSubmit={this.handleSubmit}>
@@ -128,7 +112,7 @@ export default class AddEvent extends React.Component {
               />
             </div>
             <div className='AddEvent__form__type-wrap'>
-              {inputs}
+              <EventRadioButtons handleOnChange={this.updateType} type={type} />
             </div>
             <div className='AddEvent__form__start-date-wrap'>
               <label htmlFor='new-event-start-date'>Start Date</label>

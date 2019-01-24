@@ -83,9 +83,9 @@ class EventsPage extends React.Component {
     });
   }
 
-  editEvent = ({eventText, _id, startDate, types, url, throughDate}) => {
+  editEvent = ({eventText, _id, startDate, type, url, throughDate}) => {
     putWithAxios({
-      eventText, _id, startDate, types, url, throughDate
+      eventText, _id, startDate, type, url, throughDate
     }).then(result => {
       const { updatedEvent } = result.data;
       const keysToChange = ['startDate', 'throughDate'];

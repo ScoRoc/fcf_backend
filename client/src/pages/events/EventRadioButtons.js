@@ -6,7 +6,7 @@ import checkboxes from './event-types';
 
 const { allCheckboxes } = checkboxes();
 
-const EventCheckboxes = props => {
+const EventRadioButtons = props => {
   const inputs = Object.entries(allCheckboxes).map((entry, i) => {
     const [ key, value ] = entry;
     const checked = props.type === value.type ? true : false;
@@ -21,7 +21,6 @@ const EventCheckboxes = props => {
               value={value.type}
               wrapperClassName={`AddEvent__form__type-wrap__${value.type}`}
             />
-
   });
   return (
     <>
@@ -30,4 +29,4 @@ const EventCheckboxes = props => {
   );
 }
 
-export default EventCheckboxes;
+export default EventRadioButtons;

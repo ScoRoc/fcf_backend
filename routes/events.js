@@ -41,11 +41,11 @@ router.post('/', (req, res) => {
 
 router.put('/', (req, res) => {
   console.log('req body: ', req.body)
-  const { eventText, _id, startDate, types, url, throughDate  } = req.body;
+  const { eventText, _id, startDate, type, url, throughDate  } = req.body;
   Event.findByIdAndUpdate(_id, {
     eventText,
     startDate,
-    types,
+    type,
     url,
     throughDate
   }, { new: true, runValidators: true }, (err, updatedEvent) => {

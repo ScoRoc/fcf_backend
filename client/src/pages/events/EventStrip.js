@@ -1,6 +1,6 @@
 import React from 'react';
 
-import EventCheckboxes from './EventCheckboxes';
+import EventRadioButtons from './EventRadioButtons';
 import EventTwoButtons from './EventTwoButtons';
 import TwoStateTextInput from '../../components/TwoStateTextInput';
 import TwoStateTextTACC from '../../components/TwoStateTextTACC';
@@ -20,12 +20,12 @@ export default class EventStrip extends React.Component {
       eventUrl: '',
       startDate: '',
       throughDate: '',
-      type: [],
+      type: '',
 
       initalStartDate: '',
       initialText: '',
       initialThroughDate: '',
-      initialType: [],
+      initialType: '',
       initialUrl: '',
     }
   }
@@ -127,7 +127,7 @@ export default class EventStrip extends React.Component {
                     ? ''
                     : 'disabled';
     const displayTypes  = editable
-                        ? <EventCheckboxes handleOnChange={this.updateType} type={type} />
+                        ? <EventRadioButtons handleOnChange={this.updateType} type={type} />
                         : <p className='capitalize'>{type}</p>;
     const displayStartDate  = editable
                             ? <input
