@@ -2,11 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 
-import CheckboxWrapper from '../../components/CheckboxWrapper';
+import MultiInputWrapper from '../../components/MultiInputWrapper';
 import TextAreaCharCount from '../../components/TextAreaCharCount';
 
 import { isLessThanOrEqual } from '../../utils/comparisons';
-import { addItemToStateArr, removeItemFromStateArr } from '../../utils/helpers';
 import useAxios from '../../utils/axios-helpers';
 import checkboxes from './event-types';
 
@@ -18,6 +17,7 @@ const { allCheckboxes } = checkboxes();
 export default class AddEvent extends React.Component {
   constructor(props) {
     super(props);
+    this.defaultType = 'community';
     this.startDate = React.createRef();
     this.throughDate = React.createRef();
     this.url = React.createRef();
@@ -26,7 +26,7 @@ export default class AddEvent extends React.Component {
       eventText: '',
       charCount: 0,
       charLimit: 25,
-      types: [],
+      type: this.defaultType,
     }
   }
 
@@ -55,24 +55,18 @@ export default class AddEvent extends React.Component {
     });
   }
 
-  liftInput = e => {
-    const { checked, value } = e.target;
-    this.setState(prevState => {
-      const newState  = checked
-                      ? addItemToStateArr(value, prevState, 'types')
-                      : removeItemFromStateArr(value, prevState, 'types');
-      return newState;
-    });
+  updateType = e => {
+    this.setState({ type: e.target.value });
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { eventText, types } = this.state;
+    const { eventText, type } = this.state;
     // MAKE SURE TYPES HAS SOME TYPE ON IT
     const startDate = moment(this.startDate.current.value)._d;
     const throughDate = moment(this.throughDate.current.value)._d;
     const url = this.url.current.value;
-    postWithAxios({ eventText, startDate, throughDate, types, url }).then(result => {
+    postWithAxios({ eventText, startDate, throughDate, type, url }).then(result => {
       const { data } = result;
       data.errors ? this.handleErrors(data) : this.handleSuccess(data);
       this.setState({ eventText: '' });
@@ -94,12 +88,15 @@ export default class AddEvent extends React.Component {
     const disabled = this.isTextLTEtoLimit()(eventText.length) ? '' : 'disabled';
     const inputs = Object.entries(allCheckboxes).map((entry, i) => {
       const [ key, value ] = entry;
-      return  <CheckboxWrapper
+      const checked = value.type === this.defaultType ? true : false;
+      return  <MultiInputWrapper
+                defaultChecked={checked}
                 inputId={`new-event-type--${value.type}`}
-                inputName='type'
                 key={i}
-                liftInput={this.liftInput}
-                name={value.name}
+                label={value.name}
+                name='event-type'
+                type='radio'
+                handleOnChange={this.updateType}
                 value={value.type}
                 wrapperClassName={`AddEvent__form__type-wrap__${value.type}`}
               />

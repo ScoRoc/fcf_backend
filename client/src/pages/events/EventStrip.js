@@ -20,12 +20,12 @@ export default class EventStrip extends React.Component {
       eventUrl: '',
       startDate: '',
       throughDate: '',
-      types: [],
+      type: [],
 
       initalStartDate: '',
       initialText: '',
       initialThroughDate: '',
-      initialTypes: [],
+      initialType: [],
       initialUrl: '',
     }
   }
@@ -36,7 +36,7 @@ export default class EventStrip extends React.Component {
 
   cancelChange = () => {
     this.setState((prevState, props) => {
-      const { initialStartDate, initialText, initialThroughDate, initialTypes, initialUrl } = prevState;
+      const { initialStartDate, initialText, initialThroughDate, initialType, initialUrl } = prevState;
       return {
         charCount: initialText.length,
         editable: false,
@@ -44,7 +44,7 @@ export default class EventStrip extends React.Component {
         eventUrl: initialUrl,
         startDate: initialStartDate,
         throughDate: initialThroughDate,
-        types: initialTypes,
+        type: initialType,
       }
     });
   }
@@ -58,14 +58,14 @@ export default class EventStrip extends React.Component {
     this.setState({ editable: !this.state.editable });
   }
 
-  handleEditEvent = ({eventText, _id, startDate, types, url, throughDate}) => {
+  handleEditEvent = ({eventText, _id, startDate, type, url, throughDate}) => {
     this.toggleEdit();
-    this.props.editEvent({eventText, _id, startDate, types, url, throughDate});
+    this.props.editEvent({eventText, _id, startDate, type, url, throughDate});
     this.setState({
       initialStartDate: startDate,
       initialText: eventText,
       initialThroughDate: throughDate,
-      initialTypes: types,
+      initialType: type,
       initialUrl: url
     });
   }
@@ -77,14 +77,8 @@ export default class EventStrip extends React.Component {
     });
   }
 
-  liftInput = e => {
-    const { checked, value } = e.target;
-    this.setState(prevState => {
-      const newState  = checked
-                      ? addItemToStateArr(value, prevState, 'types')
-                      : removeItemFromStateArr(value, prevState, 'types');
-      return newState;
-    });
+  updateType = e => {
+    this.setState({ type: e.target.value });
   }
 
   liftEventText = eventText => {
@@ -102,7 +96,7 @@ export default class EventStrip extends React.Component {
   componentDidMount() {
     this.setState((prevState, props) => {
       const { allowTypingPastLimit, charLimit, event } = this.props;
-      const { eventText, startDate, throughDate, types, url } = event;
+      const { eventText, startDate, throughDate, type, url } = event;
       return {
         allowTypingPastLimit: false || allowTypingPastLimit,
         charCount: eventText.length,
@@ -111,30 +105,30 @@ export default class EventStrip extends React.Component {
         eventUrl: url,
         startDate: startDate,
         throughDate: throughDate,
-        types,
+        type,
         initialStartDate: startDate,
         initialText: eventText,
         initialThroughDate: throughDate,
-        initialTypes: types,
+        initialType: type,
         initialUrl: url,
       }
     });
   }
 
   render() {
-    const { allowTypingPastLimit, eventText, eventUrl, editable, startDate, throughDate, types } = this.state;
+    const { allowTypingPastLimit, eventText, eventUrl, editable, startDate, throughDate, type } = this.state;
     const { deleteEvent, event } = this.props;
     const { _id, likes } = event;
     const defaultStartDate = new Date(startDate || new Date()).toISOString().substr(0, 10);
     const formattedStartDate = startDate ? new Date(startDate).toLocaleDateString('en-US', {timeZone: 'UTC'}) : 'None';
     const defaultThroughDate = new Date(throughDate || startDate || new Date()).toISOString().substr(0, 10);
     const formattedThroughDate = throughDate ? new Date(throughDate).toLocaleDateString('en-US', {timeZone: 'UTC'}) : 'None';
-    const disabled  = this.isLTEtoCharLimit()(eventText.length) && this.hasTypes()(types.length)
+    const disabled  = this.isLTEtoCharLimit()(eventText.length)
                     ? ''
                     : 'disabled';
     const displayTypes  = editable
-                        ? <EventCheckboxes liftInput={this.liftInput} types={types} />
-                        : types.map((type, i) => <p key={i}>{type}</p>);
+                        ? <EventCheckboxes handleOnChange={this.updateType} type={type} />
+                        : <p className='capitalize'>{type}</p>;
     const displayStartDate  = editable
                             ? <input
                                 name='startDate'
@@ -190,7 +184,7 @@ export default class EventStrip extends React.Component {
           cancelOnClick={this.cancelChange}
           disabled={disabled}
           deleteOnClick={() => deleteEvent(_id)}
-          doneOnClick={() => this.handleEditEvent({eventText, _id, startDate, types, url: eventUrl, throughDate})}
+          doneOnClick={() => this.handleEditEvent({eventText, _id, startDate, type, url: eventUrl, throughDate})}
           editOnClick={this.toggleEdit}
           useFirstState={!editable}
         />

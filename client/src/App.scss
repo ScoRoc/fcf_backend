@@ -79,6 +79,10 @@ button.disabled {
   flex: 1;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 #add-manager-span-wrapper {
   //
   @media screen and (max-width: 600px) {

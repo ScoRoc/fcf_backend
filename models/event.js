@@ -20,8 +20,8 @@ const eventSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
-  types: {
-    type: [String],
+  type: {
+    type: String,
     required: true,
   },
   url: {
