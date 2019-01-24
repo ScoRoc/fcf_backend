@@ -121,6 +121,11 @@ router.get('/bymonth', (req, res) => {
       res.send(err);
     } else {
       const arrangedEvents = [];
+      // NEED TO ORGANIZE only BY MONTH AND SORT BY YEAR AND MONTH
+      // SO PUSH ALL EVENTS INTO A MASTER ARRAY AND SORT BY MONTH AND YEAR
+      // CURRENT YEAR, THE MONTH NAME IS JANUARY
+      // PAST OR FUTURE YEAR, THE MONTH NAME IS DECEMBER 2018
+      // SO, IF new Date().year !== startDate.year() then December 2018, else January
       events.forEach(event => {
         const yearIdx = arrangedEvents.indexOf( findByYear(event, arrangedEvents) );
         const year = yearIdx >= 0 ? arrangedEvents[yearIdx] : null;
