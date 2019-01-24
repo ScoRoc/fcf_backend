@@ -120,7 +120,7 @@ class EventsPage extends React.Component {
         <AddEvent
           addEvent={this.addEvent}
           allowTypingPastLimit={true}
-          charLimit={25}
+          charLimit={22}
         />
         <AllEvents
           events={displayedEvents}

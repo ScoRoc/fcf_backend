@@ -10,7 +10,7 @@ import EventStrip from './EventStrip';
                           ? events.slice(0).map(event => (
                             <EventStrip
                               allowTypingPastLimit={true}
-                              charLimit={25}
+                              charLimit={22}
                               deleteEvent={deleteEvent}
                               editEvent={editEvent}
                               event={event}

@@ -78,7 +78,7 @@ export default class AddEvent extends React.Component {
       const { allowTypingPastLimit, charLimit } = props;
       return {
         allowTypingPastLimit: false || allowTypingPastLimit,
-        charLimit: charLimit || 50,
+        charLimit: charLimit || 25,
       };
     });
   }
