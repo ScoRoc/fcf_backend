@@ -80,6 +80,12 @@ router.put('/like', async (req, res) => {
   });
 });
 
+  //////////////////////////////
+ // helpers for GET /bymonth //
+//////////////////////////////
+const getMonth = event => moment(event.startDate).month();
+const getYear = event => moment(event.startDate).year();
+
 const longFormatted = unit => {
   const formats = {
     month: month => moment().month(month).format('MMMM'),
@@ -90,29 +96,24 @@ const longFormatted = unit => {
   }
 }
 const getLongFormattedMonth = longFormatted('month').getFormatted;
-const getLongFormattedYear = longFormatted('year').getFormatted;
+const longFormattedMonth = event => getLongFormattedMonth( getMonth(event) );
 
-const findBy = (item, arr, unit) => {
-  const momented = moment(item.startDate)[unit]();
-  const formattedDateMap = {
-    month: getLongFormattedMonth(momented),
-    year: parseInt( getLongFormattedYear(momented) )
-  }
-  const formattedDate = formattedDateMap[unit];
-  return arr.find( idx => idx[unit] === formattedDate );
-}
-const findByMonth = (item, arr) => findBy(item, arr, 'month');
-const findByYear = (item, arr) => findBy(item, arr, 'year');
+const monthNameNonCurrentyear = event => `${longFormattedMonth(event)} ${getYear(event)}`;
+const getMonthName = event => {
+  const currentYear = moment().year();
+  return moment(event.startDate).year() === currentYear
+                      ? longFormattedMonth(event)
+                      : monthNameNonCurrentyear(event);
+};
 
-const monthFactory = event => {
+const findByMonth = (event, arr) => arr.find(item => item.month === getMonthName(event));
+const getMonthIdx = (event, arr) => arr.indexOf( findByMonth(event, arr) );
+
+const monthFactory = (event, monthName) => {
   const month = moment(event.startDate).month();
-  return { month: getLongFormattedMonth(month), events: [ event ] };
+  return { month: monthName, events: [ event ] };
 }
-
-const yearFactory = event => {
-  const year = moment(event.startDate).year();
-  return { year, months: [ monthFactory(event) ] };
-}
+//////////////////////////////
 
 router.get('/bymonth', (req, res) => {
   Event.find({}, (err, events) => {
@@ -120,31 +121,13 @@ router.get('/bymonth', (req, res) => {
       console.log('err: ', err);
       res.send(err);
     } else {
-      const arrangedEvents = [];
-      // NEED TO ORGANIZE only BY MONTH AND SORT BY YEAR AND MONTH
-      // SO PUSH ALL EVENTS INTO A MASTER ARRAY AND SORT BY MONTH AND YEAR
-      // CURRENT YEAR, THE MONTH NAME IS JANUARY
-      // PAST OR FUTURE YEAR, THE MONTH NAME IS DECEMBER 2018
-      // SO, IF new Date().year !== startDate.year() then December 2018, else January
-      events.forEach(event => {
-        const yearIdx = arrangedEvents.indexOf( findByYear(event, arrangedEvents) );
-        const year = yearIdx >= 0 ? arrangedEvents[yearIdx] : null;
-        const monthIdx = year
-                        ? year.months.indexOf( findByMonth(event, year.months) )
-                        : -1;
-        const month = monthIdx >= 0 ? year.months[monthIdx] : null
-        year
-          ? month
-            ? month.events.push(event)
-            : year.months.push( monthFactory(event) )
-          : arrangedEvents.push( yearFactory(event) );
-      });
-      const sortedEvents = arrangedEvents.slice(0);
-      sortedEvents.forEach(year => {
-        year.months.forEach(month => {
-          month.events = sortByDate(month.events);
-        });
-      });
+      const sortedEvents = sortByDate(events).reduce((acc, event) => {
+        const monthName = getMonthName(event);
+        const monthIdx = getMonthIdx(event, acc);
+        const month = monthIdx >= 0 ? acc[monthIdx] : null;
+        month ? month.events.push(event) : acc.push( monthFactory(event, monthName) );
+        return acc;
+      }, []);
       res.json({sortedEvents});
     }
   })
