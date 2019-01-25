@@ -56,20 +56,24 @@ router.post('/create', async (req, res) => {
 });
 
 router.post('/validate', (req, res) => {
+  console.log(' in validate')
   const token = req.body.token;
   if (!token) {
     res.status(401).json({errors: true, _message: "Must pass the token"})
   } else {
     jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
       if (err) {
+        console.log('in first if but ERR')
         res.status(401).send(err)
       } else {
         User.findById({
           '_id': user._id
         }, function(err, foundUser) {
           if (err) {
+            console.log('in else, User findByID, but ERR')
             res.status(401).send(err);
           } else {
+            console.log('in else, User Find, else --- success')
             res.json({user: foundUser.toObject(), token})
           }
         });
