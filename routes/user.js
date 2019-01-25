@@ -56,7 +56,6 @@ router.post('/create', async (req, res) => {
 });
 
 router.post('/validate', (req, res) => {
-  console.log(' in validate')
   const token = req.body.token;
   if (!token) {
     res.status(401).json({errors: true, _message: "Must pass the token"})
@@ -64,7 +63,7 @@ router.post('/validate', (req, res) => {
     jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
       if (err) {
         console.log('in first if but ERR')
-        res.status(401).send(err)
+        res.status(401).send({ err, signout: true, _message: 'An error occurred with the token validation. Please sign back in.' })
       } else {
         User.findById({
           '_id': user._id
