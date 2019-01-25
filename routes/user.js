@@ -61,9 +61,8 @@ router.post('/validate', (req, res) => {
     res.status(401).json({errors: true, _message: "Must pass the token"})
   } else {
     jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
-      if (error) {
-        const err = { err: error, signout: true, _message: 'An error occurred with the token validation. Please sign back in.' }
-        res.status(401).send(err)
+      if (err) {
+        res.status(401).send(err);
       } else {
         User.findById({
           '_id': user._id
