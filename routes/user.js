@@ -62,7 +62,6 @@ router.post('/validate', (req, res) => {
   } else {
     jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
       if (err) {
-        console.log('in first if but ERR')
         res.status(401).send({ err, signout: true, _message: 'An error occurred with the token validation. Please sign back in.' })
       } else {
         User.findById({
@@ -72,7 +71,6 @@ router.post('/validate', (req, res) => {
             console.log('in else, User findByID, but ERR')
             res.status(401).send(err);
           } else {
-            console.log('in else, User Find, else --- success')
             res.json({user: foundUser.toObject(), token})
           }
         });
