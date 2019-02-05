@@ -19,10 +19,6 @@ const wodSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  day: {
-    type: String,
-    required: true,
-  },
 });
 
 const Wod = mongoose.model('Wod', wodSchema);

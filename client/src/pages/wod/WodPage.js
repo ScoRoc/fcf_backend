@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 
+import AddWodWeek from './AddWodWeek';
 import WodStrip from './WodStrip';
 
 import { getIndex } from '../../utils/helpers';
 import useAxios from '../../utils/axios-helpers';
 
-const path = '/wod';
-const { deleteWithAxios, getWithAxios, putWithAxios, postWithAxios } = useAxios(path);
+const path = '/wodweek';
+const { deleteWithAxios, getWithAxios } = useAxios(path);
 
 const daysOfWeek = [
   'Monday',
@@ -28,86 +29,69 @@ class WodPage extends React.Component {
     // this.day = React.createRef();
     // this.date = React.createRef();
     this.state = {
-      initialWeekOf: '',
       weekOf: '',
-      wods: null,
+      wodWeeks: [],
     }
   }
 
-  updateWod = ({ date, _id, text }) => {
-    putWithAxios({ date, _id, text }).then(result => {
-      console.log('result.data: ', result.data);
-      const { updatedWod } = result.data;
-      const wods = this.state.wods.slice(0);
-      const thisWod = wods[ getIndex('_id', wods, _id) ];
-      thisWod.date = date;
-      thisWod.text = text;
-      this.setState({ wods });
+  sortByDateDescending = arr => {
+    return arr.sort((a, b) => {
+      return a.weekOf === b.weekOf
+                          ? 0
+                          : a.weekOf < b.weekOf
+                            ? 1
+                            : -1;
     });
   }
 
-  handleSetWeek = e => {
-    const weekOf = moment(e.target.value);
-    this.setState({ weekOf });
+  deleteWodWeek = (week, wodIds) => {
+    const { _id } = week;
+    deleteWithAxios({ _id, wodIds }).then(result => {
+      // console.log('result.data: ', result.data);
+      this.setState(prevState => {
+        const wodWeeks = prevState.wodWeeks.slice(0);
+        const filteredWodWeeks = wodWeeks.filter(wodweek => wodweek._id !== _id);
+        return { wodWeeks: filteredWodWeeks };
+      });
+    });
+  }
+
+  addWodWeek = wodweek => {
+    console.log('wodweek: ', wodweek);
+    this.setState(prevState => {
+      const withNewWeek = [ ...prevState.wodWeeks, wodweek ];
+      console.log('withNewWeek: ', withNewWeek);
+      const wodWeeks = withNewWeek.map(week => ({ ...week, weekOf: moment(week.weekOf) }) );
+      return { wodWeeks: this.sortByDateDescending(wodWeeks) };
+    });
   }
 
   componentDidMount() {
     if (this.props.manager) {
       getWithAxios().then(result => {
-        const { wods } = result.data;
-        const initialWeekOf = moment( wods[ getIndex('day', wods, 'Monday') ].date );
-        this.setState({
-          initialWeekOf,
-          weekOf: initialWeekOf,
-          wods,
-        });
+        const { wodWeeks } = result.data;
+        this.setState({ wodWeeks });
       });
     }
   }
 
-  // addWod = () => {
-  //   postWithAxios({
-  //     text: this.text.current.value,
-  //     day: this.day.current.value,
-  //     date: moment(this.date.current.value)._d,
-  //   }).then(result => {
-  //     console.log('result.data: ', result.data);
-  //   });
-  // }
-
   render() {
     if (!this.props.manager) return <Redirect to='/signin' />;
-    const { initialWeekOf, weekOf, wods } = this.state;
-    const weekOfValue = weekOf._isValid ? new Date(weekOf._d).toISOString().substr(0, 10) : '';
-    const days = wods
-                ? daysOfWeek.map((day, i) => {
-                  const date = moment(weekOf).add(i, 'days');
-                  const wod = wods[ getIndex('day', wods, day) ];
-                  return <WodStrip
-                    day={day}
-                    key={i}
-                    selectedDate={date}
-                    updateWod={this.updateWod}
-                    wod={wod}
-                  />
-                })
-                : '';
+    const { wods, wodWeeks } = this.state;
+    const weeks = wodWeeks.map(wodweek => (
+        <WodStrip allowTypingPastLimit={true} charLimit={50} deleteWodWeek={this.deleteWodWeek} key={wodweek._id} wodweek={wodweek} />
+      )
+    );
     return (
       <section>
         <h1>WOD</h1>
-        <p>Set week</p>
-        <input name='week-of' onChange={this.handleSetWeek} type='date' value={weekOfValue} />
-        <button onClick={() => this.setState({ weekOf: initialWeekOf })}>Reset week</button>
         {/* CAP # OF LINES AT 16 */}
         <section>
-          {days}
+          <AddWodWeek addWodWeek={this.addWodWeek} />
         </section>
-
-        {/* <input ref={this.text} type='text' />text
-        <input ref={this.day} type='text' />day
-        <input ref={this.date} type='date' />date
-        <button onClick={this.addWod}>add wod</button> */}
-
+        <section>
+          {weeks}
+        </section>
       </section>
     );
   }
