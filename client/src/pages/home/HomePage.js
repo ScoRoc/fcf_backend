@@ -7,19 +7,11 @@ import axios from 'axios';
 
 class HomePage extends React.Component {
 
-  byMonth = () => {
-    axios.get('/events/bymonth').then(result => {
-      // console.log('result data: ', result.data);
-      console.log('result data sortedEvents: ', result.data.sortedEvents);
-    });
-  }
-
   render() {
     if (!this.props.manager) return <Redirect to='/signin' />;
     return (
       <div className='Home'>
         <p>home</p>
-        <button onClick={this.byMonth}>get bymonth</button>
       </div>
     );
   }

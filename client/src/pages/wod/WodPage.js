@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 
+import AddWodWeek from './AddWodWeek';
 import WodStrip from './WodStrip';
 
 import { getIndex } from '../../utils/helpers';
@@ -51,6 +52,10 @@ class WodPage extends React.Component {
     this.setState({ weekOf });
   }
 
+  addWodWeek = wodweek => {
+    //
+  }
+
   componentDidMount() {
     if (this.props.manager) {
       getWithAxios().then(result => {
@@ -95,12 +100,10 @@ class WodPage extends React.Component {
     return (
       <section>
         <h1>WOD</h1>
-        <p>Set week</p>
-        <input name='week-of' onChange={this.handleSetWeek} type='date' value={weekOfValue} />
-        <button onClick={() => this.setState({ weekOf: initialWeekOf })}>Reset week</button>
         {/* CAP # OF LINES AT 16 */}
         <section>
-          {days}
+          <AddWodWeek addWodWeek={this.addWodWeek} />
+          {/* {days} */}
         </section>
 
         {/* <input ref={this.text} type='text' />text
