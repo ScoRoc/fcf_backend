@@ -42,7 +42,7 @@ export default class AddWodWeek extends React.Component {
   postWodWeek = wods => {
     postWithAxios({ wods }).then(result => {
         const { data } = result;
-        data.errors ? this.handleErrors(data) : this.handleSuccess(data);
+        data.errors ? this.handleErrors(data) : this.handleSuccess(data.wodWeekWithWods);
         // this.setState({ eventText: '' });
     });
   }

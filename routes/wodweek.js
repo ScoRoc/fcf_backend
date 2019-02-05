@@ -5,16 +5,35 @@ const Wod = require('../models/wod');
 const WodWeek = require('../models/wodweek');
 const moment = require('moment');
 
-// router.get('/', (req, res) => {
-//   Wod.find({}, (err, wods) => {
-//     if (err) {
-//       console.log('err: ', err);
-//       res.send(err);
-//     } else {
-//       res.json({ wods });
-//     }
-//   })
-// });
+const sortByDateDescending = arr => {
+  return arr.sort((a, b) => {
+    return a.weekOf === b.weekOf
+                        ? 0
+                        : a.weekOf < b.weekOf
+                          ? 1
+                          : -1;
+  });
+}
+
+const getWod = id => {
+  return Wod.findById(id);
+}
+
+const getWodWeekWithWod = async wodWeek => {
+  return { _id: wodWeek._id, weekOf: wodWeek.weekOf, wods: await Promise.all(wodWeek.wods.map(getWod)) }
+}
+
+router.get('/', (req, res) => {
+  WodWeek.find({}, async (err, wodWeeks) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send(err);
+    } else {
+      const wodWeeksWithWods = await Promise.all( wodWeeks.map(getWodWeekWithWod) );
+      res.json({ wodWeeks: sortByDateDescending(wodWeeksWithWods) });
+    }
+  })
+});
 
 // router.put('/', (req, res) => {
 //   console.log('req body: ', req.body)
