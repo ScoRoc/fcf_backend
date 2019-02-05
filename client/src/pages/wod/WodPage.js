@@ -70,7 +70,6 @@ class WodPage extends React.Component {
     if (this.props.manager) {
       getWithAxios().then(result => {
         const { wodWeeks } = result.data;
-        // console.log('#### wodWeeks ####: ', wodWeeks);
         this.setState({ wodWeeks });
       });
     }
