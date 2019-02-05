@@ -36,7 +36,7 @@ export default class AddWodWeek extends React.Component {
 
   handleSuccess = data => {
     console.log('success: ', data);
-    // this.props.addWodWeek(data.wodweek);
+    this.props.addWodWeek(data);
   }
 
   postWodWeek = wods => {

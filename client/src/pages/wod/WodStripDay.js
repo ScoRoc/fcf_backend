@@ -11,65 +11,63 @@ export default class WodStripDay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weekOf: '',
-      wods: [],
+      charLimit: 50,
+      date: '',
+      editable: false,
+      text: '',
+
+      initialText: '',
     }
   }
 
   isEscapeKey = isEqual('Escape');
   isLTEtoCharLimit = () => isLessThanOrEqual(this.state.charLimit);
 
-  // liftText = text => {
-  //   this.setState((prevState, props) => {
-  //     const { allowTypingPastLimit } = prevState;
-  //     const newState  = allowTypingPastLimit
-  //                     ? { charCount: text.length, text }
-  //                     : this.isLTEtoCharLimit()(text.length)
-  //                       ? { charCount: text.length, text }
-  //                       : { charCount: text.length - 1 };
-  //     return newState;
-  //   });
-  // }
+  toggleEdit = () => {
+    this.setState({ editable: !this.state.editable });
+  }
 
-  // clearText = () => {
-  //   this.setState({ charCount: 0, text: '' });
-  // }
+  cancelChange = () => {
+    this.setState(prevState => {
+      const { initialText } = prevState;
+      return {
+        charCount: initialText.length,
+        editable: false,
+        text: initialText,
+      }
+    });
+  }
 
-  // cancelChange = () => {
-  //   this.setState(prevState => {
-  //     const { initialText } = prevState;
-  //     return {
-  //       charCount: initialText.length,
-  //       date: '',
-  //       editable: false,
-  //       text: initialText,
-  //     }
-  //   });
-  // }
+  handleKeyUp = e => {
+    e.preventDefault();
+    if ( this.isEscapeKey(e.key) ) this.cancelChange();
+  }
 
-  // handleKeyUp = e => {
-  //   e.preventDefault();
-  //   if ( this.isEscapeKey(e.key) ) this.cancelChange();
-  // }
+  liftText = text => {
+    this.setState((prevState, props) => {
+      const { allowTypingPastLimit } = prevState;
+      const newState  = allowTypingPastLimit
+                      ? { charCount: text.length, text }
+                      : this.isLTEtoCharLimit()(text.length)
+                        ? { charCount: text.length, text }
+                        : { charCount: text.length - 1 };
+      return newState;
+    });
+  }
 
-  // toggleEdit = () => {
-  //   this.setState({ editable: !this.state.editable });
-  // }
+  getFormattedDate = date => {
+    const mDate = moment(date);
+    const day = mDate.format('dddd');
+    const mm = mDate.format('MM');
+    const dd = mDate.format('DD');
+    return `${day} ${mm}/${dd}`;
+  }
 
-  // handleUpdateWod = ({ date, _id, text }) => {
-  //   this.toggleEdit();
-  //   this.props.updateWod({ date, _id, text });
-  //   this.setState({ date, initialText: text, text });
-  // }
-
-  // getFormattedWeekOf = date => {
-  //   console.log('date: ', date)
-  //   const mDate = moment(date);
-  //   const day = mDate.format('dddd');
-  //   const month = mDate.format('MMMM');
-  //   const dateOfMonth = mDate.format('Do');
-  //   return `${day}, ${month} ${dateOfMonth}`;
-  // }
+  handleUpdateWod = ({ _id, text }) => {
+    this.toggleEdit();
+    this.setState({ initialText: text, text });
+    this.props.updateWod({ _id, text });
+  }
 
   // componentDidUpdate(prevProps) {
   //   this.setState((prevState, props) => {
@@ -80,66 +78,58 @@ export default class WodStripDay extends React.Component {
   // }
 
   componentDidMount() {
-    // this.setState((prevState, props) => {
-    //   console.log('wodweek: ', this.props.wodweek);
-    //   const { weekOf, wods } = props.wodweek;
-    //   return { weekOf, wods }
-    // });
+    this.setState((prevState, props) => {
+      const { date, text } = props.wod;
+      const mDate = moment(date);
+      return { charLimit: props.charLimit, date: mDate, initialText: text, text }
+    });
   }
 
   render() {
       /////////////////////////
      // HANDLE CAPPING TEXT //
     /////////////////////////
-    // const { weekOf } = this.state;
-    // const formattedWeekOf = this.getFormattedWeekOf(weekOf);
-    // const disabled  = this.isLTEtoCharLimit()(text.length)
-    //                 ? ''
-    //                 : 'disabled';
-    // const clearBtn = editable
-    //                 ? <button onClick={this.clearText}>Clear</button>
-    //                 : '';
-    // const cancelBtn = editable
-    //                 ? <button onClick={this.cancelChange}>Cancel</button>
-    //                 : '';
-    // const doneEditBtn = {
-    //   firstState: {
-    //     btnClass: 'edit-btn',
-    //     btnOnClick: this.toggleEdit,
-    //     btnText: 'Edit',
-    //   },
-    //   secondState: {
-    //     btnClass: 'done-btn',
-    //     // btnOnClick: doneOnClick,
-    //     btnOnClick: () => this.handleUpdateWod({ date: date._d, _id: this.props.wod._id, text }),
-    //     btnText: 'Done',
-    //   },
-    // }
+    const { date, editable, text } = this.state;
+    const { allowTypingPastLimit, charLimit } = this.props;
+    const formattedDate = this.getFormattedDate(date);
+    const disabled = this.isLTEtoCharLimit()(text.length) ? '' : 'disabled';
+    const cancelBtn = editable ? <button onClick={this.cancelChange}>Cancel</button> : '';
+    const doneEditBtn = {
+      firstState: {
+        btnClass: 'edit-btn',
+        btnOnClick: this.toggleEdit,
+        btnText: 'Edit',
+      },
+      secondState: {
+        btnClass: 'done-btn',
+        btnOnClick: () => this.handleUpdateWod({ _id: this.props.wod._id, text }),
+        btnText: 'Done',
+      },
+    }
     return (
       <div>
-        <p>hello from wodstripday</p>
-        {/* <TwoStateTextTACC
-          allowTypingPastLimit={true}
-          charLimit={75}
+        <label>{formattedDate}</label>
+        <TwoStateTextTACC
+          allowTypingPastLimit={allowTypingPastLimit}
+          charLimit={charLimit}
           focusTextarea={false}
           handleKeyUp={this.handleKeyUp}
           liftText={this.liftText}
-          pClass='WodStrip__text-wrap__p'
-          taccDivClass='WodStrip__text-wrap__div'
-          taccPClass='WodStrip__text-wrap__div__p'
-          taccTextareaClass='WodStrip__text-wrap__div__textarea'
+          pClass='WodStripDay__text-wrap__p'
+          taccDivClass='WodStripDay__text-wrap__div'
+          taccPClass='WodStripDay__text-wrap__div__p'
+          taccTextareaClass='WodStripDay__text-wrap__div__textarea'
           text={text}
           useTACC={editable}
-          wrapperClass='WodStrip__text-wrap'
-        /> */}
-        {/* <TwoStateButton
+          wrapperClass='WodStripDay__text-wrap'
+        />
+        <TwoStateButton
           disabled={disabled}
           firstState={doneEditBtn.firstState}
           secondState={doneEditBtn.secondState}
           useFirstState={!editable}
-        /> */}
-        {/* {clearBtn} */}
-        {/* {cancelBtn} */}
+        />
+        {cancelBtn}
       </div>
     );
   }

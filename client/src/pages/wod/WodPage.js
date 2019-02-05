@@ -10,7 +10,7 @@ import { getIndex } from '../../utils/helpers';
 import useAxios from '../../utils/axios-helpers';
 
 const path = '/wodweek';
-const { getWithAxios } = useAxios(path);
+const { deleteWithAxios, getWithAxios } = useAxios(path);
 
 const daysOfWeek = [
   'Monday',
@@ -34,27 +34,43 @@ class WodPage extends React.Component {
     }
   }
 
-  // updateWod = ({ date, _id, text }) => {
-  //   putWithAxios({ date, _id, text }).then(result => {
-  //     console.log('result.data: ', result.data);
-  //     const { updatedWod } = result.data;
-  //     const wods = this.state.wods.slice(0);
-  //     const thisWod = wods[ getIndex('_id', wods, _id) ];
-  //     thisWod.date = date;
-  //     thisWod.text = text;
-  //     this.setState({ wods });
-  //   });
-  // }
+  sortByDateDescending = arr => {
+    return arr.sort((a, b) => {
+      return a.weekOf === b.weekOf
+                          ? 0
+                          : a.weekOf < b.weekOf
+                            ? 1
+                            : -1;
+    });
+  }
+
+  deleteWodWeek = (week, wodIds) => {
+    const { _id } = week;
+    deleteWithAxios({ _id, wodIds }).then(result => {
+      // console.log('result.data: ', result.data);
+      this.setState(prevState => {
+        const wodWeeks = prevState.wodWeeks.slice(0);
+        const filteredWodWeeks = wodWeeks.filter(wodweek => wodweek._id !== _id);
+        return { wodWeeks: filteredWodWeeks };
+      });
+    });
+  }
 
   addWodWeek = wodweek => {
-    //
+    console.log('wodweek: ', wodweek);
+    this.setState(prevState => {
+      const withNewWeek = [ ...prevState.wodWeeks, wodweek ];
+      console.log('withNewWeek: ', withNewWeek);
+      const wodWeeks = withNewWeek.map(week => ({ ...week, weekOf: moment(week.weekOf) }) );
+      return { wodWeeks: this.sortByDateDescending(wodWeeks) };
+    });
   }
 
   componentDidMount() {
     if (this.props.manager) {
       getWithAxios().then(result => {
         const { wodWeeks } = result.data;
-        console.log('#### wodWeeks ####: ', wodWeeks);
+        // console.log('#### wodWeeks ####: ', wodWeeks);
         this.setState({ wodWeeks });
       });
     }
@@ -63,8 +79,8 @@ class WodPage extends React.Component {
   render() {
     if (!this.props.manager) return <Redirect to='/signin' />;
     const { wods, wodWeeks } = this.state;
-    const weeks = wodWeeks.map((wodweek, i) => (
-        <WodStrip allowTypingPastLimit={true} charLimit={50} key={i} wodweek={wodweek} />
+    const weeks = wodWeeks.map(wodweek => (
+        <WodStrip allowTypingPastLimit={true} charLimit={50} deleteWodWeek={this.deleteWodWeek} key={wodweek._id} wodweek={wodweek} />
       )
     );
     return (

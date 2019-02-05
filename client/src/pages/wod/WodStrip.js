@@ -5,6 +5,10 @@ import axios from 'axios';
 import WodStripDay from './WodStripDay';
 
 import { isEqual, isLessThanOrEqual } from '../../utils/comparisons';
+import useAxios from '../../utils/axios-helpers';
+
+const path = '/wod';
+const { putWithAxios } = useAxios(path);
 
 export default class WodStrip extends React.Component {
   constructor(props) {
@@ -18,51 +22,28 @@ export default class WodStrip extends React.Component {
   isEscapeKey = isEqual('Escape');
   isLTEtoCharLimit = () => isLessThanOrEqual(this.state.charLimit);
 
-  // liftText = text => {
-  //   this.setState((prevState, props) => {
-  //     const { allowTypingPastLimit } = prevState;
-  //     const newState  = allowTypingPastLimit
-  //                     ? { charCount: text.length, text }
-  //                     : this.isLTEtoCharLimit()(text.length)
-  //                       ? { charCount: text.length, text }
-  //                       : { charCount: text.length - 1 };
-  //     return newState;
-  //   });
-  // }
+  handleErrors = data => {
+    console.log('data: ', data);
+    console.log('err: ', data._message)
+  }
 
-  // clearText = () => {
-  //   this.setState({ charCount: 0, text: '' });
-  // }
+  handleSuccess = data => {
+    console.log('success: ', data);
+    const { updatedWod } = data;
+    this.setState(prevState => {
+      const idx = prevState.wods.indexOf( prevState.wods.find(wod => wod._id === updatedWod._id) );
+      return { wods: prevState.wods.map((wod, i) => i === idx ? { ...wod, text: updatedWod.text } : wod) };
+    });
+  }
 
-  // cancelChange = () => {
-  //   this.setState(prevState => {
-  //     const { initialText } = prevState;
-  //     return {
-  //       charCount: initialText.length,
-  //       date: '',
-  //       editable: false,
-  //       text: initialText,
-  //     }
-  //   });
-  // }
-
-  // handleKeyUp = e => {
-  //   e.preventDefault();
-  //   if ( this.isEscapeKey(e.key) ) this.cancelChange();
-  // }
-
-  // toggleEdit = () => {
-  //   this.setState({ editable: !this.state.editable });
-  // }
-
-  // handleUpdateWod = ({ date, _id, text }) => {
-  //   this.toggleEdit();
-  //   this.props.updateWod({ date, _id, text });
-  //   this.setState({ date, initialText: text, text });
-  // }
+  updateWod = ({ _id, text }) => {
+    putWithAxios({ _id, text }).then(result => {
+      const { data } = result;
+      data.errors ? this.handleErrors(data) : this.handleSuccess(data);
+    });
+  }
 
   getFormattedWeekOf = date => {
-    console.log('date: ', date)
     const mDate = moment(date);
     const day = mDate.format('dddd');
     const month = mDate.format('MMMM');
@@ -80,7 +61,7 @@ export default class WodStrip extends React.Component {
 
   componentDidMount() {
     this.setState((prevState, props) => {
-      console.log('wodweek: ', this.props.wodweek);
+      // console.log('wodweek: ', this.props.wodweek);
       const { weekOf, wods } = props.wodweek;
       return { weekOf, wods }
     });
@@ -88,11 +69,22 @@ export default class WodStrip extends React.Component {
 
   render() {
     const { weekOf, wods } = this.state;
+    const { allowTypingPastLimit, charLimit, wodweek } = this.props;
+    const wodIds = wods.map(wod => wod._id);
     const formattedWeekOf = this.getFormattedWeekOf(weekOf);
-    const days = wods.map((day, i) => <WodStripDay key={i} />);
+    const days = wods.map((wod, i) => (
+      <WodStripDay
+        allowTypingPastLimit={allowTypingPastLimit}
+        charLimit={charLimit}
+        wod={wod}
+        key={i}
+        updateWod={this.updateWod}
+      />
+    ));
     return (
       <div>
         <h4>Week of: {formattedWeekOf}</h4>
+        <button onClick={() => this.props.deleteWodWeek(wodweek, wodIds)}>Delete whole week</button>
         {days}
       </div>
     );
