@@ -55,21 +55,19 @@ class AnnouncementsPage extends React.Component {
     if (!this.props.manager) return <Redirect to='/signin' />;
     const { announcements } = this.state;
     return (
-      <>
-        <section className='AnnouncementsPage'>
-          <h1>Accouncments</h1>
-          <AddAnnouncement
-            addAnnouncement={this.addAnnouncement}
-            allowTypingPastLimit={true}
-            charLimit={150}
-          />
-          <AllAnnouncements
-            announcements={announcements}
-            deleteAnnouncement={this.deleteAnnouncement}
-            editAnnouncement={this.editAnnouncement}
-          />
-        </section>
-      </>
+      <section className='AnnouncementsPage'>
+        <h1>Accouncments</h1>
+        <AddAnnouncement
+          addAnnouncement={this.addAnnouncement}
+          allowTypingPastLimit={true}
+          charLimit={150}
+        />
+        <AllAnnouncements
+          announcements={announcements}
+          deleteAnnouncement={this.deleteAnnouncement}
+          editAnnouncement={this.editAnnouncement}
+        />
+      </section>
     );
   }
 }

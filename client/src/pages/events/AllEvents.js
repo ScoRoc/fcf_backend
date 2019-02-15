@@ -23,8 +23,8 @@ import EventStrip from './EventStrip';
     <>
       <h3 id='h3-AllEvents'>Current Events</h3>
       <section>
-        <p className={`foo-p-foo ${pastClass}`} onClick={() => toggleShowEvents('showPastEvents')}>Past Events</p>
-        <p className={`foo-p-foo ${currentClass}`} onClick={() => toggleShowEvents('showCurrentEvents')}>Current Events</p>
+        <p className={`events-filter ${pastClass}`} onClick={() => toggleShowEvents('showPastEvents')}>Past Events</p>
+        <p className={`events-filter ${currentClass}`} onClick={() => toggleShowEvents('showCurrentEvents')}>Current Events</p>
       </section>
       <section className='AllEvents'>
         {allEvents}

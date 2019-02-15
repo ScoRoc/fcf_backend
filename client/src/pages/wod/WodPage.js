@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 
+import './Wod.min.css';
 import AddWodWeek from './AddWodWeek';
 import WodStrip from './WodStrip';
 
@@ -83,13 +84,12 @@ class WodPage extends React.Component {
       )
     );
     return (
-      <section>
+      <section className='WodPage'>
         <h1>WOD</h1>
         {/* CAP # OF LINES AT 16 */}
-        <section>
-          <AddWodWeek addWodWeek={this.addWodWeek} />
-        </section>
-        <section>
+        <AddWodWeek addWodWeek={this.addWodWeek} />
+        <h3>Wod Weeks</h3>
+        <section className='AllWodWeeks'>
           {weeks}
         </section>
       </section>
