@@ -82,7 +82,7 @@ export default class WodStrip extends React.Component {
       />
     ));
     return (
-      <div>
+      <div className='WodWeekStrip'>
         <h4>Week of: {formattedWeekOf}</h4>
         <button onClick={() => this.props.deleteWodWeek(wodweek, wodIds)}>Delete whole week</button>
         {days}

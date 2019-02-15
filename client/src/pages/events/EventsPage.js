@@ -115,7 +115,7 @@ class EventsPage extends React.Component {
     const { events } = this.state;
     const displayedEvents = this.filterEvents(events);
     return (
-      <section>
+      <section className='EventsPage'>
         <h1>Events</h1>
         <AddEvent
           addEvent={this.addEvent}
