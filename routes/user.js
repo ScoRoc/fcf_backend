@@ -16,7 +16,7 @@ const doesPasswordMatch = (pw, hashedPw) => {
 }
 
 const createToken = user => {
-  const expireTime = 60 * 60 * 24 * 7
+  const expireTime = 60 * 60 * 24 * 7 * 3;
   return jwt.sign(user.toObject(), process.env.JWT_SECRET, {
     expiresIn: expireTime,
   });
