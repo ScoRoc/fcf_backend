@@ -6,7 +6,6 @@ const announcementSchema = new mongoose.Schema({
     required: true,
     minlength: 1,
     maxlength: 150,
-    lowercase: true,
     trim: true,
   },
   imgUrl: {
