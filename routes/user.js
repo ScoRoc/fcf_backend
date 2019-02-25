@@ -26,10 +26,10 @@ router.post('/login', async (req, res) => {
   const errMsg = 'Email or password is incorrect.';
   let user = await findUserByEmail(req.body.email);
   const hashedPass = user ? user.password : '';
-  !user  ? res.json({ user: null, token: null, errors: true, _message: errMsg })
-            : doesPasswordMatch(req.body.password, hashedPass)
-              ? res.json({ user: user.toObject(), token: createToken(user) })
-              : res.json({ errors: true, _message: errMsg });
+  !user ? res.json({ user: null, token: null, errors: true, _message: errMsg })
+          : doesPasswordMatch(req.body.password, hashedPass)
+            ? res.json({ user: user.toObject(), token: createToken(user) })
+            : res.json({ errors: true, _message: errMsg });
 });
 
 router.post('/create', async (req, res) => {
@@ -53,6 +53,15 @@ router.post('/create', async (req, res) => {
       }
     )
   }
+});
+
+router.put('/', (req, res) => {
+  const { id, password } = req.body;
+  const hash = bcrypt.hashSync(password, 10);
+  User.findByIdAndUpdate(id, {password: hash}, updatedUser => {
+    console.log('updatedUser: ', updatedUser);
+    res.send('yo')
+  });
 });
 
 router.post('/validate', (req, res) => {
