@@ -55,7 +55,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/password', (req, res) => {
   const { id, password } = req.body;
   const hash = bcrypt.hashSync(password, 10);
   User.findByIdAndUpdate(id, {password: hash}, updatedUser => {
