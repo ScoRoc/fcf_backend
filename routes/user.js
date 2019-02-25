@@ -59,9 +59,12 @@ router.put('/password', (req, res) => {
   const { id, password } = req.body;
   const hash = bcrypt.hashSync(password, 10);
   User.findByIdAndUpdate(id, { password: hash }, (err, updatedUser) => {
-    console.log('err: ', err);
-    console.log('updatedUser: ', updatedUser);
-    res.json({ updatedUser });
+    if (err) {
+      console.log('err: ', err);
+      res.send(err);
+    } else {
+      res.json({ updatedUser });
+    }
   });
 });
 
