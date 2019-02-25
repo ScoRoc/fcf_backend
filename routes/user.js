@@ -57,10 +57,13 @@ router.post('/create', async (req, res) => {
 
 router.put('/password', (req, res) => {
   const { id, password } = req.body;
+  console.log('id: ', id);
+  console.log('password: ', password);
   const hash = bcrypt.hashSync(password, 10);
-  User.findByIdAndUpdate(id, {password: hash}, updatedUser => {
+  console.log('hash: ', hash)
+  User.findByIdAndUpdate(id, { password: hash }, updatedUser => {
     console.log('updatedUser: ', updatedUser);
-    res.send('yo')
+    res.json({ updatedUser });
   });
 });
 
