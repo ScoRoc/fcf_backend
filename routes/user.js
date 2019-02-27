@@ -50,8 +50,8 @@ router.post('/create', async (req, res) => {
     const { email, firstName, lastName, password } = req.body;
     User.create(
       {
-        firstName: firstName.toLowerCase(),
-        lastName: lastName.toLowerCase(),
+        firstName: firstName,
+        lastName: lastName,
         email: email.toLowerCase(),
         password,
       }, (err, user) => {

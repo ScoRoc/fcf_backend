@@ -21,7 +21,6 @@ const announcementSchema = new mongoose.Schema({
   url: {
     type: String,
     required: false,
-    lowercase: true,
     trim: true,
   }
 });
