@@ -1,12 +1,14 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { liftUserToDisplay } from '../../redux/modules/displayed-user';
 
 import useAxios from '../../utils/axios-helpers';
 
 const path = '/user';
 const { getWithAxios } = useAxios(path);
 
-export default class UsersPage extends React.Component {
+class UsersPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -16,12 +18,22 @@ export default class UsersPage extends React.Component {
 
   componentDidMount() {
     getWithAxios().then(result => {
+      console.log('result.data: ', result.data);
       this.setState({ allUsers: result.data.allUsers });
     });
   }
 
   render() {
-    const allUsers = this.state.allUsers.map(user => <p>{user.firstName}</p>);
+    const allUsers = this.state.allUsers.map(user => {
+      return (
+        <div key={user._id}>
+          <Link
+            to='/user'
+            onClick={() => this.props.liftUserToDisplay(user)}
+          >{user.firstName} {user.lastName}</Link>
+        </div>
+      )
+    });
     return (
       <section>
         <p>hey from users page</p>
@@ -31,3 +43,17 @@ export default class UsersPage extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    displayedUser: state.displayedUser,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    liftUserToDisplay: displayedUser => dispatch(liftUserToDisplay(displayedUser)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersPage);

@@ -4,6 +4,7 @@ import { combineReducers, createStore } from 'redux';
 // import storage from 'redux-persist/lib/storage';
 import auth from '../modules/auth';
 import pages from '../modules/pages';
+import displayedUser from '../modules/displayed-user';
 
 // const reducers = {
 //   auth,
@@ -28,6 +29,7 @@ import pages from '../modules/pages';
 const rootReducer = combineReducers({
   auth,
   pages,
+  displayedUser,
 });
 
 const store = createStore(rootReducer);

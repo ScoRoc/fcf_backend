@@ -11,6 +11,7 @@ import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
 import EventsPage from './pages/events/EventsPage';
 import WodPage from './pages/wod/WodPage';
 import UsersPage from './pages/users/UsersPage';
+import DisplayedUserPage from './pages/users/DisplayedUserPage';
 import AddManagerPage from './pages/new-manager/AddManagerPage';
 
 import Footer from './page-sections/Footer';
@@ -50,7 +51,10 @@ class App extends Component {
             <Route path='/announcements' render={() => <AnnouncementsPage />} />
             <Route path='/events' render={() => <EventsPage />} />
             <Route path='/wod' render={() => <WodPage />} />
-            <Route path='/users' render={() => <UsersPage /> } />
+            <Route path='/users' render={() => <UsersPage />} />
+            <Route path='/user' render={() => (
+              <DisplayedUserPage displayedUser={this.state.displayedUser} />
+            )} />
             <Route path='/addmanager' render={() => <AddManagerPage />} />
             <Route path='/signin' render={() => <SignInPage />} />
           </main>
@@ -66,6 +70,7 @@ const mapStateToProps = state => {
   return {
     manager: state.auth.manager,
     token: state.auth.token,
+    displayedUser: state.displayedUser,
   };
 };
 

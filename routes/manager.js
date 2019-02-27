@@ -39,8 +39,8 @@ router.post('/addmanager', async (req, res) => {
     const { email, firstName, lastName, superUser, password } = req.body;
     Manager.create(
       {
-        firstName: firstName.toLowerCase(),
-        lastName: lastName.toLowerCase(),
+        firstName: firstName,
+        lastName: lastName,
         email: email.toLowerCase(),
         superUser,
         password,
