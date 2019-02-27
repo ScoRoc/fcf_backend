@@ -60,23 +60,27 @@
       input {
         font-size: .8em;
       }
+
+      #new-event-url-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #new-event-url {
+        width: 100%;
+      }
     }
 
-    &__img-wrap {
-      // min-height: 30vh;
-      margin-top: 1em;
-
-      label {
-        margin-bottom: .7em;
+    &__start-date-wrap {
+      span {
+        margin-left: 1em;
       }
+    }
 
-      button {
-        @extend %button;
-        margin: 0;
-      }
-
-      img {
-        // width: 50%;
+    &__through-date-wrap {
+      span {
+        margin-left: 1em;
       }
     }
   }

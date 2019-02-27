@@ -90,7 +90,10 @@ export default class AddWodWeek extends React.Component {
     return (
       <section className='AddWodWeek'>
         <p>Set week</p>
-        <input name='week-of' onChange={this.handleSetWeek} type='date' value={weekOfValue} />
+        <div className='AddWodWeek__set-week-wrapper'>
+          <input name='week-of' onChange={this.handleSetWeek} type='date' value={weekOfValue} />
+          <span>required</span>
+        </div>
         <form encType="multipart/form-data" className='AddWodWeek__form' onSubmit={this.handleSubmit}>
           {addWodDays}
           <button onClick={this.handleSubmit} type='submit'>Add Wod Week</button>

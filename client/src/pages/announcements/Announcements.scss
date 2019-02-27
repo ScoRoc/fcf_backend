@@ -1,4 +1,4 @@
-@import '../../sass/variables';
+ @import '../../sass/variables';
 @import '../../sass/silent-classes/misc';
 @import '../../sass/silent-classes/buttons';
 
@@ -47,6 +47,16 @@
     &__url-wrap {
       input {
         font-size: .8em;
+      }
+
+      #new-announcement-url-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #new-announcement-url {
+        width: 100%;
       }
     }
 

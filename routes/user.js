@@ -6,6 +6,17 @@ const bcrypt = require('bcrypt');
 const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
 
+router.get('/', (req, res) => {
+  User.find({}, (err, allUsers) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send(err);
+    } else {
+      res.json({ allUsers });
+    }
+  });
+});
+
 // await this
 const findUserByEmail = email => {
   return User.findOne({email});

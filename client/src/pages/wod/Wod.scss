@@ -21,6 +21,12 @@
   // background: $greyMedium;
   background: $teal;
 
+  &__set-week-wrapper {
+    span {
+      margin-left: 1em;
+    }
+  }
+
   &__form {
     width: 100%;
     padding: .6em 1em;

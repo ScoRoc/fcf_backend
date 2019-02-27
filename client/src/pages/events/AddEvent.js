@@ -105,11 +105,14 @@ export default class AddEvent extends React.Component {
             </div>
             <div className='AddEvent__form__url-wrap'>
               <label htmlFor='new-event-url'>URL</label>
-              <input
-                id='new-event-url'
-                ref={this.url}
-                type='text'
-              />
+              <div id='new-event-url-wrapper'>
+                <span>http://</span>
+                <input
+                  id='new-event-url'
+                  ref={this.url}
+                  type='text'
+                />
+              </div>
             </div>
             <div className='AddEvent__form__type-wrap'>
               <EventRadioButtons handleOnChange={this.updateType} type={type} />
@@ -117,10 +120,12 @@ export default class AddEvent extends React.Component {
             <div className='AddEvent__form__start-date-wrap'>
               <label htmlFor='new-event-start-date'>Start Date</label>
               <input id='new-event-start-date' ref={this.startDate} type='date' />
+              <span>required</span>
             </div>
             <div className='AddEvent__form__through-date-wrap'>
               <label htmlFor='new-event-through-date'>Through Date</label>
               <input id='new-event-through-date' ref={this.throughDate} type='date' />
+              <span>optional</span>
             </div>
           <button className={disabled} disabled={disabled} type='submit'>Add Announcement</button>
         </form>

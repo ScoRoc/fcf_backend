@@ -135,13 +135,17 @@ export default class AddAnnouncement extends React.Component {
             </div>
             <div className='AddAnnouncement__form__url-wrap'>
               <label htmlFor='new-announcement-url'>URL</label>
-              <input
-                id='new-announcement-url'
-                name='imgUrl'
-                onChange={e => this.setState({url: e.target.value})}
-                type='text'
-                value={url}
-              />
+              <div id='new-announcement-url-wrapper'>
+                <span>http://</span>
+                <input
+                  id='new-announcement-url'
+                  name='imgUrl'
+                  onChange={e => this.setState({url: e.target.value})}
+                  type='text'
+                  value={url}
+                />
+
+              </div>
             </div>
             <div className='AddAnnouncement__form__img-wrap'>
               <label htmlFor='new-announcement-img'>Image</label>

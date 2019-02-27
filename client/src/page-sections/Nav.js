@@ -14,6 +14,9 @@ const Nav = props => {
                         <span id='add-manager-span-wrapper'><span>Add </span><span>Manager</span></span>
                       </NavLink>
                     : '';
+  const allUsers  = superUser
+                    ? <NavLink to='/users' onClick={() => props.setPage('/users')}  activeClassName='selected-nav-link'>Users</NavLink>
+                    : '';
   const handleLogoutClick = () => {
     props.setPage('/signin');
     props.logout();
@@ -24,6 +27,7 @@ const Nav = props => {
       <NavLink to='/announcements' onClick={() => props.setPage('/announcements')} activeClassName='selected-nav-link'>Announcements</NavLink>
       <NavLink to='/events' onClick={() => props.setPage('/events')} activeClassName='selected-nav-link'>Events</NavLink>
       <NavLink to='/wod' onClick={() => props.setPage('/wod')} activeClassName='selected-nav-link'>Wod</NavLink>
+      {allUsers}
       {addManager}
       {/* <NavLink to='/signin' onClick={handleLogoutClick} activeClassName='selected-nav-link'>Logout</NavLink> */}
       <NavLink to='/signin' onClick={handleLogoutClick}>Logout</NavLink>

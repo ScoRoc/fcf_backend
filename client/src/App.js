@@ -10,6 +10,7 @@ import SignInPage from './pages/signin/SignInPage';
 import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
 import EventsPage from './pages/events/EventsPage';
 import WodPage from './pages/wod/WodPage';
+import UsersPage from './pages/users/UsersPage';
 import AddManagerPage from './pages/new-manager/AddManagerPage';
 
 import Footer from './page-sections/Footer';
@@ -47,8 +48,9 @@ class App extends Component {
             <Route exact path='/' render={() => <LoadingFirstPage />} />
             <Route path='/home' render={() => <HomePage />} />
             <Route path='/announcements' render={() => <AnnouncementsPage />} />
-            <Route exact path='/events' render={() => <EventsPage />} />
+            <Route path='/events' render={() => <EventsPage />} />
             <Route path='/wod' render={() => <WodPage />} />
+            <Route path='/users' render={() => <UsersPage /> } />
             <Route path='/addmanager' render={() => <AddManagerPage />} />
             <Route path='/signin' render={() => <SignInPage />} />
           </main>
