@@ -55,7 +55,7 @@ class App extends Component {
             <Route path='/user' render={() => (
               <DisplayedUserPage
                 displayedUser={this.props.displayedUser}
-                superUser={this.props.manager.superUser}
+                // superUser={this.props.manager.superUser}
               />
             )} />
             <Route path='/addmanager' render={() => <AddManagerPage />} />
