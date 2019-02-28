@@ -14,6 +14,14 @@ class UsersPage extends React.Component {
     this.state = {
        allUsers: [],
     }
+    this.firstName = React.createRef();
+    this.lastName = React.createRef();
+    this.email = React.createRef();
+    this.password = React.createRef();
+  }
+
+  handleClick = user => {
+    this.props.liftUserToDisplay(user);
   }
 
   componentDidMount() {
@@ -29,7 +37,7 @@ class UsersPage extends React.Component {
         <div key={user._id}>
           <Link
             to='/user'
-            onClick={() => this.props.liftUserToDisplay(user)}
+            onClick={() => this.handleClick(user)}
           >{user.firstName} {user.lastName}</Link>
         </div>
       )

@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import useAxios from '../../utils/axios-helpers';
 
 const path = '/user';
-const { getWithAxios } = useAxios(path);
+const { getWithAxios, putWithAxios } = useAxios(path);
 
 export default class DisplayedUserPage extends React.Component {
   constructor(props) {
@@ -16,8 +16,11 @@ export default class DisplayedUserPage extends React.Component {
   }
 
   handleClick = () => {
+<<<<<<< HEAD
     const path = '/user/password';
     const { putWithAxios } = useAxios(path);
+=======
+>>>>>>> dev
     putWithAxios({ id: this.state.displayedUser._id, password: this.newPassword }).then(result => {
       console.log('result.data: ', result.data);
     });

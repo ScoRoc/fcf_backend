@@ -50,9 +50,9 @@ router.post('/create', async (req, res) => {
     const { email, firstName, lastName, password } = req.body;
     User.create(
       {
-        firstName: firstName,
-        lastName: lastName,
-        email: email.toLowerCase(),
+        firstName,
+        lastName,
+        email,
         password,
       }, (err, user) => {
         if (err) {
@@ -65,6 +65,31 @@ router.post('/create', async (req, res) => {
     )
   }
 });
+
+router.post('/test-create', async (req, res) => {
+
+  if ( await findUserByEmail(req.body.email) ) {
+    res.send({errors: true, _message: 'There is already a user with that email.'});
+  } else {
+    const { email, firstName, lastName, password } = req.body;
+    User.create(
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+      }, (err, user) => {
+        if (err) {
+          console.log('err: ', err);
+          res.send(err);
+        } else {
+          res.json({ user: user.toObject() });
+        }
+      }
+    )
+  }
+});
+
 
 router.put('/password', (req, res) => {
   const { id, password } = req.body;
