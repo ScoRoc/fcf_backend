@@ -20,19 +20,6 @@ class UsersPage extends React.Component {
     this.password = React.createRef();
   }
 
-  addNewUser = () => {
-    const path = '/user/test-create';
-    const { postWithAxios } = useAxios(path);
-    postWithAxios({
-      firstName: this.firstName.current.value,
-      lastName: this.lastName.current.value,
-      email: this.email.current.value,
-      password: this.password.current.value,
-    }).then(result => {
-      // console.log('result.data: ', result.data);
-    });
-  }
-
   handleClick = user => {
     this.props.liftUserToDisplay(user);
   }
@@ -57,21 +44,6 @@ class UsersPage extends React.Component {
     });
     return (
       <section>
-        {/* test */}
-        <label>First Name
-          <input ref={this.firstName} type='text' />
-        </label>
-        <label>Last Name
-          <input ref={this.lastName} type='text' />
-        </label>
-        <label>Email
-          <input ref={this.email} type='text' />
-        </label>
-        <label>Password
-          <input ref={this.password} type='text' />
-        </label>
-        <button onClick={this.addNewUser}>add new user</button>
-        {/* test */}
         <p>hey from users page</p>
         <h2>heres the users</h2>
         {allUsers}
