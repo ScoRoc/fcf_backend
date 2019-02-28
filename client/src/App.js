@@ -12,7 +12,9 @@ import EventsPage from './pages/events/EventsPage';
 import WodPage from './pages/wod/WodPage';
 import UsersPage from './pages/users/UsersPage';
 import DisplayedUserPage from './pages/users/DisplayedUserPage';
-import AddManagerPage from './pages/new-manager/AddManagerPage';
+import ManagersPage from './pages/managers/ManagersPage';
+import DisplayedManagerPage from './pages/managers/DisplayedManagerPage';
+import AddManagerPage from './pages/managers/AddManagerPage';
 
 import Footer from './page-sections/Footer';
 // import Main from './page-sections/Main';
@@ -58,7 +60,14 @@ class App extends Component {
                 superUser={this.props.manager.superUser}
               />
             )} />
-            <Route path='/addmanager' render={() => <AddManagerPage />} />
+            <Route path='/managers' render={() => <ManagersPage />} />
+            <Route path='/manager' render={() => (
+              <DisplayedManagerPage
+                displayedManager={this.props.displayedManager}
+                superUser={this.props.manager.superUser}
+              />
+            )} />
+            <Route path='/add-manager' render={() => <AddManagerPage />} />
             <Route path='/signin' render={() => <SignInPage />} />
           </main>
           {/* <Main /> */}
@@ -74,6 +83,7 @@ const mapStateToProps = state => {
     manager: state.auth.manager,
     token: state.auth.token,
     displayedUser: state.displayedUser,
+    displayedManager: state.displayedManager,
   };
 };
 

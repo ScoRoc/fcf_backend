@@ -5,6 +5,7 @@ import { combineReducers, createStore } from 'redux';
 import auth from '../modules/auth';
 import pages from '../modules/pages';
 import displayedUser from '../modules/displayed-user';
+import displayedManager from '../modules/displayed-manager';
 
 // const reducers = {
 //   auth,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   auth,
   pages,
   displayedUser,
+  displayedManager,
 });
 
 const store = createStore(rootReducer);

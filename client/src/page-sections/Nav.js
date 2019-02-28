@@ -10,8 +10,8 @@ import './page-sections.min.css';
 const Nav = props => {
   const superUser = props.manager ? props.manager.superUser : false;
   const addManager  = superUser
-                    ? <NavLink to='/addmanager' onClick={() => props.setPage('/addmanager')}  activeClassName='selected-nav-link'>
-                        <span id='add-manager-span-wrapper'><span>Add </span><span>Manager</span></span>
+                    ? <NavLink to='/managers' onClick={() => props.setPage('/managers')}  activeClassName='selected-nav-link'>
+                        <span id='add-manager-span-wrapper'>Managers</span>
                       </NavLink>
                     : '';
   const handleLogoutClick = () => {

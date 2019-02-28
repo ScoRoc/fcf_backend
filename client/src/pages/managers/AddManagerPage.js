@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import './AddManager.min.css';
@@ -52,6 +52,7 @@ class AddManagerPage extends Component {
                         </div>;
     return (
       <div className='AddManager'>
+        <Link to='/managers'>Back</Link>
         <h2>Add New Manager</h2>
         <div className='AddManager__body'>
           <AddManagerForm updateSuccessfulManager={this.updateSuccessfulManager} />

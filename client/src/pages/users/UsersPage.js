@@ -14,10 +14,6 @@ class UsersPage extends React.Component {
     this.state = {
        allUsers: [],
     }
-    this.firstName = React.createRef();
-    this.lastName = React.createRef();
-    this.email = React.createRef();
-    this.password = React.createRef();
   }
 
   handleClick = user => {
@@ -26,7 +22,7 @@ class UsersPage extends React.Component {
 
   componentDidMount() {
     getWithAxios().then(result => {
-      console.log('result.data: ', result.data);
+      // console.log('result.data: ', result.data);
       this.setState({ allUsers: result.data.allUsers });
     });
   }
