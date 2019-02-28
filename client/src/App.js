@@ -53,7 +53,10 @@ class App extends Component {
             <Route path='/wod' render={() => <WodPage />} />
             <Route path='/users' render={() => <UsersPage />} />
             <Route path='/user' render={() => (
-              <DisplayedUserPage displayedUser={this.props.displayedUser} />
+              <DisplayedUserPage
+                displayedUser={this.props.displayedUser}
+                superUser={this.props.manager.superUser}
+              />
             )} />
             <Route path='/addmanager' render={() => <AddManagerPage />} />
             <Route path='/signin' render={() => <SignInPage />} />

@@ -34,16 +34,20 @@ export default class DisplayedUserPage extends React.Component {
     const firstName = this.state.displayedUser ? this.state.displayedUser.firstName : 'null';
     const lastName = this.state.displayedUser ? this.state.displayedUser.lastName : 'null';
     const email = this.state.displayedUser ? this.state.displayedUser.email : 'null';
+    const changePassword = this.props.superUser
+                          ? <div>
+                              <label>Change password:
+                                <input ref={this.newPassword} type='text' />
+                              </label>
+                              <button onClick={this.handleClick}>Submit</button>
+                            </div>
+                          : '';
     return (
       <section>
         <Link to='/users'>Back</Link>
         <p>Name: {firstName} {lastName}</p>
         <p>Email: {email}</p>
-        <p>Change password:</p>
-        <div>
-          <input ref={this.newPassword} type='text' />
-          <button onClick={this.handleClick}>Submit</button>
-        </div>
+        {changePassword}
       </section>
     );
   }
