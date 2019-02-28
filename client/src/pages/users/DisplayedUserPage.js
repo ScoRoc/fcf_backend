@@ -18,8 +18,11 @@ export default class DisplayedUserPage extends React.Component {
   handleClick = () => {
     const path = '/user/password';
     const { putWithAxios } = useAxios(path);
-    putWithAxios({ id: this.state.displayedUser._id, password: this.newPassword }).then(result => {
+    putWithAxios(
+      { id: this.state.displayedUser._id, password: this.newPassword.current.value }
+    ).then(result => {
       console.log('result.data: ', result.data);
+      this.newPassword.current.value = '';
     });
   }
 
