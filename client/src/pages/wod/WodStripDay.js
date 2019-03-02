@@ -90,7 +90,8 @@ export default class WodStripDay extends React.Component {
      // HANDLE CAPPING TEXT //
     /////////////////////////
     const { date, editable, text } = this.state;
-    const { allowTypingPastLimit, charLimit } = this.props;
+    const { allowTypingPastLimit, charLimit, wod } = this.props;
+    const { attended, likes } = wod;
     const formattedDate = this.getFormattedDate(date);
     const disabled = this.isLTEtoCharLimit()(text.length) ? '' : 'disabled';
     const cancelBtn = editable ? <button onClick={this.cancelChange}>Cancel</button> : '';
@@ -102,13 +103,15 @@ export default class WodStripDay extends React.Component {
       },
       secondState: {
         btnClass: 'done-btn',
-        btnOnClick: () => this.handleUpdateWod({ _id: this.props.wod._id, text }),
+        btnOnClick: () => this.handleUpdateWod({ _id: wod._id, text }),
         btnText: 'Done',
       },
     }
     return (
       <div>
         <label>{formattedDate}</label>
+        <p>Likes: {likes.length}</p>
+        <p>Attended: {attended.length}</p>
         <TwoStateTextTACC
           allowTypingPastLimit={allowTypingPastLimit}
           charLimit={charLimit}
