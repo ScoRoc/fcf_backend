@@ -174,7 +174,7 @@ export default class EventStrip extends React.Component {
             useInput={editable}
             value={eventUrl}
           />
-          <p>Likes: {likes || 'none'}</p>
+          <p>Likes: {likes.length || 'none'}</p>
           {displayTypes}
           {displayStartDate}
           {displayThroughDate}
