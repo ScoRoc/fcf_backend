@@ -28,17 +28,18 @@ router.put('/', (req, res) => {
   });
 });
 
-// router.post('/', (req, res) => {
-//   const { day, text } = req.body;
-//   const date = moment(req.body.date)._d;
-//   Wod.create({ day, date, text }, (err, wod) => {
-//     if (err) {
-//       console.log('err: ', err);
-//       res.send(err);
-//     } else {
-//       res.json({ wod });
-//     }
-//   });
-// });
+router.put('/like', async (req, res) => {
+  const { wodId, userId, type } = req.body;
+  const foundWod = await Wod.findById(wodId).lean();
+  const operation = foundWod[type].includes(userId) ? '$pull' : '$push';
+  Wod.findByIdAndUpdate(wodId, { [operation]: {[type]: userId} }, { new: true }, (err, updatedWod) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send({ err });
+    } else {
+      res.send({ msg: 'Successfully updated the wod', updatedWod});
+    }
+  });
+});
 
 module.exports = router;
