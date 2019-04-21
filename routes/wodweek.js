@@ -45,6 +45,7 @@ router.post('/', async (req, res) => {
   const newWods = await Promise.all( wods.map(postNewWod) );
   const [ mon, tues, wed, thurs, fri, sat, sun ] = newWods;
   const wodIds = [ mon._id, tues._id, wed._id, thurs._id, fri._id, sat._id, sun._id ];
+  // const wodIds = newWods.map(wod => wod._id);
   WodWeek.create({ weekOf: moment(mon.date)._d, wods: wodIds }, (err, newWodWeek) => {
     if (err) {
       console.log('err: ', err);
