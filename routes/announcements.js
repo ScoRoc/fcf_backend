@@ -88,6 +88,8 @@ router.put('/like', async (req, res) => {
       console.log('err: ', err);
       res.send({ err });
     } else {
+      const data = { announcement: updatedAnnouncement, userId }
+      req.app.io.of('/announcements').emit('announcementLikeUpdate', data)
       res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement});
     }
   });
