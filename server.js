@@ -1,5 +1,6 @@
 require('dotenv').config();
-const app = require('express')();
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
 const cookieParser = require('cookie-parser');
