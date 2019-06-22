@@ -52,9 +52,12 @@ if (process.env.NODE_ENV === 'production') {
 
 // npm run dev to run in dev mode
 const PORT = process.env.PORT || 3001;
-// app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
+// app.listen(PORT, () => {
+//   console.log(`App listening on port ${PORT}!`)
+// });
 http.listen(PORT, function() {
   console.log(`Http is listening on port ${PORT}...`)
 })
+
 
 module.exports = app;
