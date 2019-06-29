@@ -11,8 +11,8 @@ module.exports.listen = app => {
   })
 
   // Events
-  const announcementsNamespace = io.of('/events')
-  announcementsNamespace.on('connection', function(socket) {
+  const eventsNamespace = io.of('/events')
+  eventsNamespace.on('connection', function(socket) {
     console.log('a user connected...')
     socket.on('test', msg => console.log('msg: ', msg))
   })
