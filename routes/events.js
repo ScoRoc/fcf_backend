@@ -15,8 +15,8 @@ const sortByDate = arr => {
 }
 
 router.get('/', (req, res) => {
-  if (req.params.sort === 'bymonth') return getByMonth(req, res)
-  
+  if (req.params.sort === 'bymonth') return getByMonth(req, res);
+
   Event.find({}, (err, events) => {
     if (err) {
       console.log('err: ', err);
@@ -133,6 +133,6 @@ const getByMonth = (req, res) => {
       res.json({sortedEvents});
     }
   })
-});
+};
 
 module.exports = router;
