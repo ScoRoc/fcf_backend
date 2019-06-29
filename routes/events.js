@@ -15,7 +15,7 @@ const sortByDate = arr => {
 }
 
 router.get('/', (req, res) => {
-  if (req.params.sort === 'bymonth') return getByMonth(req, res);
+  if (req.query.sort === 'bymonth') return getByMonth(req, res);
 
   Event.find({}, (err, events) => {
     if (err) {
@@ -77,6 +77,8 @@ router.put('/like', async (req, res) => {
       console.log('err: ', err);
       res.send({ err });
     } else {
+      const data = { event: updatedEvent, userId }
+      req.app.io.of('/events').emit('eventLikeUpdate', data)
       res.send({ msg: 'Successfully updated the event', updatedEvent});
     }
   });
