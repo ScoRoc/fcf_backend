@@ -15,6 +15,8 @@ const sortByDate = arr => {
 }
 
 router.get('/', (req, res) => {
+  if (req.params.sort === 'bymonth') return getByMonth(req, res)
+  
   Event.find({}, (err, events) => {
     if (err) {
       console.log('err: ', err);
@@ -115,7 +117,7 @@ const monthFactory = (event, monthName) => {
 }
 //////////////////////////////
 
-router.get('/bymonth', (req, res) => {
+const getByMonth = (req, res) => {
   Event.find({}, (err, events) => {
     if (err) {
       console.log('err: ', err);
