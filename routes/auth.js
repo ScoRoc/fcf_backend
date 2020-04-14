@@ -1,11 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const User = require('../models/user');
+// Libraries
 const bcrypt = require('bcrypt');
-const expressJWT = require('express-jwt');
+const express = require('express');
 const jwt = require('jsonwebtoken');
+const router = express.Router();
+// Models
+const User = require('../models/user');
+// CONSTANTS
+const { TOKEN_DURATION } = require('../constants/globals');
 
+// UPDATE SO ONLY ADMIN CAN LOGIN
 router.post('/login', (req, res) => {
   let hashedPass = '';
   let passwordMatch = false;
@@ -17,7 +20,7 @@ router.post('/login', (req, res) => {
       passwordMatch = bcrypt.compareSync(req.body.password, hashedPass);
       if (passwordMatch) {
         let token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-          expiresIn: 60 * 60 * 24
+          expiresIn: TOKEN_DURATION,
         });
         res.json({user: user.toObject(), token});
       } else {
@@ -44,7 +47,7 @@ router.post('/signup', (req, res) => {
         } else {
           console.log("JUST ABOUT TO SIGN THE TOKEN")
           let token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-            expiresIn: 60 * 60 * 24
+            expiresIn: TOKEN_DURATION,
           });
           res.json({user: user.toObject(), token})
         }

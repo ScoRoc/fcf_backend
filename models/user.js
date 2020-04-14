@@ -1,34 +1,90 @@
+// Libraries
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+// Utils
+const { ROLES } = require('../constants/enums');
 
 const userSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 99
-  },
-  lastName: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 99
+  announcements: {
+    liked: [{
+      ref: 'Announcement',
+      type: mongoose.Schema.Types.ObjectId,
+    }],
+    viewed: [{ // which urls have they clicked on
+      ref: 'Announcement',
+      type: mongoose.Schema.Types.ObjectId,
+    }],
   },
   email: {
-    type: String,
-    required: true,
-    unique: true,
-    minlength: 5,
-    maxlength: 99,
     lowercase: true,
+    maxlength: 99,
+    minlength: 5,
+    // required: true,
     trim: true,
+    type: String,
+    unique: true,
+  },
+  events: {
+    liked: [{
+      ref: 'Event',
+      type: mongoose.Schema.Types.ObjectId,
+    }],
+    viewed: [{ // which urls have they clicked on
+      ref: 'Event',
+      type: mongoose.Schema.Types.ObjectId,
+    }],
+  },
+  firstName: {
+    maxlength: 99,
+    minlength: 1,
+    // required: true,
+    type: String,
+  },
+  lastLogin: {
+    app: { type: Date },
+    portal: { type: Date },
+  },
+  lastName: {
+    maxlength: 99,
+    minlength: 1,
+    // required: true,
+    type: String,
+  },
+  meta: {
+    createdByUser: {
+      ref: 'User',
+      // required: true,
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    dateCreated: {
+      // required: true,
+      type: Date,
+    },
+    dateUpdated: {
+      type: Date,
+    },
+    updatedByUser: {
+      ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+    },
   },
   password: {
-    type: String,
-    required: true,
+    maxlength: 99,
     minlength: 8,
-    maxlength: 99
-  }
+    // required: true,
+    type: String,
+  },
+  role: {
+    enum: Object.values(ROLES),
+    // required: true,
+    type: String,
+  },
+  wods: {
+    liked: [{
+      ref: 'Wod',
+      type: mongoose.Schema.Types.ObjectId,
+    }],
+  },
 });
 
 userSchema.methods.authenticated = function(password, cb) {
@@ -39,15 +95,16 @@ userSchema.methods.authenticated = function(password, cb) {
 
 userSchema.pre('save', function(next) {
   if (this.isNew) {
-    let hash = bcrypt.hashSync(this.password, 10);
-    this.password = hash;
+    console.log('new')
+    // const hash = bcrypt.hashSync(this.password, 10);
+    // this.password = hash;
   }
   next();
 });
 
 userSchema.set('toJSON', {
   transform: function(doc, returned, options) {
-    const returnObject = {...returned};
+    const returnObject = { ...returned };
     delete returnObject.password;
     return returnObject;
   }
@@ -55,7 +112,7 @@ userSchema.set('toJSON', {
 
 userSchema.set('toObject', {
   transform: function(doc, returned, options) {
-    const returnObject = {...returned};
+    const returnObject = { ...returned };
     delete returnObject.password;
     return returnObject;
   }

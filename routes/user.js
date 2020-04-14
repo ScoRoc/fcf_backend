@@ -1,74 +1,86 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const User = require('../models/user');
+// Libraries
 const bcrypt = require('bcrypt');
-const expressJWT = require('express-jwt');
+const express = require('express');
 const jwt = require('jsonwebtoken');
+const router = express.Router();
+const moment = require('moment');
+// Models
+const User = require('../models/user');
+// Constants
+const { TOKEN_DURATION } = require('../constants/globals');
+
+// Helper Functions
+
+const createToken = user => {
+  return jwt.sign(user.toObject(), process.env.JWT_SECRET, {
+    expiresIn: TOKEN_DURATION,
+  });
+}
+
+// GET - all users
 
 router.get('/', (req, res) => {
-  User.find({}, (err, allUsers) => {
+  User.find({}, (err, users) => {
     if (err) {
       console.log('err: ', err);
       res.send(err);
     } else {
-      res.json({ allUsers });
+      res.json({ users });
     }
   });
 });
 
-// await this
-const findUserByEmail = email => {
-  return User.findOne({email});
-}
+// POST - a new user
 
-const doesPasswordMatch = (pw, hashedPw) => {
-  return bcrypt.compareSync(pw, hashedPw);
-}
+router.post('/', async (req, res) => {
+  if ( await User.findOne({ email: req.body.email }) ) {
+    res.send({ error: true, _message: 'There is already a user with that email.' });
+  }
 
-const createToken = user => {
-  const expireTime = 60 * 60 * 24 * 7 * 3;
-  return jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-    expiresIn: expireTime,
+  const { email, firstName, lastName } = req.body;
+  User.create({
+    firstName,
+    lastName,
+    email,
+  }, (err, user) => {
+    if (err) {
+      console.log('err: ', err);
+      res.send(err);
+    } else {
+      res.json({ user: { attributes: user.toObject(), token: createToken(user) } });
+    }
   });
-}
+});
+
+// DELETE - a new
+
+router.delete('/:id', (req, res) => {
+  User.findByIdAndDelete(req.params.id, (err, deletedUser) => {
+    if (err || deletedUser === null) {
+      res.status(400).send({ msg: 'An error occurred when attempting to delete the user.' });
+    } else {
+      res.send({ msg: 'Successfully deleted user.' });
+    }
+  });
+});
+
+// ???
 
 router.post('/login', async (req, res) => {
   const errMsg = 'Email or password is incorrect.';
-  let user = await findUserByEmail(req.body.email);
+  let user = await User.findOne({ email: req.body.email });
   const hashedPass = user ? user.password : '';
   !user ? res.json({ user: null, token: null, errors: true, _message: errMsg })
-          : doesPasswordMatch(req.body.password, hashedPass)
+          : bcrypt.compareSync(req.body.password, hashedPass)
             ? res.json({ user: user.toObject(), token: createToken(user) })
             : res.json({ errors: true, _message: errMsg });
 });
 
-router.post('/create', async (req, res) => {
-  if ( await findUserByEmail(req.body.email) ) {
-    res.send({errors: true, _message: 'There is already a user with that email.'});
-  } else {
-    const { email, firstName, lastName, password } = req.body;
-    User.create(
-      {
-        firstName,
-        lastName,
-        email,
-        password,
-      }, (err, user) => {
-        if (err) {
-          console.log('err: ', err);
-          res.send(err);
-        } else {
-          res.json({ user: user.toObject(), token: createToken(user) });
-        }
-      }
-    )
-  }
-});
+// ???
 
 router.post('/test-create', async (req, res) => {
 
-  if ( await findUserByEmail(req.body.email) ) {
+  if ( await User.findOne({ email: req.body.email }) ) {
     res.send({errors: true, _message: 'There is already a user with that email.'});
   } else {
     const { email, firstName, lastName, password } = req.body;
@@ -90,6 +102,7 @@ router.post('/test-create', async (req, res) => {
   }
 });
 
+// ???
 
 router.put('/password', (req, res) => {
   const { id, password } = req.body;
@@ -103,6 +116,8 @@ router.put('/password', (req, res) => {
     }
   });
 });
+
+// ???
 
 router.post('/validate', (req, res) => {
   const token = req.body.token;
