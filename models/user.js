@@ -56,13 +56,6 @@ const userSchema = new mongoose.Schema({
       // required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
-    dateCreated: {
-      // required: true,
-      type: Date,
-    },
-    dateUpdated: {
-      type: Date,
-    },
     updatedByUser: {
       ref: 'User',
       type: mongoose.Schema.Types.ObjectId,
@@ -85,6 +78,11 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
     }],
   },
+}, {
+  timestamps: {
+    createdAt: 'meta.dateCreated',
+    updatedAt: 'meta.dateUpdated',
+  },
 });
 
 userSchema.methods.authenticated = function(password, cb) {
@@ -93,11 +91,23 @@ userSchema.methods.authenticated = function(password, cb) {
   })
 }
 
+userSchema.pre('validate', function(next) {
+  console.log('####');
+  console.log('in validate...');
+  console.log('!this.isNew: ', this.isNew);
+  console.log('this.isModified(meta.createdByUser): ', this.isModified('meta.createdByUser'));
+  console.log('####');
+  if (!this.isNew && this.isModified('meta.createdByUser')) {
+    console.log('in if...')
+    this.invalidate('meta.createdByUser');
+  }
+  next();
+});
+
 userSchema.pre('save', function(next) {
   if (this.isNew) {
-    console.log('new')
-    // const hash = bcrypt.hashSync(this.password, 10);
-    // this.password = hash;
+    const hash = bcrypt.hashSync(this.password, 10);
+    this.password = hash;
   }
   next();
 });

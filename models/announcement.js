@@ -28,13 +28,6 @@ const announcementSchema = new mongoose.Schema({
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
-    dateCreated: {
-      required: true,
-      type: Date,
-    },
-    dateUpdated: {
-      type: Date,
-    },
     updatedByUser: {
       ref: 'User',
       type: mongoose.Schema.Types.ObjectId,
@@ -49,6 +42,11 @@ const announcementSchema = new mongoose.Schema({
     ref: 'User',
     type: mongoose.Schema.Types.ObjectId,
   }],
+}, {
+  timestamps: {
+    createdAt: 'meta.dateCreated',
+    updatedAt: 'meta.dateUpdated',
+  },
 });
 
 const Announcement = mongoose.model('Announcement', announcementSchema);

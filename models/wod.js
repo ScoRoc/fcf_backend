@@ -21,17 +21,15 @@ const wodSchema = new mongoose.Schema({
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
-    dateCreated: {
-      required: true,
-      type: Date,
-    },
-    dateUpdated: {
-      type: Date,
-    },
     updatedByUser: {
       ref: 'User',
       type: mongoose.Schema.Types.ObjectId,
     },
+  },
+}, {
+  timestamps: {
+    createdAt: 'meta.dateCreated',
+    updatedAt: 'meta.dateUpdated',
   },
 });
 

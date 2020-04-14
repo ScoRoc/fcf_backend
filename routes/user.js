@@ -37,11 +37,16 @@ router.post('/', async (req, res) => {
     res.send({ error: true, _message: 'There is already a user with that email.' });
   }
 
-  const { email, firstName, lastName } = req.body;
+  const { email, firstName, lastName, password, userId } = req.body;
   User.create({
     firstName,
     lastName,
     email,
+    meta: {
+      createdByUser: userId,
+      updatedByUser: userId,
+    },
+    password,
   }, (err, user) => {
     if (err) {
       console.log('err: ', err);
@@ -52,7 +57,7 @@ router.post('/', async (req, res) => {
   });
 });
 
-// DELETE - a new
+// DELETE - a user
 
 router.delete('/:id', (req, res) => {
   User.findByIdAndDelete(req.params.id, (err, deletedUser) => {
@@ -60,6 +65,27 @@ router.delete('/:id', (req, res) => {
       res.status(400).send({ msg: 'An error occurred when attempting to delete the user.' });
     } else {
       res.send({ msg: 'Successfully deleted user.' });
+    }
+  });
+});
+
+// PATCH - a user
+
+// NOT DONE NOT DONE NOT DONE
+// NOT DONE NOT DONE NOT DONE
+router.patch('/:id', (req, res) => {
+  User.findByIdAndUpdate(req.params.id, {
+    firstName: req.body.firstName,
+    'meta.createdByUser': req.body.userId, // not being blocked by pre validate
+    'meta.updatedByUser': req.body.userId,
+  }, {
+    new: true,
+  }, (err, updatedUser) => {
+    if (err) {
+      console.log('err: ', err);
+      res.status(400).send({ msg: 'An error occurred when attempting to update the user.' });
+    } else {
+      res.json({ user: { attributes: updatedUser.toObject(), token: createToken(updatedUser) } });
     }
   });
 });
