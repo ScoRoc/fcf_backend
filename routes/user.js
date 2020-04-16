@@ -169,7 +169,7 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-// ???
+// ??? DO I NEED
 
 router.post('/login', async (req, res) => {
   const errMsg = 'Email or password is incorrect.';
@@ -182,7 +182,7 @@ router.post('/login', async (req, res) => {
       : res.json({ errors: true, _msg: errMsg });
 });
 
-// ???
+// ??? DO I NEED
 
 router.put('/password', (req, res) => {
   const { id, password } = req.body;
@@ -194,7 +194,7 @@ router.put('/password', (req, res) => {
   });
 });
 
-// ???
+// ??? DO I NEED
 
 router.post('/validate', (req, res) => {
   const token = req.body.token;
