@@ -33,6 +33,7 @@ app.use('/auth', auth);
 app.use('/events', events);
 app.use('/users', user);
 app.use('/wods', wod);
+// https://app.swaggerhub.com/home - ToDo complete Swagger
 
 // Mongoose
 

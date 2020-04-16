@@ -52,6 +52,7 @@ const userSchema = new mongoose.Schema({
   },
   meta: {
     createdByUser: {
+      immutable: true,
       ref: 'User',
       // required: true,
       type: mongoose.Schema.Types.ObjectId,
@@ -90,19 +91,6 @@ userSchema.methods.authenticated = function(password, cb) {
     err ? cb(err) : cb(null, res ? this : false);
   })
 }
-
-userSchema.pre('validate', function(next) {
-  console.log('####');
-  console.log('in validate...');
-  console.log('!this.isNew: ', this.isNew);
-  console.log('this.isModified(meta.createdByUser): ', this.isModified('meta.createdByUser'));
-  console.log('####');
-  if (!this.isNew && this.isModified('meta.createdByUser')) {
-    console.log('in if...')
-    this.invalidate('meta.createdByUser');
-  }
-  next();
-});
 
 userSchema.pre('save', function(next) {
   if (this.isNew) {

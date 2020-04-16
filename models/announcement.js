@@ -24,6 +24,7 @@ const announcementSchema = new mongoose.Schema({
   }],
   meta: {
     createdByUser: {
+      immutable: true,
       ref: 'User',
       required: true,
       type: mongoose.Schema.Types.ObjectId,

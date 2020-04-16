@@ -1,3 +1,8 @@
+const LAST_LOGIN = Object.freeze({
+  APP: 'app',
+  PORTAL: 'portal',
+});
+
 const ROLES = Object.freeze({
   ADMIN: 'admin',
   SUPER_ADMIN: 'super-admin',
@@ -5,5 +10,6 @@ const ROLES = Object.freeze({
 });
 
 module.exports = {
+  LAST_LOGIN,
   ROLES,
 };
