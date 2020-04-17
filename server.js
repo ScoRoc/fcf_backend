@@ -18,7 +18,10 @@ const wodweek = require('./routes/wodweek');
 
 const mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/fcf_backend', { useNewUrlParser: true, useCreateIndex: true }); // for local dev
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true });  // for heroku deployment
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+}); // for heroku deployment
 
 // add this in client package.json for local dev after scripts
 // "proxy": "http://localhost:3001",
@@ -29,7 +32,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.io = io
+app.io = io;
 // libraries
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,9 +59,8 @@ const PORT = process.env.PORT || 3001;
 // app.listen(PORT, () => {
 //   console.log(`App listening on port ${PORT}!`)
 // });
-http.listen(PORT, function() {
-  console.log(`Http is listening on port ${PORT}...`)
-})
-
+http.listen(PORT, function () {
+  console.log(`Http is listening on port ${PORT}...`);
+});
 
 module.exports = app;
