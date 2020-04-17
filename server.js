@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
 const cookieParser = require('cookie-parser');
 const express = require('express');
-// const http = require('http').createServer(app);
 const httpLib = require('http');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -22,7 +21,7 @@ const app = express();
 const http = httpLib.createServer(app);
 const io = sockets.listen(http);
 
-app.io = io
+app.io = io;
 // Libraries
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,7 +36,10 @@ app.use('/wods', wod);
 
 // Mongoose
 
-mongoose.connect('mongodb://localhost/fcf_backend', { useNewUrlParser: true, useCreateIndex: true }); // for local dev
+mongoose.connect('mongodb://localhost/fcf_backend', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+}); // for local dev
 // mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true });  // for heroku deployment
 
 // Cloudinary
@@ -66,11 +68,10 @@ if (process.env.NODE_ENV === 'production') {
 // npm run dev to run in dev mode
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}...`)
+  console.log(`App listening on port ${PORT}...`);
 });
 // http.listen(PORT, function() {
 //   console.log(`Http is listening on port ${PORT}...`)
 // });
-
 
 module.exports = app;
