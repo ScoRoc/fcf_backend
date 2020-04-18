@@ -17,11 +17,14 @@ const wod = require('./routes/wod');
 const wodweek = require('./routes/wodweek');
 
 const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/fcf_backend', { useNewUrlParser: true, useCreateIndex: true }); // for local dev
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect('mongodb://localhost/fcf_backend', {
   useNewUrlParser: true,
   useCreateIndex: true,
-}); // for heroku deployment
+}); // for local dev
+// mongoose.connect(process.env.MONGODB_URI, {
+//   useNewUrlParser: true,
+//   useCreateIndex: true,
+// }); // for heroku deployment
 
 // add this in client package.json for local dev after scripts
 // "proxy": "http://localhost:3001",
