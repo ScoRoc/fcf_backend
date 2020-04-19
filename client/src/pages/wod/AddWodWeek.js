@@ -5,20 +5,11 @@ import moment from 'moment';
 import AddWodDay from './AddWodDay';
 
 import { isLessThanOrEqual } from '../../utils/comparisons';
-import useAxios from '../../utils/axios-helpers';
 
-const path = '/wodweek';
-const { postWithAxios } = useAxios(path);
+// PLACEHOLDER
+const postWithAxios = console.log('useAxios placeholder...change with real func!!!');
 
-const daysOfWeek = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 export default class AddWodWeek extends React.Component {
   constructor(props) {
@@ -26,26 +17,26 @@ export default class AddWodWeek extends React.Component {
     this.state = {
       weekOf: '',
       wods: [],
-    }
+    };
   }
 
   handleErrors = data => {
     console.log('data: ', data);
-    console.log('err: ', data._message)
-  }
+    console.log('err: ', data._message);
+  };
 
   handleSuccess = data => {
     console.log('success: ', data);
     this.props.addWodWeek(data);
-  }
+  };
 
   postWodWeek = wods => {
     postWithAxios({ wods }).then(result => {
-        const { data } = result;
-        data.errors ? this.handleErrors(data) : this.handleSuccess(data.wodWeekWithWods);
-        // this.setState({ eventText: '' });
+      const { data } = result;
+      data.errors ? this.handleErrors(data) : this.handleSuccess(data.wodWeekWithWods);
+      // this.setState({ eventText: '' });
     });
-  }
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -53,7 +44,7 @@ export default class AddWodWeek extends React.Component {
     wods.filter(wod => !wod.date._isValid).length > 0
       ? console.log('error, add a starting week')
       : this.postWodWeek(wods);
-  }
+  };
 
   handleSetWeek = e => {
     const weekOf = moment(e.target.value);
@@ -62,7 +53,7 @@ export default class AddWodWeek extends React.Component {
       wod.date = moment(weekOf).add(wods.indexOf(wod), 'd');
     }
     this.setState({ weekOf, wods });
-  }
+  };
 
   updateWod = (i, { date, text }) => {
     const newWods = [
@@ -71,32 +62,40 @@ export default class AddWodWeek extends React.Component {
       ...this.state.wods.slice(i + 1),
     ];
     this.setState({ wods: newWods });
-  }
+  };
 
   render() {
     const { weekOf } = this.state;
     const weekOfValue = weekOf._isValid ? new Date(weekOf._d).toISOString().substr(0, 10) : '';
     const addWodDays = daysOfWeek.map((day, i) => {
-      return <AddWodDay
-        allowTypingPastLimit={true}
-        charLimit={50}
-        date={ moment(weekOf).add(i, 'd') }
-        day={day}
-        i={i}
-        key={i}
-        updateWod={this.updateWod}
-      />
+      return (
+        <AddWodDay
+          allowTypingPastLimit={true}
+          charLimit={50}
+          date={moment(weekOf).add(i, 'd')}
+          day={day}
+          i={i}
+          key={i}
+          updateWod={this.updateWod}
+        />
+      );
     });
     return (
-      <section className='AddWodWeek'>
+      <section className="AddWodWeek">
         <p>Set week</p>
-        <div className='AddWodWeek__set-week-wrapper'>
-          <input name='week-of' onChange={this.handleSetWeek} type='date' value={weekOfValue} />
+        <div className="AddWodWeek__set-week-wrapper">
+          <input name="week-of" onChange={this.handleSetWeek} type="date" value={weekOfValue} />
           <span>required</span>
         </div>
-        <form encType="multipart/form-data" className='AddWodWeek__form' onSubmit={this.handleSubmit}>
+        <form
+          encType="multipart/form-data"
+          className="AddWodWeek__form"
+          onSubmit={this.handleSubmit}
+        >
           {addWodDays}
-          <button onClick={this.handleSubmit} type='submit'>Add Wod Week</button>
+          <button onClick={this.handleSubmit} type="submit">
+            Add Wod Week
+          </button>
         </form>
       </section>
     );

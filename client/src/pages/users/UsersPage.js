@@ -3,40 +3,36 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { liftUserToDisplay } from '../../redux/modules/displayed-user';
 
-import useAxios from '../../utils/axios-helpers';
-
-const path = '/user';
-const { getWithAxios } = useAxios(path);
+// PLACEHOLDER
+const getWithAxios = console.log('useAxios placeholder...change with real func!!!');
 
 class UsersPage extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-       allUsers: [],
-    }
+      allUsers: [],
+    };
   }
 
   handleClick = user => {
     this.props.liftUserToDisplay(user);
-  }
+  };
 
   componentDidMount() {
-    getWithAxios().then(result => {
-      // console.log('result.data: ', result.data);
-      this.setState({ allUsers: result.data.allUsers });
-    });
+    // getWithAxios().then(result => {
+    //   this.setState({ allUsers: result.data.allUsers });
+    // });
   }
 
   render() {
     const allUsers = this.state.allUsers.map(user => {
       return (
         <div key={user._id}>
-          <Link
-            to='/user'
-            onClick={() => this.handleClick(user)}
-          >{user.firstName} {user.lastName}</Link>
+          <Link to="/user" onClick={() => this.handleClick(user)}>
+            {user.firstName} {user.lastName}
+          </Link>
         </div>
-      )
+      );
     });
     return (
       <section>
@@ -44,7 +40,7 @@ class UsersPage extends React.Component {
         <h2>heres the users</h2>
         {allUsers}
       </section>
-    )
+    );
   }
 }
 

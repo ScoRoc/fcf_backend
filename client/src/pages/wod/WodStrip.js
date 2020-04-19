@@ -5,10 +5,9 @@ import axios from 'axios';
 import WodStripDay from './WodStripDay';
 
 import { isEqual, isLessThanOrEqual } from '../../utils/comparisons';
-import useAxios from '../../utils/axios-helpers';
 
-const path = '/wod';
-const { putWithAxios } = useAxios(path);
+// PLACEHOLDER
+const putWithAxios = console.log('useAxios placeholder...change with real func!!!');
 
 export default class WodStrip extends React.Component {
   constructor(props) {
@@ -16,7 +15,7 @@ export default class WodStrip extends React.Component {
     this.state = {
       weekOf: '',
       wods: [],
-    }
+    };
   }
 
   isEscapeKey = isEqual('Escape');
@@ -24,24 +23,26 @@ export default class WodStrip extends React.Component {
 
   handleErrors = data => {
     console.log('data: ', data);
-    console.log('err: ', data._message)
-  }
+    console.log('err: ', data._message);
+  };
 
   handleSuccess = data => {
     console.log('success: ', data);
     const { updatedWod } = data;
     this.setState(prevState => {
-      const idx = prevState.wods.indexOf( prevState.wods.find(wod => wod._id === updatedWod._id) );
-      return { wods: prevState.wods.map((wod, i) => i === idx ? { ...wod, text: updatedWod.text } : wod) };
+      const idx = prevState.wods.indexOf(prevState.wods.find(wod => wod._id === updatedWod._id));
+      return {
+        wods: prevState.wods.map((wod, i) => (i === idx ? { ...wod, text: updatedWod.text } : wod)),
+      };
     });
-  }
+  };
 
   updateWod = ({ _id, text }) => {
     putWithAxios({ _id, text }).then(result => {
       const { data } = result;
       data.errors ? this.handleErrors(data) : this.handleSuccess(data);
     });
-  }
+  };
 
   getFormattedWeekOf = date => {
     const mDate = moment(date);
@@ -49,7 +50,7 @@ export default class WodStrip extends React.Component {
     const month = mDate.format('MMMM');
     const dateOfMonth = mDate.format('Do');
     return `${day}, ${month} ${dateOfMonth}`;
-  }
+  };
 
   // componentDidUpdate(prevProps) {
   //   this.setState((prevState, props) => {
@@ -63,7 +64,7 @@ export default class WodStrip extends React.Component {
     this.setState((prevState, props) => {
       // console.log('wodweek: ', this.props.wodweek);
       const { weekOf, wods } = props.wodweek;
-      return { weekOf, wods }
+      return { weekOf, wods };
     });
   }
 
@@ -82,7 +83,7 @@ export default class WodStrip extends React.Component {
       />
     ));
     return (
-      <div className='WodWeekStrip'>
+      <div className="WodWeekStrip">
         <h4>Week of: {formattedWeekOf}</h4>
         <button onClick={() => this.props.deleteWodWeek(wodweek, wodIds)}>Delete whole week</button>
         {days}

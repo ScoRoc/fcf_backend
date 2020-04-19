@@ -8,10 +8,8 @@ export const mapDateStringToMomentObj = (toChange, keysArr) => {
   const newArr = arr.map(item => {
     return {
       ...item,
-      [firstKey]: item[firstKey] !== null
-                      ? stringToMomentDate( item[firstKey] )
-                      : null,
+      [firstKey]: item[firstKey] !== null ? stringToMomentDate(item[firstKey]) : null,
     };
   });
   return keysArr.length > 0 ? mapDateStringToMomentObj(newArr, keysArr) : newArr;
-}
+};

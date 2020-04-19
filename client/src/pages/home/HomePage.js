@@ -1,27 +1,28 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import './Home.min.css';
-
+// Libraries
+import React, { useGlobal } from 'reactn';
+import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+// CSS
+import './Home.min.css';
+// Constnats
+import { URL } from '../../constants/url';
 
-class HomePage extends React.Component {
+const HomePage = props => {
+  // Global State
+  const [user] = useGlobal('user');
 
-  render() {
-    if (!this.props.manager) return <Redirect to='/signin' />;
-    return (
-      <div className='Home'>
-        <p>home</p>
-      </div>
-    );
-  }
-}
+  // If no token, go to LoginPage
 
-const mapStateToProps = state => {
-  return {
-    manager: state.auth.manager,
-    token: state.auth.token,
-  };
+  if (!user.token) return <Redirect to={URL.LOGIN} />;
+
+  // Return
+
+  return (
+    <div className="Home">
+      <p>home</p>
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(HomePage);
+export default HomePage;

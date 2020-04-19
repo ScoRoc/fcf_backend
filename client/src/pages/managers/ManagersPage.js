@@ -3,22 +3,20 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { liftManagerToDisplay } from '../../redux/modules/displayed-manager';
 
-import useAxios from '../../utils/axios-helpers';
-
-const path = '/manager';
-const { getWithAxios } = useAxios(path);
+// PLACEHOLDER
+const getWithAxios = console.log('useAxios placeholder...change with real func!!!');
 
 class ManagersPage extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-       allManagers: [],
-    }
+      allManagers: [],
+    };
   }
 
   handleClick = manager => {
     this.props.liftManagerToDisplay(manager);
-  }
+  };
 
   componentDidMount() {
     getWithAxios().then(result => {
@@ -31,21 +29,20 @@ class ManagersPage extends React.Component {
     const allManagers = this.state.allManagers.map(manager => {
       return (
         <div key={manager._id}>
-          <Link
-            to='/manager'
-            onClick={() => this.handleClick(manager)}
-          >{manager.firstName} {manager.lastName}</Link>
+          <Link to="/manager" onClick={() => this.handleClick(manager)}>
+            {manager.firstName} {manager.lastName}
+          </Link>
         </div>
-      )
+      );
     });
     return (
       <section>
         <p>hey from users page</p>
-        <Link to='/add-manager'>Add a manager</Link>
+        <Link to="/add-manager">Add a manager</Link>
         <h2>heres the users</h2>
         {allManagers}
       </section>
-    )
+    );
   }
 }
 
