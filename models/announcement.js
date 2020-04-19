@@ -2,18 +2,19 @@ const mongoose = require('mongoose');
 
 const announcementSchema = new mongoose.Schema(
   {
-    cloudinary: {
-      imgUrl: {
-        // from Cloudinary
-        required: true,
-        type: String,
-      },
-      public_id: {
-        // from Cloudinary
-        required: true,
-        type: String,
-      },
-    },
+    // COMMENTED OUT FOR TESTING
+    // cloudinary: {
+    //   imgUrl: {
+    //     // from Cloudinary
+    //     required: true,
+    //     type: String,
+    //   },
+    //   public_id: {
+    //     // from Cloudinary
+    //     required: true,
+    //     type: String,
+    //   },
+    // },
     description: {
       maxlength: 150,
       minlength: 1,
