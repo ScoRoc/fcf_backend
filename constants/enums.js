@@ -6,6 +6,7 @@ const EVENT_TYPES = Object.freeze({
 
 const LAST_LOGIN = Object.freeze({
   APP: 'app',
+  NONE: 'none',
   PORTAL: 'portal',
 });
 

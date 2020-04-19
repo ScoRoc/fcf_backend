@@ -1,6 +1,5 @@
 // Libraries
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 // Models
 const Event = require('../models/event');
@@ -58,8 +57,8 @@ router.get('/:id', (req, res) => {
 // POST - create new event
 
 router.post('/', (req, res) => {
-  const { endDate, name, startDate, type, url } = req.body;
   const { createdByUser } = req.query;
+  const { endDate, name, startDate, type, url } = req.body;
 
   // Validation
 

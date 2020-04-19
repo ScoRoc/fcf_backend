@@ -1,8 +1,8 @@
 // Libraries
+require('dotenv').config();
 const bcrypt = require('bcrypt');
-const express = require('express');
 const jwt = require('jsonwebtoken');
-const router = express.Router();
+const router = require('express').Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 // Models
 const User = require('../models/user');
@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
 
   // Validation
 
-  if (!Object.values(LAST_LOGIN).includes(loginFrom)) {
+  if (loginFrom && !Object.values(LAST_LOGIN).includes(loginFrom)) {
     return res.send({
       enumValues: LAST_LOGIN,
       error: true,
@@ -91,8 +91,8 @@ router.post('/', async (req, res) => {
       firstName,
       lastName,
       lastLogin: {
-        app: loginFrom === 'app' ? new Date() : null,
-        portal: loginFrom === 'portal' ? new Date() : null,
+        app: loginFrom === 'app' ? new Date() : undefined,
+        portal: loginFrom === 'portal' ? new Date() : undefined,
       },
       email,
       meta: {
@@ -150,7 +150,7 @@ router.patch('/:id', (req, res) => {
     userToUpdate.save((err, updatedUser) => {
       if (err)
         return res
-          .status(400)
+          .status(500)
           .send({ msg: 'An error occurred when attempting to update the user.' });
 
       res.json({ user: { attributes: updatedUser.toObject() } });
