@@ -1,3 +1,9 @@
+const EVENT_TYPES = Object.freeze({
+  COMMUNITY: 'community',
+  COMPETITION: 'competition',
+  SOCIAL: 'social',
+});
+
 const LAST_LOGIN = Object.freeze({
   APP: 'app',
   PORTAL: 'portal',
@@ -10,6 +16,7 @@ const ROLES = Object.freeze({
 });
 
 module.exports = {
+  EVENT_TYPES,
   LAST_LOGIN,
   ROLES,
 };

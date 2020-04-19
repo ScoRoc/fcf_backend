@@ -22,28 +22,28 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.post('/signup', (req, res) => {
-  User.findOne({ email: req.body.email.toLowerCase() }, function (err, user) {
-    if (user) res.redirect('/auth/signup'); // DO I NEED TO RETURN THIS ???
+// router.post('/signup', (req, res) => {
+//   User.findOne({ email: req.body.email.toLowerCase() }, function (err, user) {
+//     if (user) res.redirect('/auth/signup'); // DO I NEED TO RETURN THIS ???
 
-    User.create(
-      {
-        name: req.body.name,
-        email: req.body.email.toLowerCase(),
-        password: req.body.password,
-        numberOfStickies: 0,
-      },
-      function (err, user) {
-        if (err) return res.send(err);
+//     User.create(
+//       {
+//         name: req.body.name,
+//         email: req.body.email.toLowerCase(),
+//         password: req.body.password,
+//         numberOfStickies: 0,
+//       },
+//       function (err, user) {
+//         if (err) return res.send(err);
 
-        const token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-          expiresIn: TOKEN_DURATION,
-        });
-        res.json({ user: user.toObject(), token });
-      },
-    );
-  });
-});
+//         const token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
+//           expiresIn: TOKEN_DURATION,
+//         });
+//         res.json({ user: user.toObject(), token });
+//       },
+//     );
+//   });
+// });
 
 router.post('/validate', (req, res) => {
   const { token } = req.body.token;

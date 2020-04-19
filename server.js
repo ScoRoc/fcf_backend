@@ -15,14 +15,14 @@ const sockets = require('./websocket/sockets');
 const user = require('./routes/user');
 const wod = require('./routes/wod');
 
-// App Declarations
+// App Setup
 
 const app = express();
 const http = httpLib.createServer(app);
 const io = sockets.listen(http);
 
 app.io = io;
-// Libraries
+// libraries
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -33,6 +33,9 @@ app.use('/events', events);
 app.use('/users', user);
 app.use('/wods', wod);
 // https://app.swaggerhub.com/home - ToDo complete Swagger
+
+// add this in client package.json for local dev after scripts
+// "proxy": "http://localhost:3001",
 
 // Mongoose
 
@@ -67,11 +70,11 @@ if (process.env.NODE_ENV === 'production') {
 
 // npm run dev to run in dev mode
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}...`);
-});
-// http.listen(PORT, function() {
-//   console.log(`Http is listening on port ${PORT}...`)
+// app.listen(PORT, () => {
+//   console.log(`App listening on port ${PORT}...`);
 // });
+http.listen(PORT, function () {
+  console.log(`Http is listening on port ${PORT}...`);
+});
 
 module.exports = app;

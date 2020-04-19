@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-const moment = require('moment');
 const ObjectId = require('mongoose').Types.ObjectId;
 // Models
 const User = require('../models/user');
@@ -17,12 +16,15 @@ const createToken = user => {
   return jwt.sign(user.toObject(), process.env.JWT_SECRET, {
     expiresIn: TOKEN_DURATION,
   });
-}
+};
 
 // GET - all users
 
 router.get('/', (req, res) => {
   // TODO - add query string for options rollup data, populate, etc.
+
+  // Find users
+
   User.find({}, (err, users) => {
     if (err) return res.send(err);
 
@@ -30,7 +32,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// GET - single user
+// GET - one user
 
 router.get('/:id', (req, res) => {
   // TODO - add query string for options rollup data, populate, etc.
@@ -44,6 +46,8 @@ router.get('/:id', (req, res) => {
       _msg: 'The id field is invalid and should be a valid user._id',
     });
   }
+
+  // Get user
 
   User.findById(id, (err, user) => {
     if (err) return res.send(err);
@@ -64,7 +68,8 @@ router.post('/', async (req, res) => {
     return res.send({
       enumValues: LAST_LOGIN,
       error: true,
-      _msg: 'The loginFrom field was incorrect. It should be an enum. See the enumValues field in this response for possible values.',
+      _msg:
+        'The loginFrom field was incorrect. See the enumValues field in this response for possible values.',
     });
   }
 
@@ -75,31 +80,35 @@ router.post('/', async (req, res) => {
     });
   }
 
-  if ( await User.findOne({ email: req.body.email }) ) {
+  if (await User.findOne({ email: req.body.email })) {
     return res.send({ error: true, _msg: 'There is already a user with that email.' });
   }
 
-  // Create document
+  // Create user
 
-  User.create({
-    firstName,
-    lastName,
-    lastLogin: {
-      app: loginFrom === 'app' ? new Date() : null,
-      portal: loginFrom === 'portal' ? new Date() : null,
+  User.create(
+    {
+      firstName,
+      lastName,
+      lastLogin: {
+        app: loginFrom === 'app' ? new Date() : null,
+        portal: loginFrom === 'portal' ? new Date() : null,
+      },
+      email,
+      meta: {
+        createdByUser: createdByUser || APP_USER_ID,
+        updatedByUser: createdByUser || APP_USER_ID,
+      },
+      password,
+      role: role || ROLES.USER,
     },
-    email,
-    meta: {
-      createdByUser: createdByUser || APP_USER_ID,
-      updatedByUser: createdByUser || APP_USER_ID,
-    },
-    password,
-    role: role || ROLES.USER,
-  }, (err, user) => {
-    if (err) return res.send(err);
+    (err, user) => {
+      if (err) return res.send(err);
 
-    res.json({ user: { attributes: user.toObject(), token: createToken(user) } });
-  });
+      const token = loginFrom === 'app' && createToken(user);
+      res.json({ user: { attributes: user.toObject(), token } });
+    },
+  );
 });
 
 // PATCH - update a user
@@ -107,6 +116,8 @@ router.post('/', async (req, res) => {
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
   const { updatedByUser } = req.query;
+  // take out passsword so we don't save on a user patch
+  const { pasword, ...body } = req.body;
 
   // Validation
 
@@ -124,19 +135,23 @@ router.patch('/:id', (req, res) => {
     });
   }
 
-  // Update document
+  // Update user
 
   User.findById(id, (err, userToUpdate) => {
     if (err) return res.send(err);
 
     userToUpdate.set({
-      ...req.body,
+      ...body, // TODO need to do validation
       meta: {
         updatedByUser,
       },
     });
+
     userToUpdate.save((err, updatedUser) => {
-      if (err) return res.status(400).send({ msg: 'An error occurred when attempting to update the user.' });
+      if (err)
+        return res
+          .status(400)
+          .send({ msg: 'An error occurred when attempting to update the user.' });
 
       res.json({ user: { attributes: updatedUser.toObject() } });
     });
@@ -158,11 +173,11 @@ router.delete('/:id', (req, res) => {
     });
   }
 
-  // Delete document
+  // Delete user
 
   User.findByIdAndDelete(id, (err, deletedUser) => {
     if (err || deletedUser === null) {
-      return res.status(400).send({ msg: 'An error occurred when attempting to delete the user.' });
+      return res.status(500).send({ msg: 'An error occurred when attempting to delete the user.' });
     }
 
     return res.send({ msg: 'Successfully deleted user.' });
@@ -178,8 +193,8 @@ router.post('/login', async (req, res) => {
   !user
     ? res.json({ user: null, token: null, errors: true, _msg: errMsg })
     : bcrypt.compareSync(req.body.password, hashedPass)
-      ? res.json({ user: user.toObject(), token: createToken(user) })
-      : res.json({ errors: true, _msg: errMsg });
+    ? res.json({ user: user.toObject(), token: createToken(user) })
+    : res.json({ errors: true, _msg: errMsg });
 });
 
 // ??? DO I NEED
@@ -190,7 +205,7 @@ router.put('/password', (req, res) => {
   User.findByIdAndUpdate(id, { password: hash }, (err, updatedUser) => {
     if (err) return res.send(err);
 
-      res.json({ updatedUser });
+    res.json({ updatedUser });
   });
 });
 
@@ -198,15 +213,15 @@ router.put('/password', (req, res) => {
 
 router.post('/validate', (req, res) => {
   const token = req.body.token;
-  if (!token) res.status(401).json({errors: true, _msg: "Must pass the token"})
-    
-  jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
+  if (!token) res.status(401).json({ errors: true, _msg: 'Must pass the token' });
+
+  jwt.verify(token, process.env.JWT_SECRET, function (err, user) {
     if (err) return res.status(401).send(err);
-    
-    User.findById({ '_id': user._id }, function(err, foundUser) {
+
+    User.findById({ _id: user._id }, function (err, foundUser) {
       if (err) return res.status(401).send(err);
-      
-      res.json({user: foundUser.toObject(), token})
+
+      res.json({ user: foundUser.toObject(), token });
     });
   });
 });

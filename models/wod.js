@@ -1,38 +1,43 @@
 const mongoose = require('mongoose');
 
-const wodSchema = new mongoose.Schema({
-  date: {
-    required: true,
-    type: Date,
-  },
-  description: {
-    maxlength: 75,
-    minlength: 1,
-    required: true,
-    type: String,
-  },
-  likedBy: [{
-    ref: 'User',
-    type: mongoose.Schema.Types.ObjectId,
-  }],
-  meta: {
-    createdByUser: {
-      immutable: true,
-      ref: 'User',
+const wodSchema = new mongoose.Schema(
+  {
+    date: {
       required: true,
-      type: mongoose.Schema.Types.ObjectId,
+      type: Date,
     },
-    updatedByUser: {
-      ref: 'User',
-      type: mongoose.Schema.Types.ObjectId,
+    description: {
+      maxlength: 75,
+      minlength: 1,
+      required: true,
+      type: String,
+    },
+    likedBy: [
+      {
+        ref: 'User',
+        type: mongoose.Schema.Types.ObjectId,
+      },
+    ],
+    meta: {
+      createdByUser: {
+        immutable: true,
+        ref: 'User',
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+      },
+      updatedByUser: {
+        ref: 'User',
+        type: mongoose.Schema.Types.ObjectId,
+      },
     },
   },
-}, {
-  timestamps: {
-    createdAt: 'meta.dateCreated',
-    updatedAt: 'meta.dateUpdated',
+  {
+    timestamps: {
+      createdAt: 'meta.dateCreated',
+      updatedAt: 'meta.dateUpdated',
+    },
   },
-});
+);
 
 const Wod = mongoose.model('Wod', wodSchema);
 
