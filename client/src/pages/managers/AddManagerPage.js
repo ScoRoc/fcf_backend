@@ -8,7 +8,7 @@ import SuccessfulNewManager from './SuccessfulNewManager';
 
 class AddManagerPage extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       successfulAdd: false,
       email: '',
@@ -16,7 +16,7 @@ class AddManagerPage extends Component {
       lastName: '',
       superUser: false,
       password: '',
-    }
+    };
   }
 
   clearManagerData = e => {
@@ -26,35 +26,44 @@ class AddManagerPage extends Component {
       lastName: '',
       superUser: false,
       password: '',
-      successfulAdd: false
+      successfulAdd: false,
     });
-  }
+  };
 
-  updateSuccessfulManager = ({manager, managerPassword}) => {
+  updateSuccessfulManager = ({ manager, managerPassword }) => {
     const { email, firstName, lastName, superUser } = manager;
-    this.setState({email, firstName, lastName, superUser, password: managerPassword, successfulAdd: true});
-  }
+    this.setState({
+      email,
+      firstName,
+      lastName,
+      superUser,
+      password: managerPassword,
+      successfulAdd: true,
+    });
+  };
 
   render() {
-    if (!this.props.manager) return <Redirect to='/signin' />;
+    // if (!this.props.manager) return <Redirect to='/signin' />;
     const { email, firstName, lastName, superUser, password, successfulAdd } = this.state;
-    const newManager  = successfulAdd
-                      ? <SuccessfulNewManager
-                          clearManagerData={this.clearManagerData}
-                          email={email}
-                          firstName={firstName}
-                          lastName={lastName}
-                          superUser={superUser}
-                          password={password}
-                        />
-                      : <div className='placeholder'>
-                          <h3>Newly added manager...</h3>
-                        </div>;
+    const newManager = successfulAdd ? (
+      <SuccessfulNewManager
+        clearManagerData={this.clearManagerData}
+        email={email}
+        firstName={firstName}
+        lastName={lastName}
+        superUser={superUser}
+        password={password}
+      />
+    ) : (
+      <div className="placeholder">
+        <h3>Newly added manager...</h3>
+      </div>
+    );
     return (
-      <div className='AddManager'>
-        <Link to='/managers'>Back</Link>
+      <div className="AddManager">
+        <Link to="/managers">Back</Link>
         <h2>Add New Manager</h2>
-        <div className='AddManager__body'>
+        <div className="AddManager__body">
           <AddManagerForm updateSuccessfulManager={this.updateSuccessfulManager} />
           {newManager}
         </div>

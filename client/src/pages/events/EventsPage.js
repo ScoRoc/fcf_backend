@@ -118,7 +118,7 @@ class EventsPage extends React.Component {
   }
 
   render() {
-    if (!this.props.manager) return <Redirect to="/signin" />;
+    // if (!this.props.manager) return <Redirect to="/signin" />;
     const { events } = this.state;
     const displayedEvents = this.filterEvents(events);
     return (

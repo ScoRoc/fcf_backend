@@ -53,7 +53,7 @@ class AnnouncementsPage extends React.Component {
   }
 
   render() {
-    if (!this.props.manager) return <Redirect to="/signin" />;
+    // if (!this.props.manager) return <Redirect to="/signin" />;
     const { announcements } = this.state;
     return (
       <section className="AnnouncementsPage">

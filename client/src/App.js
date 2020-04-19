@@ -17,8 +17,6 @@ import ManagersPage from './pages/managers/ManagersPage';
 import LoginPage from './pages/login/LoginPage';
 import UsersPage from './pages/users/UsersPage';
 import WodPage from './pages/wod/WodPage';
-// CSS
-import './App.min.css';
 // Constants
 import { URL } from './constants/url';
 
@@ -62,12 +60,12 @@ function App() {
         {/* <Header /> */}
         {/* <main className="main flex1"> */}
 
-        <Route exact path={URL.LOGIN} render={() => <LoginPage />} />
-        <Route PATH={URL.ROOT} component={HomePage} />
-        <Route PATH={URL.ANNOUNCEMENTS} render={() => <AnnouncementsPage />} />
-        <Route PATH={URL.EVENTS} render={() => <EventsPage />} />
-        <Route PATH={URL.WODS} render={() => <WodPage />} />
-        <Route PATH={URL.USERS} render={() => <UsersPage />} />
+        <Route exact path={URL.ROOT} component={HomePage} />
+        <Route path={URL.ANNOUNCEMENTS} render={() => <AnnouncementsPage />} />
+        <Route path={URL.EVENTS} render={() => <EventsPage />} />
+        <Route path={URL.LOGIN} render={() => <LoginPage />} />
+        <Route path={URL.USERS} render={() => <UsersPage />} />
+        <Route path={URL.WODS} render={() => <WodPage />} />
 
         {/* <Route
             path="/user"

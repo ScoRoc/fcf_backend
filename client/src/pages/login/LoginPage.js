@@ -3,11 +3,9 @@ import React, { useGlobal, useState } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-// REDUX TO GET RID OF \/ \/ \/ \/ \/
-import { connect } from 'react-redux';
-import { login } from '../../redux/modules/auth';
-// CSS
-import './Login.min.css';
+
+// PLACEHOLDER
+const login = () => console.log('login placeholder...');
 
 const LoginPage = props => {
   // Global State
@@ -44,9 +42,9 @@ const LoginPage = props => {
   // Return
 
   return (
-    <div className="SignIn">
+    <div style={styles.page}>
+      <h1>Administration Portal</h1>
       <form className="signin-form" onSubmit={handleSubmit}>
-        <h3>Please Sign In</h3>
         <label htmlFor="new-manager-email">
           Email
           <br />
@@ -62,23 +60,24 @@ const LoginPage = props => {
             required
           />
         </label>
-        <button type="submit">Sign In</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    manager: state.auth.manager,
-    token: state.auth.token,
-  };
+const styles = {
+  page: {
+    //
+  },
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    login: (manager, token) => dispatch(login(manager, token)),
-  };
+LoginPage.propTypes = {
+  //
+};
+
+LoginPage.defaultProps = {
+  //
 };
 
 export default LoginPage;

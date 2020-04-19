@@ -65,7 +65,7 @@ class WodPage extends React.Component {
   }
 
   render() {
-    if (!this.props.manager) return <Redirect to="/signin" />;
+    // if (!this.props.manager) return <Redirect to="/signin" />;
     const { wods, wodWeeks } = this.state;
     const weeks = wodWeeks.map(wodweek => (
       <WodStrip
