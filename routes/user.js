@@ -6,6 +6,8 @@ const router = require('express').Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 // Models
 const User = require('../models/user');
+// Middleware
+const withAuth = require('../middleware/withAuth');
 // Constants
 const { APP_USER_ID, TOKEN_DURATION } = require('../constants/globals');
 const { LAST_LOGIN, ROLES } = require('../constants/enums');
@@ -20,6 +22,7 @@ const createToken = user => {
 
 // GET - all users
 
+// router.get('/', withAuth, (req, res) => {
 router.get('/', (req, res) => {
   // TODO - add query string for options rollup data, populate, etc.
 
@@ -90,23 +93,23 @@ router.post('/', async (req, res) => {
     {
       firstName,
       lastName,
-      lastLogin: {
-        app: loginFrom === 'app' ? new Date() : undefined,
-        portal: loginFrom === 'portal' ? new Date() : undefined,
-      },
+      // lastLogin: {
+      //   app: loginFrom === 'app' ? new Date() : undefined,
+      //   portal: loginFrom === 'portal' ? new Date() : undefined,
+      // },
       email,
-      meta: {
-        createdByUser: createdByUser || APP_USER_ID,
-        updatedByUser: createdByUser || APP_USER_ID,
-      },
+      // meta: {
+      //   createdByUser: createdByUser || APP_USER_ID,
+      //   updatedByUser: createdByUser || APP_USER_ID,
+      // },
       password,
       role: role || ROLES.USER,
     },
     (err, user) => {
       if (err) return res.send(err);
 
-      const token = loginFrom === 'app' && createToken(user);
-      res.json({ user: { attributes: user.toObject(), token } });
+      // const token = loginFrom === 'app' && createToken(user);
+      res.json({ user: user.toObject() });
     },
   );
 });
@@ -116,8 +119,6 @@ router.post('/', async (req, res) => {
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
   const { updatedByUser } = req.query;
-  // take out passsword so we don't save on a user patch
-  const { pasword, ...body } = req.body;
 
   // Validation
 
@@ -141,7 +142,7 @@ router.patch('/:id', (req, res) => {
     if (err) return res.send(err);
 
     userToUpdate.set({
-      ...body, // TODO need to do validation
+      ...req.body, // TODO need to do validation
       meta: {
         updatedByUser,
       },
@@ -181,48 +182,6 @@ router.delete('/:id', (req, res) => {
     }
 
     return res.send({ msg: 'Successfully deleted user.' });
-  });
-});
-
-// ??? DO I NEED
-
-router.post('/login', async (req, res) => {
-  const errMsg = 'Email or password is incorrect.';
-  let user = await User.findOne({ email: req.body.email });
-  const hashedPass = user ? user.password : '';
-  !user
-    ? res.json({ user: null, token: null, errors: true, _msg: errMsg })
-    : bcrypt.compareSync(req.body.password, hashedPass)
-    ? res.json({ user: user.toObject(), token: createToken(user) })
-    : res.json({ errors: true, _msg: errMsg });
-});
-
-// ??? DO I NEED
-
-router.put('/password', (req, res) => {
-  const { id, password } = req.body;
-  const hash = bcrypt.hashSync(password, 10);
-  User.findByIdAndUpdate(id, { password: hash }, (err, updatedUser) => {
-    if (err) return res.send(err);
-
-    res.json({ updatedUser });
-  });
-});
-
-// ??? DO I NEED
-
-router.post('/validate', (req, res) => {
-  const token = req.body.token;
-  if (!token) res.status(401).json({ errors: true, _msg: 'Must pass the token' });
-
-  jwt.verify(token, process.env.JWT_SECRET, function (err, user) {
-    if (err) return res.status(401).send(err);
-
-    User.findById({ _id: user._id }, function (err, foundUser) {
-      if (err) return res.status(401).send(err);
-
-      res.json({ user: foundUser.toObject(), token });
-    });
   });
 });
 

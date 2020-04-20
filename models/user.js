@@ -76,7 +76,8 @@ const userSchema = new mongoose.Schema(
     password: {
       maxlength: 99,
       minlength: 8,
-      // required: true,
+      required: true,
+      select: false,
       type: String,
     },
     role: {
@@ -101,34 +102,28 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-userSchema.methods.authenticated = function (password, cb) {
-  bcrypt.compare(password, this.password, function (err, res) {
-    err ? cb(err) : cb(null, res ? this : false);
+userSchema.methods.hasPortalAccess = function (role) {
+  const portalAccess = [ROLES.ADMIN, ROLES.SUPER_ADMIN];
+  return portalAccess.includes(role);
+};
+
+userSchema.methods.isCorrectPassword = function (password, cb) {
+  bcrypt.compare(password, this.password, function (err, isCorrect) {
+    err ? cb(err) : cb(err, isCorrect);
   });
 };
 
 userSchema.pre('save', function (next) {
-  if (this.isNew) {
-    const hash = bcrypt.hashSync(this.password, 10);
-    this.password = hash;
+  if (this.isNew || this.isModified('password')) {
+    const doc = this; // save ref bc bcrypt.hash changes scope which changes this
+    const saltRounds = 10;
+    bcrypt.hash(doc.password, saltRounds, function (err, hashedPassword) {
+      if (err) next(err);
+
+      doc.password = hashedPassword;
+      next();
+    });
   }
-  next();
-});
-
-userSchema.set('toJSON', {
-  transform: function (doc, returned, options) {
-    const returnObject = { ...returned };
-    delete returnObject.password;
-    return returnObject;
-  },
-});
-
-userSchema.set('toObject', {
-  transform: function (doc, returned, options) {
-    const returnObject = { ...returned };
-    delete returnObject.password;
-    return returnObject;
-  },
 });
 
 const User = mongoose.model('User', userSchema);
