@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/core": "^10.0.28",
     "axios": "^0.19.2",
+    "emotion-theming": "^10.0.27",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

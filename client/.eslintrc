@@ -12,6 +12,7 @@
   "plugins": ["prettier"],
   "rules": {
     "eqeqeq": "error",
+    "jsx-quotes": ["error", "prefer-single"],
     "linebreak-style": ["error", "unix"],
     "prettier/prettier": [
       "error",

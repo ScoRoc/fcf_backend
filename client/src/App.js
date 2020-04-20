@@ -3,6 +3,9 @@ import React, { setGlobal, useEffect, useGlobal } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+// @jsx jsx
+import { jsx } from '@emotion/core';
+import { ThemeProvider } from 'emotion-theming';
 // Components
 import AddManagerPage from './pages/managers/AddManagerPage';
 import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
@@ -18,11 +21,14 @@ import LoginPage from './pages/login/LoginPage';
 import UsersPage from './pages/users/UsersPage';
 import WodPage from './pages/wod/WodPage';
 // Constants
-import { URL } from './constants/url';
+import { LOCAL_STORAGE_NAME, URL } from './constants/index';
+// Themes
+import themes, { THEME_NAMES } from './theme/themes';
 
 // Global State
 
 setGlobal({
+  themeName: THEME_NAMES.MAIN,
   user: {},
 });
 
@@ -34,40 +40,48 @@ const logout = () => console.log('fake logging out...');
 function App() {
   // Global State
 
-  const { user, setUser } = useGlobal('user');
+  const [themeName] = useGlobal('themeName');
+  const [user] = useGlobal('user');
 
   // Effects
 
   useEffect(() => {
-    const token = localStorage.getItem('fcf_backend');
-    if (!token) logout();
-
     axios
-      .post(URL.VALIDATE_USER, { token })
-      .then(result => {
-        const { data } = result;
-        const { user } = data;
+      .get(URL.AUTH)
+      .then(res => {
+        console.log('res: ', res);
+        console.log('res.data: ', res.data);
+        const { user } = res.data;
         login(user);
       })
       .catch(err => console.log('err: ', err));
   }, []);
 
+  // Theme
+
+  const theme = themes[themeName];
+
+  // Styles
+
+  const styles = buildStyles(theme);
+
   // Return
 
   return (
-    <Router>
-      <div className="App">
-        {/* <Header /> */}
-        {/* <main className="main flex1"> */}
+    <ThemeProvider theme={theme}>
+      <div className='App' css={styles.app}>
+        <Router>
+          {/* <Header /> */}
+          {/* <main className="main flex1"> */}
 
-        <Route exact path={URL.ROOT} component={HomePage} />
-        <Route path={URL.ANNOUNCEMENTS} render={() => <AnnouncementsPage />} />
-        <Route path={URL.EVENTS} render={() => <EventsPage />} />
-        <Route path={URL.LOGIN} render={() => <LoginPage />} />
-        <Route path={URL.USERS} render={() => <UsersPage />} />
-        <Route path={URL.WODS} render={() => <WodPage />} />
+          <Route exact path={URL.ROOT} component={HomePage} />
+          <Route path={URL.ANNOUNCEMENTS} render={() => <AnnouncementsPage />} />
+          <Route path={URL.EVENTS} render={() => <EventsPage />} />
+          <Route path={URL.LOGIN} render={() => <LoginPage />} />
+          <Route path={URL.USERS} render={() => <UsersPage />} />
+          <Route path={URL.WODS} render={() => <WodPage />} />
 
-        {/* <Route
+          {/* <Route
             path="/user"
             render={() => (
               <DisplayedUserPage
@@ -88,12 +102,24 @@ function App() {
           />
           <Route path="/add-manager" render={() => <AddManagerPage />} />
           <Route path="/signin" render={() => <SignInPage />} /> */}
-        {/* </main> */}
-        {/* <Main /> */}
-        {/* <Footer /> */}
+          {/* </main> */}
+          {/* <Main /> */}
+          {/* <Footer /> */}
+        </Router>
       </div>
-    </Router>
+    </ThemeProvider>
   );
 }
+
+const buildStyles = theme => ({
+  app: {
+    backgroundColor: theme.background,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    margin: 0,
+    padding: 0,
+  },
+});
 
 export default App;

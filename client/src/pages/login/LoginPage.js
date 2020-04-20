@@ -3,9 +3,15 @@ import React, { useGlobal, useState } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-
-// PLACEHOLDER
-const login = () => console.log('login placeholder...');
+// @jsx jsx
+import { jsx } from '@emotion/core';
+import { useTheme } from 'emotion-theming';
+// Widgets
+import { Button, Text, ThemeToggle } from '../../widgets/index';
+// Utils
+import { login } from '../../utils/authHelpers';
+// Constants
+import { QUERY_STRING, URL } from '../../constants/index';
 
 const LoginPage = props => {
   // Global State
@@ -15,62 +21,114 @@ const LoginPage = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleErrors = data => {
+  // Theme
+  const theme = useTheme();
+
+  // Functions
+
+  const handleErrors = res => {
+    const { data } = res;
     console.log('data: ', data);
-    console.log('err: ', data._message);
+    console.log('err: ', data._msg);
   };
 
-  const handleSuccess = data => {
-    console.log('success: ', data);
-    const { manager, token } = data;
-    login(manager, token);
+  const handleSuccess = res => {
+    // send to home page
+    login(user);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    const email = email.toLowerCase();
-    axios.post('/manager/signin', { email, password }).then(result => {
-      const { data } = result;
-      data.errors ? handleErrors(data) : handleSuccess(data);
-    });
+    axios
+      .post(
+        URL.AUTH,
+        { email, password },
+        {
+          params: {
+            loginFrom: QUERY_STRING.LOGIN_FROM,
+          },
+        },
+      )
+      .then(res => {
+        console.log('res: ', res);
+        res.status === 200 ? handleSuccess(res) : handleErrors(res);
+      })
+      .catch(err => console.error(err));
   };
+
+  // Styles
+
+  const styles = buildStyles(theme);
 
   // Redirect Home if session exists
 
-  if (user.token) return <Redirect to="/home" />;
+  if (user.token) return <Redirect to='/home' />;
 
   // Return
 
   return (
-    <div style={styles.page}>
-      <h1>Administration Portal</h1>
-      <form className="signin-form" onSubmit={handleSubmit}>
-        <label htmlFor="new-manager-email">
-          Email
-          <br />
-          <input id="new-manager-email" onChange={text => setEmail(text)} type="email" required />
-        </label>
-        <label htmlFor="new-manager-password">
-          Password
-          <br />
-          <input
-            id="new-manager-password"
-            onChange={text => setPassword(text)}
-            type="password"
-            required
-          />
-        </label>
-        <button type="submit">Login</button>
-      </form>
+    <div css={styles.page}>
+      <div css={styles.box}>
+        <ThemeToggle />
+        <Text size='lg'>Administration Portal</Text>
+        <form css={styles.form} onSubmit={handleSubmit}>
+          <label css={styles.label} htmlFor='login-email'>
+            <Text size='sm'>Email</Text>
+            <input
+              css={styles.input}
+              onChange={e => setEmail(e.target.value)}
+              required
+              type='email'
+              value={email}
+            />
+          </label>
+          <label css={styles.label} htmlFor='login-password'>
+            <Text size='sm'>Password</Text>
+            <input
+              css={styles.input}
+              onChange={e => setPassword(e.target.value)}
+              required
+              type='password'
+              value={password}
+            />
+          </label>
+          <Button css={styles.button} type='submit'>
+            Login
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };
 
-const styles = {
-  page: {
-    //
+const buildStyles = theme => ({
+  box: {
+    // backgroundColor: theme.colors.white,
+    backgroundColor: theme.modalBackgroundColor,
+    padding: '20px',
   },
-};
+  button: {
+    width: '100%',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  input: {
+    color: theme.color,
+  },
+  label: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+  },
+  page: {
+    alignItems: 'center',
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+  },
+});
 
 LoginPage.propTypes = {
   //

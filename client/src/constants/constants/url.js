@@ -1,11 +1,15 @@
 const URL = {
   ANNOUNCEMENTS: '/announcements',
+  AUTH: '/auth',
   EVENTS: '/events',
   LOGIN: '/login',
   ROOT: '/',
   USERS: '/users',
-  VALIDATE_USER: '/auth/validation',
   WODS: '/wods',
 };
 
-export { URL };
+const QUERY_STRING = {
+  LOGIN_FROM: 'portal',
+};
+
+export { QUERY_STRING, URL };

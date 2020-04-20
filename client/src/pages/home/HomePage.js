@@ -3,14 +3,25 @@ import React, { useGlobal } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-// CSS
-import './Home.min.css';
-// Constnats
-import { URL } from '../../constants/url';
+// @jsx jsx
+import { jsx } from '@emotion/core';
+import { useTheme } from 'emotion-theming';
+// Constants
+import { URL } from '../../constants/index';
+
+// HomePage
 
 const HomePage = props => {
   // Global State
   const [user] = useGlobal('user');
+
+  // Theme
+
+  const theme = useTheme();
+
+  // Styles
+
+  const styles = buildStyles(theme);
 
   // If no token, go to LoginPage
 
@@ -19,10 +30,16 @@ const HomePage = props => {
   // Return
 
   return (
-    <div className="Home">
-      <p>home</p>
+    <div>
+      <p css={styles.p}>home</p>
     </div>
   );
 };
+
+const buildStyles = theme => ({
+  p: {
+    color: theme.color,
+  },
+});
 
 export default HomePage;
