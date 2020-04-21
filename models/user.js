@@ -51,10 +51,6 @@ const userSchema = new mongoose.Schema(
       // required: true,
       type: String,
     },
-    lastLogin: {
-      app: { type: Date },
-      portal: { type: Date },
-    },
     lastName: {
       maxlength: 99,
       minlength: 1,
@@ -67,6 +63,10 @@ const userSchema = new mongoose.Schema(
         ref: 'User',
         // required: true,
         type: mongoose.Schema.Types.ObjectId,
+      },
+      lastLogin: {
+        app: { type: Date },
+        portal: { type: Date },
       },
       updatedByUser: {
         ref: 'User',
@@ -123,6 +123,8 @@ userSchema.pre('save', function (next) {
       doc.password = hashedPassword;
       next();
     });
+  } else {
+    next();
   }
 });
 

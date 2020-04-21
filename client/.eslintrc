@@ -4,12 +4,12 @@
     "es6": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended", "plugin:react/recommended"],
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2020
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react", "react-hooks"],
   "rules": {
     "eqeqeq": "error",
     "jsx-quotes": ["error", "prefer-single"],
@@ -22,6 +22,13 @@
         "trailingComma": "all"
       }
     ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhuastive-deps": "warn",
     "singleQuotes": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

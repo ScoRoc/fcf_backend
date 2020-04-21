@@ -1,40 +1,49 @@
 // Libraries
-import React, { useGlobal, useState } from 'reactn';
+import React, { useDispatch, useState } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Widgets
 import { Button, Text, ThemeToggle } from '../../widgets/index';
-// Utils
-import { login } from '../../utils/authHelpers';
 // Constants
 import { QUERY_STRING, URL } from '../../constants/index';
 
+// LoginPage
+
 const LoginPage = props => {
-  // Global State
-  const [user] = useGlobal('user');
+  // Dispatchers
+  const login = useDispatch('login');
+  const logout = useDispatch('logout');
 
   // State
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('super@super.com');
+  const [password, setPassword] = useState('password');
+
+  // History and Location
+
+  const history = useHistory();
+  const location = useLocation();
 
   // Theme
+
   const theme = useTheme();
 
   // Functions
 
   const handleErrors = res => {
-    const { data } = res;
-    console.log('data: ', data);
-    console.log('err: ', data._msg);
+    // console.log('res.data: ', res.data);
+    // console.log('res.err: ', res.data._msg);
+    logout();
   };
 
   const handleSuccess = res => {
-    // send to home page
+    const { from } = location.state || { from: { pathname: URL.ROOT } };
+    const { user } = res.data;
     login(user);
+    history.replace(from);
   };
 
   const handleSubmit = e => {
@@ -53,16 +62,15 @@ const LoginPage = props => {
         console.log('res: ', res);
         res.status === 200 ? handleSuccess(res) : handleErrors(res);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        handleErrors(err);
+      });
   };
 
   // Styles
 
   const styles = buildStyles(theme);
-
-  // Redirect Home if session exists
-
-  if (user.token) return <Redirect to='/home' />;
 
   // Return
 

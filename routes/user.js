@@ -6,23 +6,12 @@ const router = require('express').Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 // Models
 const User = require('../models/user');
-// Middleware
-const withAuth = require('../middleware/withAuth');
 // Constants
 const { APP_USER_ID, TOKEN_DURATION } = require('../constants/globals');
 const { LAST_LOGIN, ROLES } = require('../constants/enums');
 
-// Helper Functions
-
-const createToken = user => {
-  return jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-    expiresIn: TOKEN_DURATION,
-  });
-};
-
 // GET - all users
 
-// router.get('/', withAuth, (req, res) => {
 router.get('/', (req, res) => {
   // TODO - add query string for options rollup data, populate, etc.
 
@@ -93,23 +82,35 @@ router.post('/', async (req, res) => {
     {
       firstName,
       lastName,
-      // lastLogin: {
-      //   app: loginFrom === 'app' ? new Date() : undefined,
-      //   portal: loginFrom === 'portal' ? new Date() : undefined,
-      // },
       email,
-      // meta: {
-      //   createdByUser: createdByUser || APP_USER_ID,
-      //   updatedByUser: createdByUser || APP_USER_ID,
-      // },
+      meta: {
+        createdByUser: createdByUser || APP_USER_ID,
+        lastLogin: {
+          app: loginFrom === LAST_LOGIN.APP ? new Date() : undefined,
+          // portal: loginFrom === LAST_LOGIN.PORTAL ? new Date() : undefined, // ??? if created from portal they aren't logging in...I think... ???
+        },
+        updatedByUser: createdByUser || APP_USER_ID,
+      },
       password,
       role: role || ROLES.USER,
     },
-    (err, user) => {
+    (err, createdUser) => {
+      // Error creating user
+
       if (err) return res.send(err);
 
-      // const token = loginFrom === 'app' && createToken(user);
-      res.json({ user: user.toObject() });
+      // Remove password
+
+      const { password, ...user } = createdUser.toObject();
+
+      // If created through app, add token
+
+      if (loginFrom === LAST_LOGIN.APP) {
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: TOKEN_DURATION });
+        return res.cookie('token', token, { httpOnly: true }).status(200).send(user);
+      } else {
+        return res.send({ user });
+      }
     },
   );
 });
@@ -149,12 +150,13 @@ router.patch('/:id', (req, res) => {
     });
 
     userToUpdate.save((err, updatedUser) => {
-      if (err)
+      if (err) {
         return res
           .status(500)
           .send({ msg: 'An error occurred when attempting to update the user.' });
+      }
 
-      res.json({ user: { attributes: updatedUser.toObject() } });
+      res.json({ user: updatedUser.toObject() });
     });
   });
 });
