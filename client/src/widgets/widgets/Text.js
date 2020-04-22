@@ -7,14 +7,11 @@ import { useTheme } from 'emotion-theming';
 
 // Text
 
-const Text = ({ size, ...props }) => {
-  // Theme
+const Text = ({ color, size, ...props }) => {
+  // Theme and Styles
 
   const theme = useTheme();
-
-  // Styles
-
-  const styles = buildStyles({ size, theme });
+  const styles = buildStyles({ color, size, theme });
 
   // Return
 
@@ -25,19 +22,21 @@ const Text = ({ size, ...props }) => {
   );
 };
 
-const buildStyles = ({ size, theme }) => ({
+const buildStyles = ({ color, size, theme }) => ({
   p: {
-    color: theme.color,
+    color: color || theme.color,
     fontSize: theme.sizes[size],
     margin: 0,
   },
 });
 
 Text.propTypes = {
+  color: 'string', // SHOULD BE ONE OF THEME COLORS ONLY
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
 };
 
 Text.defaultProps = {
+  color: null,
   size: 'sm',
 };
 

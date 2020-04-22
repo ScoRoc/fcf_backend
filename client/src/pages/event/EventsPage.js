@@ -7,7 +7,7 @@ import './Events.min.css';
 import AddEvent from './AddEvent';
 import AllEvents from './AllEvents';
 
-import { getIndex, addItemToStateArr } from '../../utils/helpers';
+import { getIndex, addItemToStateArr } from '../../utils/OLD-helpers';
 import { isGreaterThanOrEqual, isLessThan } from '../../utils/comparisons';
 import { mapDateStringToMomentObj } from '../../utils/date-helpers';
 
@@ -122,7 +122,7 @@ class EventsPage extends React.Component {
     const { events } = this.state;
     const displayedEvents = this.filterEvents(events);
     return (
-      <section className="EventsPage">
+      <section className='EventsPage'>
         <h1>Events</h1>
         <AddEvent addEvent={this.addEvent} allowTypingPastLimit={true} charLimit={22} />
         <AllEvents

@@ -1,5 +1,3 @@
-import Button from './widgets/Button';
-import Text from './widgets/Text';
-import ThemeToggle from './widgets/ThemeToggle';
+import ThemeToggle from './components/ThemeToggle';
 
-export { Button, Text, ThemeToggle };
+export { ThemeToggle };

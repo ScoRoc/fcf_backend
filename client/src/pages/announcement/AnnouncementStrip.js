@@ -1,8 +1,8 @@
 import React from 'react';
 
 import AnnouncementTwoButtons from './AnnouncementTwoButtons';
-import TwoStateTextInput from '../../components/TwoStateTextInput';
-import TwoStateTextTACC from '../../components/TwoStateTextTACC';
+import TwoStateTextInput from '../../components/components/TwoStateTextInput';
+import TwoStateTextTACC from '../../components/components/TwoStateTextTACC';
 
 import { isEqual, isLessThanOrEqual } from '../../utils/comparisons';
 
@@ -18,7 +18,7 @@ export default class AnnouncementStrip extends React.Component {
       editable: false,
       initialText: '',
       initialUrl: '',
-    }
+    };
   }
 
   isEscapeKey = isEqual('Escape');
@@ -33,36 +33,36 @@ export default class AnnouncementStrip extends React.Component {
         announcementUrl: initialUrl,
         charCount: initialText.length,
         editable: false,
-      }
+      };
     });
-  }
+  };
 
   handleKeyUp = e => {
     e.preventDefault();
-    if ( this.isEscapeKey(e.key) ) this.cancelChange();
-  }
+    if (this.isEscapeKey(e.key)) this.cancelChange();
+  };
 
   toggleEdit = () => {
     this.setState({ editable: !this.state.editable });
-  }
+  };
 
   handleEditAnnouncement = (announcementText, url, id) => {
     this.toggleEdit();
     this.props.editAnnouncement(announcementText, url, id);
     this.setState({ initialText: announcementText, initialUrl: url });
-  }
+  };
 
   liftAnnouncementText = announcementText => {
     this.setState((prevState, props) => {
       const { allowTypingPastLimit } = prevState;
-      const newState  = allowTypingPastLimit
-                      ? { charCount: announcementText.length, announcementText }
-                      : this.isLTEtoCharLimit()(announcementText.length)
-                        ? { charCount: announcementText.length, announcementText }
-                        : { charCount: announcementText.length - 1 };
+      const newState = allowTypingPastLimit
+        ? { charCount: announcementText.length, announcementText }
+        : this.isLTEtoCharLimit()(announcementText.length)
+        ? { charCount: announcementText.length, announcementText }
+        : { charCount: announcementText.length - 1 };
       return newState;
     });
-  }
+  };
 
   componentDidMount() {
     this.setState((prevState, props) => {
@@ -75,7 +75,7 @@ export default class AnnouncementStrip extends React.Component {
         charCount: announcementText.length,
         initialText: announcementText,
         initialUrl: url,
-      }
+      };
     });
   }
 

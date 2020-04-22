@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-import ImgCrop from '../../components/ImgCrop';
-import TextAreaCharCount from '../../components/TextAreaCharCount';
+import ImgCrop from '../../components/components/ImgCrop';
+import TextAreaCharCount from '../../components/components/TextAreaCharCount';
 
 import { isLessThanOrEqual } from '../../utils/comparisons';
 
@@ -115,55 +115,55 @@ export default class AddAnnouncement extends React.Component {
     const { allowTypingPastLimit, announcementText, charLimit, imgUrl, url } = this.state;
     const disabled = this.isTextLTEtoLimit()(announcementText.length) ? '' : 'disabled';
     return (
-      <section className="AddAnnouncement">
+      <section className='AddAnnouncement'>
         <form
-          encType="multipart/form-data"
-          className="AddAnnouncement__form"
+          encType='multipart/form-data'
+          className='AddAnnouncement__form'
           onSubmit={this.handleSubmit}
         >
-          <div className="AddAnnouncement__form__announcement-wrap">
-            <label htmlFor="new-announcement-text">Announcement</label>
+          <div className='AddAnnouncement__form__announcement-wrap'>
+            <label htmlFor='new-announcement-text'>Announcement</label>
             <TextAreaCharCount
               allowTypingPastLimit={allowTypingPastLimit}
               charLimit={charLimit}
-              id="new-announcement-text"
+              id='new-announcement-text'
               liftText={this.liftAnnouncementText}
-              divClass="AddAnnouncement__form__tacc-wrap-div"
-              pClass="AddAnnouncement__form__tacc-wrap-div__p"
-              textareaClass="AddAnnouncement__form__tacc-wrap-div__textarea"
+              divClass='AddAnnouncement__form__tacc-wrap-div'
+              pClass='AddAnnouncement__form__tacc-wrap-div__p'
+              textareaClass='AddAnnouncement__form__tacc-wrap-div__textarea'
               required
               text={announcementText}
             />
           </div>
-          <div className="AddAnnouncement__form__url-wrap">
-            <label htmlFor="new-announcement-url">URL</label>
-            <div id="new-announcement-url-wrapper">
+          <div className='AddAnnouncement__form__url-wrap'>
+            <label htmlFor='new-announcement-url'>URL</label>
+            <div id='new-announcement-url-wrapper'>
               <span>http://</span>
               <input
-                id="new-announcement-url"
-                name="imgUrl"
+                id='new-announcement-url'
+                name='imgUrl'
                 onChange={e => this.setState({ url: e.target.value })}
-                type="text"
+                type='text'
                 value={url}
               />
             </div>
           </div>
-          <div className="AddAnnouncement__form__img-wrap">
-            <label htmlFor="new-announcement-img">Image</label>
+          <div className='AddAnnouncement__form__img-wrap'>
+            <label htmlFor='new-announcement-img'>Image</label>
             {/* <button onClick={this.handleImgBtnClick}>Choose an image</button> */}
             <input
-              id="new-announcement-img"
-              name="imgFile"
+              id='new-announcement-img'
+              name='imgFile'
               onChange={this.handleImgChange}
               ref={this.img}
-              type="file"
+              type='file'
             />
             {/* <img src={imgUrl} /> */}
             {/* <div style={{ height: '30vh', background: 'green', }}> */}
             <ImgCrop liftCrop={this.liftCrop} src={imgUrl} />
             {/* </div> */}
           </div>
-          <button className={disabled} disabled={disabled} type="submit">
+          <button className={disabled} disabled={disabled} type='submit'>
             Add Announcement
           </button>
         </form>

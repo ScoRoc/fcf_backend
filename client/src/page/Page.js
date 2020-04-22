@@ -2,32 +2,28 @@
 import React, { useDispatch, useEffect, useGlobal } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { useHistory, useLocation, Route } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
+// Body
+import Body from './body/Body';
 // Components
-import AddManagerPage from './pages/managers/AddManagerPage';
-import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
-import DisplayedManagerPage from './pages/managers/DisplayedManagerPage';
-import DisplayedUserPage from './pages/users/DisplayedUserPage';
-import EventsPage from './pages/events/EventsPage';
-import Footer from './page-sections/Footer';
-import Header from './page-sections/Header';
-import HomePage from './pages/home/HomePage';
+import AddManagerPage from '../pages/manager/AddManagerPage';
+import DisplayedManagerPage from '../pages/manager/DisplayedManagerPage';
+import DisplayedUserPage from '../pages/user/DisplayedUserPage';
+import Footer from '../page-sections/Footer';
+import Header from '../page-sections/Header';
 // import Main from './page-sections/Main';
-import ManagersPage from './pages/managers/ManagersPage';
-import LoginPage from './pages/login/LoginPage';
-import UsersPage from './pages/users/UsersPage';
-import WodPage from './pages/wod/WodPage';
-// Constants
-import { URL } from './constants/index';
+import ManagersPage from '../pages/manager/ManagersPage';
 // Themes
-import themes, { THEME_NAMES } from './theme/themes';
+import themes, { THEME_NAMES } from '../theme/themes';
+// Constants
+import { URL } from 'constants/index';
 
-// AppRouter
+// Page
 
-function AppRouter() {
+function Page() {
   // Global State
 
   const [themeName] = useGlobal('themeName');
@@ -89,17 +85,19 @@ function AppRouter() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='App' css={styles.app}>
-        <Route exact path={URL.ROOT} component={HomePage} />
-        <Route path={URL.ANNOUNCEMENTS} render={() => <AnnouncementsPage />} />
-        <Route path={URL.EVENTS} render={() => <EventsPage />} />
-        <Route path={URL.LOGIN} render={() => <LoginPage />} />
-        <Route path={URL.USERS} render={() => <UsersPage />} />
-        <Route path={URL.WODS} render={() => <WodPage />} />
+      <div className='Page' css={styles.app}>
+        {/* <Header /> */}
+        {/* <Sidebar /> */}
+
+        <Body />
+
+        {/* <Footer /> */}
       </div>
     </ThemeProvider>
   );
 }
+
+// buildStyles
 
 const buildStyles = theme => ({
   app: {
@@ -112,4 +110,42 @@ const buildStyles = theme => ({
   },
 });
 
-export default AppRouter;
+// CHANGE STRUCTURE AND NAMES SO ITS LIKE THIS
+{
+  /* <Page>
+  <Heaader>
+    <Nav />
+    <Profile />
+  </Heaader>
+  <Body>
+    <Home>
+      <Grid>
+        <Announcement />
+        <Event />
+        <Wod />
+        <Daily />
+      </Grid>
+    </Home>
+    <Edit>
+      <EditSection />
+      <PhoneSection />
+    </Edit>
+    <Login>
+      <Input />
+    </Login>
+    <Manager />
+    <User />
+    <Wod />
+  </Body>
+</Page>; */
+}
+
+// folders are lowerCamelCase
+// component folders are lowerCamelCase
+//    ~ usually singular
+//    ~ plural if it contains multiple of something
+//    ~ Components are singular and UpperCamelCase
+// utils, themes, hooks, etc are plural and lowerCamelCase
+//    ~ files inside them are lowerCamelCase and either singular or plural
+
+export default Page;

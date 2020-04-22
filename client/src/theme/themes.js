@@ -24,7 +24,7 @@ const themes = {
   main: {
     color: colors.black,
     colors,
-    background: colors.darkGrey,
+    background: colors.greyDark,
     modalBackgroundColor: colors.white,
     sizes: {
       sm: '1rem',

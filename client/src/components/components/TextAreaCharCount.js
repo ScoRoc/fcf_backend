@@ -2,8 +2,7 @@ import React from 'react';
 
 import './TextAreaCharCount.min.css';
 
-import { isLessThanOrEqual } from '../utils/comparisons';
-
+import { isLessThanOrEqual } from '../../utils/comparisons';
 
 export default class TextAreaCharCount extends React.Component {
   constructor(props) {
@@ -15,41 +14,41 @@ export default class TextAreaCharCount extends React.Component {
       charLimit: 100,
       editable: false,
       text: '',
-    }
+    };
   }
 
   isTextLTEtoLimit = () => isLessThanOrEqual(this.state.charLimit);
 
   focusTextarea = () => {
     this.textarea.current.focus();
-  }
+  };
 
   handleKeyUp = e => {
     e.preventDefault();
     if (this.props.handleKeyUp) this.props.handleKeyUp(e);
-  }
+  };
 
   handleChange = e => {
     e.preventDefault();
     const { value } = e.target;
     this.setState((prevState, props) => {
       const { allowTypingPastLimit } = prevState;
-      const newState  = allowTypingPastLimit
-                      ? { charCount: value.length, text: value }
-                      : this.isTextLTEtoLimit()(value.length)
-                        ? { charCount: value.length, text: value }
-                        :  { charCount: value.length - 1 };
+      const newState = allowTypingPastLimit
+        ? { charCount: value.length, text: value }
+        : this.isTextLTEtoLimit()(value.length)
+        ? { charCount: value.length, text: value }
+        : { charCount: value.length - 1 };
       props.liftText(value);
       return newState;
     });
-  }
+  };
 
   componentDidUpdate(prevProps) {
     if (this.props.text !== prevProps.text && this.props.text === '') {
       this.textarea.current.value = this.props.text;
       this.setState({
         charCount: this.props.text.length,
-        text: this.props.text
+        text: this.props.text,
       });
       this.focusTextarea();
     }
@@ -93,9 +92,10 @@ export default class TextAreaCharCount extends React.Component {
           ref={this.textarea}
           value={text}
           {...rest}
-          >
-        </textarea>
-        <p className={`char-count ${turnRed} ${pClass}`}>{charCount} / {charLimit}</p>
+        ></textarea>
+        <p className={`char-count ${turnRed} ${pClass}`}>
+          {charCount} / {charLimit}
+        </p>
       </div>
     );
   }

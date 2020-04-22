@@ -1,8 +1,8 @@
 import React from 'react';
 
-import TwoStateButtonWrapper from '../../components/TwoStateButtonWrapper';
+import TwoStateButtonWrapper from '../../components/components/TwoStateButtonWrapper';
 
-const EventTwoButtons = props => {
+const AnnouncementTwoButtons = props => {
   const { cancelOnClick, disabled, deleteOnClick, doneOnClick, editOnClick, useFirstState } = props;
   const firstButton = {
     firstState: {
@@ -15,7 +15,7 @@ const EventTwoButtons = props => {
       btnOnClick: doneOnClick,
       btnText: 'Done',
     },
-  }
+  };
   const secondButton = {
     firstState: {
       btnClass: 'delete-btn',
@@ -27,12 +27,18 @@ const EventTwoButtons = props => {
       btnOnClick: cancelOnClick,
       btnText: 'Cancel',
     },
-  }
+  };
   return (
     <>
-      <TwoStateButtonWrapper disabled={disabled} firstButton={firstButton} secondButton={secondButton} useFirstState={useFirstState} wrapperClass='EventStrip__btn-div' />
+      <TwoStateButtonWrapper
+        disabled={disabled}
+        firstButton={firstButton}
+        secondButton={secondButton}
+        useFirstState={useFirstState}
+        wrapperClass='AnnouncementStrip__btn-div'
+      />
     </>
   );
-}
+};
 
-export default EventTwoButtons;
+export default AnnouncementTwoButtons;

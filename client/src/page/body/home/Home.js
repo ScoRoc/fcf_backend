@@ -7,11 +7,11 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Constants
-import { URL } from '../../constants/index';
+import { URL } from 'constants/index';
 
-// HomePage
+// Home
 
-const HomePage = props => {
+const Home = props => {
   // Global State
   const [user] = useGlobal('user');
 
@@ -60,4 +60,4 @@ const buildStyles = theme => ({
   },
 });
 
-export default HomePage;
+export default Home;

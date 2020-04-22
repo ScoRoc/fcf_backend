@@ -1,7 +1,7 @@
 // Libraries
 import React, { useGlobal } from 'reactn';
 // Theme
-import { THEME_NAMES } from '../../theme/themes';
+import { THEME_NAMES } from 'theme/themes';
 
 // ThemeToggle
 

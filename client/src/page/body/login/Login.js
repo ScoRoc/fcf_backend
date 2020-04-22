@@ -4,16 +4,19 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useLocation, useHistory } from 'react-router-dom';
 // @jsx jsx
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
+// Parts
+import LoginInput from './LoginInput';
 // Widgets
-import { Button, Text, ThemeToggle } from '../../components/index';
+import { Button, Text, Input } from 'widgets';
+import { ThemeToggle } from 'components';
 // Constants
-import { QUERY_STRING, URL } from '../../constants/index';
+import { QUERY_STRING, URL } from 'constants/index';
 
-// LoginPage
+// Login
 
-const LoginPage = props => {
+const Login = props => {
   // Dispatchers
   const login = useDispatch('login');
   const logout = useDispatch('logout');
@@ -27,9 +30,10 @@ const LoginPage = props => {
   const history = useHistory();
   const location = useLocation();
 
-  // Theme
+  // Styles and Theme
 
   const theme = useTheme();
+  const styles = buildStyles(theme);
 
   // Functions
 
@@ -68,38 +72,25 @@ const LoginPage = props => {
       });
   };
 
-  // Styles
-
-  const styles = buildStyles(theme);
-
   // Return
 
   return (
     <div css={styles.page}>
       <div css={styles.loginBox}>
         <ThemeToggle />
-        <Text size='lg'>Administration Portal</Text>
+        <Text css={styles.title} size='lg'>
+          Administration Portal
+        </Text>
+        <div css={styles.logo} />
         <form css={styles.form} onSubmit={handleSubmit}>
-          <label css={styles.label} htmlFor='login-email'>
-            <Text size='sm'>Email</Text>
-            <input
-              css={styles.input}
-              onChange={e => setEmail(e.target.value)}
-              required
-              type='email'
-              value={email}
-            />
-          </label>
-          <label css={styles.label} htmlFor='login-password'>
-            <Text size='sm'>Password</Text>
-            <input
-              css={styles.input}
-              onChange={e => setPassword(e.target.value)}
-              required
-              type='password'
-              value={password}
-            />
-          </label>
+          <LoginInput label='Email' onChange={e => setEmail(e.target.value)} value={email} />
+          <LoginInput
+            label='Password'
+            onChange={e => setPassword(e.target.value)}
+            style={{ margin: '0 auto' }}
+            value={password}
+          />
+
           <Button css={styles.button} type='submit'>
             Login
           </Button>
@@ -111,24 +102,32 @@ const LoginPage = props => {
 
 const buildStyles = theme => ({
   button: {
+    marginTop: '40px',
     width: '100%',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
   },
-  input: {
-    color: theme.color,
-  },
-  label: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-  },
-  loginBox: {
-    // backgroundColor: theme.colors.white,
-    backgroundColor: theme.modalBackgroundColor,
-    padding: '20px',
+  loginBox: css`
+    /* background-color: ${theme.colors.white}; */
+    background-color: ${theme.modalBackgroundColor};
+    padding: 40px 14%;
+
+    @media only screen and (min-width: 1250px) {
+      padding: 40px 20%;
+    }
+
+    @media only screen and (max-width: 900px) {
+      padding: 40px 11%;
+    } 
+  `,
+  logo: {
+    backgroundColor: theme.colors.yellow,
+    borderRadius: '50%',
+    height: '80px',
+    margin: '30px auto',
+    width: '80px',
   },
   page: {
     alignItems: 'center',
@@ -136,14 +135,17 @@ const buildStyles = theme => ({
     flex: 1,
     justifyContent: 'center',
   },
+  title: {
+    // marginBottom:
+  },
 });
 
-LoginPage.propTypes = {
+Login.propTypes = {
   //
 };
 
-LoginPage.defaultProps = {
+Login.defaultProps = {
   //
 };
 
-export default LoginPage;
+export default Login;

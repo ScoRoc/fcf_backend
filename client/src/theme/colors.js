@@ -1,8 +1,25 @@
 const black = '#000';
-const darkGrey = '#141414';
 const green = 'green';
+const greyDark = '#141414';
+const greyLight = '#BDBDBD';
+const greyLightExtra = '#DDD';
+const greyMedium = '#555';
+const offWhite = 'papayawhip';
 const orange = 'orange';
 const purple = 'purple';
 const white = '#FFF';
+const yellow = '#FF0';
 
-export { black, darkGrey, green, orange, purple, white };
+export {
+  black,
+  green,
+  greyDark,
+  greyLight,
+  greyLightExtra,
+  greyMedium,
+  offWhite,
+  orange,
+  purple,
+  white,
+  yellow,
+};

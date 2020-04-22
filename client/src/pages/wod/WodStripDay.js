@@ -2,8 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import axios from 'axios';
 
-import TwoStateButton from '../../components/TwoStateButton';
-import TwoStateTextTACC from '../../components/TwoStateTextTACC';
+import TwoStateButton from '../../components/components/TwoStateButton';
+import TwoStateTextTACC from '../../components/components/TwoStateTextTACC';
 
 import { isEqual, isLessThanOrEqual } from '../../utils/comparisons';
 
@@ -17,7 +17,7 @@ export default class WodStripDay extends React.Component {
       text: '',
 
       initialText: '',
-    }
+    };
   }
 
   isEscapeKey = isEqual('Escape');
@@ -25,7 +25,7 @@ export default class WodStripDay extends React.Component {
 
   toggleEdit = () => {
     this.setState({ editable: !this.state.editable });
-  }
+  };
 
   cancelChange = () => {
     this.setState(prevState => {
@@ -34,26 +34,26 @@ export default class WodStripDay extends React.Component {
         charCount: initialText.length,
         editable: false,
         text: initialText,
-      }
+      };
     });
-  }
+  };
 
   handleKeyUp = e => {
     e.preventDefault();
-    if ( this.isEscapeKey(e.key) ) this.cancelChange();
-  }
+    if (this.isEscapeKey(e.key)) this.cancelChange();
+  };
 
   liftText = text => {
     this.setState((prevState, props) => {
       const { allowTypingPastLimit } = prevState;
-      const newState  = allowTypingPastLimit
-                      ? { charCount: text.length, text }
-                      : this.isLTEtoCharLimit()(text.length)
-                        ? { charCount: text.length, text }
-                        : { charCount: text.length - 1 };
+      const newState = allowTypingPastLimit
+        ? { charCount: text.length, text }
+        : this.isLTEtoCharLimit()(text.length)
+        ? { charCount: text.length, text }
+        : { charCount: text.length - 1 };
       return newState;
     });
-  }
+  };
 
   getFormattedDate = date => {
     const mDate = moment(date);
@@ -61,13 +61,13 @@ export default class WodStripDay extends React.Component {
     const mm = mDate.format('MM');
     const dd = mDate.format('DD');
     return `${day} ${mm}/${dd}`;
-  }
+  };
 
   handleUpdateWod = ({ _id, text }) => {
     this.toggleEdit();
     this.setState({ initialText: text, text });
     this.props.updateWod({ _id, text });
-  }
+  };
 
   // componentDidUpdate(prevProps) {
   //   this.setState((prevState, props) => {
@@ -81,13 +81,13 @@ export default class WodStripDay extends React.Component {
     this.setState((prevState, props) => {
       const { date, text } = props.wod;
       const mDate = moment(date);
-      return { charLimit: props.charLimit, date: mDate, initialText: text, text }
+      return { charLimit: props.charLimit, date: mDate, initialText: text, text };
     });
   }
 
   render() {
-      /////////////////////////
-     // HANDLE CAPPING TEXT //
+    /////////////////////////
+    // HANDLE CAPPING TEXT //
     /////////////////////////
     const { date, editable, text } = this.state;
     const { allowTypingPastLimit, charLimit, wod } = this.props;
@@ -106,7 +106,7 @@ export default class WodStripDay extends React.Component {
         btnOnClick: () => this.handleUpdateWod({ _id: wod._id, text }),
         btnText: 'Done',
       },
-    }
+    };
     return (
       <div>
         <label>{formattedDate}</label>

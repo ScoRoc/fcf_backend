@@ -2,9 +2,9 @@
 import React, { addReducers, setGlobal, useGlobal } from 'reactn';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Components
-import AppRouter from './AppRouter';
+import AppBody from './page/Page';
 // Themes
-import { THEME_NAMES } from './theme/themes';
+import { THEME_NAMES } from 'theme/themes';
 
 // Global State
 
@@ -46,7 +46,7 @@ addReducers({
 function App() {
   return (
     <Router>
-      <AppRouter />
+      <AppBody />
     </Router>
   );
 }

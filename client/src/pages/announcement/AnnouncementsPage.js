@@ -6,7 +6,7 @@ import './Announcements.min.css';
 import AddAnnouncement from './AddAnnouncement';
 import AllAnnouncements from './AllAnnouncements';
 
-import { getIndex, addItemToStateArr } from '../../utils/helpers';
+import { getIndex, addItemToStateArr } from '../../utils/OLD-helpers';
 
 // PLACEHOLDER
 const deleteWithAxios = console.log('useAxios placeholder...change with real func!!!');
@@ -56,7 +56,7 @@ class AnnouncementsPage extends React.Component {
     // if (!this.props.manager) return <Redirect to="/signin" />;
     const { announcements } = this.state;
     return (
-      <section className="AnnouncementsPage">
+      <section className='AnnouncementsPage'>
         <h1>Accouncments</h1>
         <AddAnnouncement
           addAnnouncement={this.addAnnouncement}

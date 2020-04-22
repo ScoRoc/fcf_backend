@@ -7,7 +7,7 @@ import './Wod.min.css';
 import AddWodWeek from './AddWodWeek';
 import WodStrip from './WodStrip';
 
-import { getIndex } from '../../utils/helpers';
+import { getIndex } from '../../utils/OLD-helpers';
 
 // PLACEHOLDER
 const deleteWithAxios = console.log('useAxios placeholder...change with real func!!!');
@@ -77,12 +77,12 @@ class WodPage extends React.Component {
       />
     ));
     return (
-      <section className="WodPage">
+      <section className='WodPage'>
         <h1>WOD</h1>
         {/* CAP # OF LINES AT 16 */}
         <AddWodWeek addWodWeek={this.addWodWeek} />
         <h3>Wod Weeks</h3>
-        <section className="AllWodWeeks">{weeks}</section>
+        <section className='AllWodWeeks'>{weeks}</section>
       </section>
     );
   }
