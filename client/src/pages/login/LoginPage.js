@@ -7,7 +7,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Widgets
-import { Button, Text, ThemeToggle } from '../../widgets/index';
+import { Button, Text, ThemeToggle } from '../../components/index';
 // Constants
 import { QUERY_STRING, URL } from '../../constants/index';
 
@@ -76,7 +76,7 @@ const LoginPage = props => {
 
   return (
     <div css={styles.page}>
-      <div css={styles.box}>
+      <div css={styles.loginBox}>
         <ThemeToggle />
         <Text size='lg'>Administration Portal</Text>
         <form css={styles.form} onSubmit={handleSubmit}>
@@ -110,11 +110,6 @@ const LoginPage = props => {
 };
 
 const buildStyles = theme => ({
-  box: {
-    // backgroundColor: theme.colors.white,
-    backgroundColor: theme.modalBackgroundColor,
-    padding: '20px',
-  },
   button: {
     width: '100%',
   },
@@ -129,6 +124,11 @@ const buildStyles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+  },
+  loginBox: {
+    // backgroundColor: theme.colors.white,
+    backgroundColor: theme.modalBackgroundColor,
+    padding: '20px',
   },
   page: {
     alignItems: 'center',

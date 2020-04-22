@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 
 const withUser = (req, res, next) => {
-  console.log('in withUser...');
+  // console.log('in withUser...');
   next();
   // const token = req.cookies.token;
 

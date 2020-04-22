@@ -57,7 +57,7 @@ function AppRouter() {
   // Handle Fetch User Response
 
   const handleErrors = err => {
-    // console.log('response: ', err);
+    // console.log('err: ', err);
     // console.log('if error, error.response: ', err.response);
     const { from } = location.state || { from: { pathname: URL.LOGIN } };
     logout();

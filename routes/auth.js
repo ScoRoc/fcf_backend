@@ -7,8 +7,8 @@ const router = express.Router();
 const User = require('../models/user');
 // Middlewater
 const { withAuth } = require('../middleware/auth');
-const { withUser } = require('../middleware/models');
-// CONSTANTS
+// const { withUser } = require('../middleware/models');
+// Constants
 const { TOKEN_DURATION } = require('../constants/globals');
 const { LOGIN_FROM } = require('../constants/enums');
 
@@ -28,7 +28,8 @@ router.get('/', withAuth, function (req, res) {
 
 // POST - authenticate a user
 
-router.post('/', withUser, (req, res) => {
+// router.post('/', withUser, (req, res) => {
+router.post('/', (req, res) => {
   const { email, password } = req.body;
   const { loginFrom } = req.query;
 
@@ -95,7 +96,6 @@ router.post('/', withUser, (req, res) => {
 
           const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: TOKEN_DURATION });
           const { password, ...user } = updatedUser.toObject();
-          console.log('res: ', res);
           return res.cookie('token', token, { httpOnly: true }).status(200).send({ user });
         });
       });

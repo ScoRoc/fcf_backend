@@ -78,7 +78,6 @@ router.post('/', upload.single('imgFile'), (req, res) => {
 
   // if (createdByUser !== undefined && !ObjectId.isValid(createdByUser)) {
   if (!ObjectId.isValid(createdByUser)) {
-    console.log('in createdByUser if');
     return res.send({
       error: true,
       _msg: 'The createdByUser field is invalid and should be a valid user._id',
@@ -145,7 +144,6 @@ router.patch('/:id', (req, res) => {
   // Update announcement
 
   Announcement.findById(id, (err, announcementToUpdate) => {
-    console.log('in findById');
     if (err) return res.send(err);
 
     announcementToUpdate.set({
