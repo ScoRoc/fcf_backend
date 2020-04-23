@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "@styled-system/should-forward-prop": "^5.1.5",
     "axios": "^0.19.2",
     "emotion-theming": "^10.0.27",
     "moment": "^2.24.0",
@@ -15,7 +17,9 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
     "reactn": "^2.2.7",
-    "redux-persist": "^5.10.0"
+    "redux-persist": "^5.10.0",
+    "styled-components": "^5.1.0",
+    "styled-system": "^5.1.5"
   },
   "scripts": {
     "start": "react-scripts start",

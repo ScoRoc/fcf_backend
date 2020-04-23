@@ -2,7 +2,7 @@
 import React, { addReducers, setGlobal, useGlobal } from 'reactn';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Components
-import AppBody from './page/Page';
+import AppBody from 'page/Page';
 // Themes
 import { THEME_NAMES } from 'theme/themes';
 

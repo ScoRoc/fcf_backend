@@ -2,22 +2,16 @@
 import React, { useDispatch, useEffect, useGlobal } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Route } from 'react-router-dom';
 import { useHistory, useLocation } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
-// Body
-import Body from './body/Body';
-// Components
-import AddManagerPage from '../pages/manager/AddManagerPage';
-import DisplayedManagerPage from '../pages/manager/DisplayedManagerPage';
-import DisplayedUserPage from '../pages/user/DisplayedUserPage';
-import Footer from '../page-sections/Footer';
-import Header from '../page-sections/Header';
-// import Main from './page-sections/Main';
-import ManagersPage from '../pages/manager/ManagersPage';
+// Pages
+import Home from './home/Home';
+import Login from './login/Login';
 // Themes
-import themes, { THEME_NAMES } from '../theme/themes';
+import themes from 'theme/themes';
 // Constants
 import { URL } from 'constants/index';
 
@@ -42,12 +36,12 @@ function Page() {
   // Effects
 
   useEffect(() => {
-    axios
-      .get(URL.AUTH)
-      .then(res => {
-        res.status === 200 ? handleSuccess(res) : handleErrors(res);
-      })
-      .catch(err => handleErrors(err));
+    // axios
+    //   .get(URL.AUTH)
+    //   .then(res => {
+    //     res.status === 200 ? handleSuccess(res) : handleErrors(res);
+    //   })
+    //   .catch(err => handleErrors(err));
   }, []);
 
   // Handle Fetch User Response
@@ -73,25 +67,18 @@ function Page() {
       .catch(err => handleErrors(err));
   };
 
-  // Theme
+  // Styles and Theme
 
   const theme = themes[themeName];
-
-  // Styles
-
   const styles = buildStyles(theme);
 
   // Return
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='Page' css={styles.app}>
-        {/* <Header /> */}
-        {/* <Sidebar /> */}
-
-        <Body />
-
-        {/* <Footer /> */}
+      <div className='Page' css={styles.page}>
+        <Route exact path={URL.ROOT} component={Home} />
+        <Route path={URL.LOGIN} render={() => <Login />} />
       </div>
     </ThemeProvider>
   );
@@ -100,13 +87,13 @@ function Page() {
 // buildStyles
 
 const buildStyles = theme => ({
-  app: {
+  page: {
     backgroundColor: theme.background,
     display: 'flex',
-    flexDirection: 'column',
     height: '100vh',
     margin: 0,
     padding: 0,
+    overflow: 'hidden',
   },
 });
 

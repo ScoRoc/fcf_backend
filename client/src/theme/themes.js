@@ -1,5 +1,11 @@
+// Libraries
+// @jsx jsx
+import { css, jsx } from '@emotion/core';
 // Colors
 import * as colors from './colors';
+// Themes
+import inputTheme from './inputTheme';
+import textTheme from './textTheme';
 
 // theme names
 export const THEME_NAMES = {
@@ -22,15 +28,21 @@ const themes = {
     },
   },
   main: {
-    color: colors.black,
+    color: {
+      primary: colors.black,
+      secondary: colors.white,
+      tertiary: colors.yellow,
+    },
     colors,
-    background: colors.greyDark,
-    modalBackgroundColor: colors.white,
+    background: colors.white,
+    input: inputTheme,
+    modalBackgroundColor: 'papayawhip',
     sizes: {
       sm: '1rem',
       md: '2rem',
       lg: '3rem',
     },
+    text: textTheme,
   },
 };
 

@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
+// Widgets
+import { Text } from 'widgets';
 
-// Template
+// NavLink
 
-const Template = props => {
+const NavLink = ({ text }) => {
   // Styles and Theme
 
   const theme = useTheme();
@@ -15,7 +17,7 @@ const Template = props => {
 
   return (
     <div>
-      <p>Template</p>
+      <Text variant='secondary'>{text}</Text>
     </div>
   );
 };
@@ -24,12 +26,12 @@ const buildStyle = theme => ({
   //
 });
 
-Template.propTypes = {
-  //
+NavLink.propTypes = {
+  text: PropTypes.oneOfType([PropTypes.array, PropTypes.number, PropTypes.string]),
 };
 
-Template.defaultProps = {
-  //
+NavLink.defaultProps = {
+  text: 'NavLink',
 };
 
-export default Template;
+export default NavLink;

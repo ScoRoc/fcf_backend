@@ -1,5 +1,6 @@
+import Box from './widgets/Box';
 import Button from './widgets/Button';
-import Text from './widgets/Text';
 import Input from './widgets/Input';
+import Text from './widgets/Text';
 
-export { Button, Text, Input };
+export { Box, Button, Input, Text };

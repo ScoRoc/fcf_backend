@@ -12,7 +12,7 @@ import LoginInput from './LoginInput';
 import { Button, Text, Input } from 'widgets';
 import { ThemeToggle } from 'components';
 // Constants
-import { QUERY_STRING, URL } from 'constants/index';
+import { QUERY_STRING, URL } from 'constants/urls';
 
 // Login
 
@@ -75,13 +75,14 @@ const Login = props => {
   // Return
 
   return (
-    <div css={styles.page}>
+    <div className='FOOOOO' css={styles.page}>
       <div css={styles.loginBox}>
         <ThemeToggle />
         <Text css={styles.title} size='lg'>
           Administration Portal
         </Text>
         <div css={styles.logo} />
+
         <form css={styles.form} onSubmit={handleSubmit}>
           <LoginInput label='Email' onChange={e => setEmail(e.target.value)} value={email} />
           <LoginInput
@@ -108,19 +109,22 @@ const buildStyles = theme => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
+    width: '100%',
   },
   loginBox: css`
-    /* background-color: ${theme.colors.white}; */
     background-color: ${theme.modalBackgroundColor};
-    padding: 40px 14%;
+    flex: 1;
+    max-height: 70%;
+    padding: 40px 100px;
+    width: 50vw;
 
     @media only screen and (min-width: 1250px) {
-      padding: 40px 20%;
+      ${'' /* padding: 40px 20%; */}
     }
 
-    @media only screen and (max-width: 900px) {
-      padding: 40px 11%;
-    } 
+    @media only screen and (min-width: 600px) and (max-width: 850px) {
+      ${'' /* padding: 30px 10px; */}
+    }
   `,
   logo: {
     backgroundColor: theme.colors.yellow,
@@ -133,7 +137,9 @@ const buildStyles = theme => ({
     alignItems: 'center',
     display: 'flex',
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
+    width: '100%',
   },
   title: {
     // marginBottom:

@@ -1,43 +1,31 @@
 // Libraries
 import React from 'react';
-import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
+import { createShouldForwardProp, props } from '@styled-system/should-forward-prop';
 // @jsx jsx
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
+// Custom Props
+import systemProps from 'widgets/systemProps.js';
 
-// Text
+// TODO only keep items I'm usings
+export const forwardedProps = [...props, 'cursor', 'd', 'fill', 'stroke', 'transform'];
 
-const Text = ({ color, size, ...props }) => {
-  // Theme and Styles
+export const shouldForwardProp = createShouldForwardProp(forwardedProps);
 
+const StyledText = styled('p', { shouldForwardProp })(systemProps);
+
+const Text = props => {
   const theme = useTheme();
-  const styles = buildStyles({ color, size, theme });
-
-  // Return
 
   return (
-    <p css={styles.p} {...props}>
-      {props.children}
-    </p>
+    <StyledText
+      css={css`
+        ${theme.text.base}
+      `}
+      {...props}
+    />
   );
-};
-
-const buildStyles = ({ color, size, theme }) => ({
-  p: {
-    color: color || theme.color,
-    fontSize: theme.sizes[size],
-    margin: 0,
-  },
-});
-
-Text.propTypes = {
-  color: 'string', // SHOULD BE ONE OF THEME COLORS ONLY
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
-};
-
-Text.defaultProps = {
-  color: null,
-  size: 'sm',
 };
 
 export default Text;

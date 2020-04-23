@@ -7,6 +7,7 @@ const greyMedium = '#555';
 const offWhite = 'papayawhip';
 const orange = 'orange';
 const purple = 'purple';
+const red = 'red';
 const white = '#FFF';
 const yellow = '#FF0';
 
@@ -20,6 +21,7 @@ export {
   offWhite,
   orange,
   purple,
+  red,
   white,
   yellow,
 };

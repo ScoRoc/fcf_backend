@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
+// NavLink Parts
+import NavLink from './NavLink';
 
-// Template
+// NavLinkGroup
 
-const Template = props => {
+const NavLinkGroup = props => {
   // Styles and Theme
 
   const theme = useTheme();
@@ -15,7 +17,7 @@ const Template = props => {
 
   return (
     <div>
-      <p>Template</p>
+      <NavLink />
     </div>
   );
 };
@@ -24,12 +26,12 @@ const buildStyle = theme => ({
   //
 });
 
-Template.propTypes = {
+NavLinkGroup.propTypes = {
   //
 };
 
-Template.defaultProps = {
+NavLinkGroup.defaultProps = {
   //
 };
 
-export default Template;
+export default NavLinkGroup;
