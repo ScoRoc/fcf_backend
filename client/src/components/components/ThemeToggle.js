@@ -14,6 +14,7 @@ const ThemeToggle = props => {
 
   return (
     <button
+      className='ThemeToggle'
       onClick={() =>
         setThemeName(themeName === THEME_NAMES.MAIN ? THEME_NAMES.ALT : THEME_NAMES.MAIN)
       }

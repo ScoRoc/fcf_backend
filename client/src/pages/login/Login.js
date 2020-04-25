@@ -44,7 +44,8 @@ const Login = props => {
   };
 
   const handleSuccess = res => {
-    const { from } = location.state || { from: { pathname: URL.ROOT } };
+    const to = `${URL.APP}${URL.DASHBOARD}`;
+    const { from } = location.state || { from: { pathname: to } };
     const { user } = res.data;
     login(user);
     history.replace(from);
@@ -75,7 +76,7 @@ const Login = props => {
   // Return
 
   return (
-    <div className='FOOOOO' css={styles.page}>
+    <div className='Login' css={styles.page}>
       <div css={styles.loginBox}>
         <ThemeToggle />
         <Text css={styles.title} size='lg'>
@@ -136,10 +137,10 @@ const buildStyles = theme => ({
   page: {
     alignItems: 'center',
     display: 'flex',
-    flex: 1,
     flexDirection: 'column',
+    height: '100vh',
     justifyContent: 'center',
-    width: '100%',
+    width: '100vw',
   },
   title: {
     // marginBottom:

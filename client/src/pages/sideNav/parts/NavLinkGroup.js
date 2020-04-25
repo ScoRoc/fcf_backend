@@ -4,21 +4,28 @@ import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
-// NavLink Parts
-import NavLink from './NavLink';
+// Widgets
+import { Box } from 'widgets';
 
 // NavLinkGroup
 
-const NavLinkGroup = props => {
+const NavLinkGroup = ({ children, ...props }) => {
   // Styles and Theme
 
   const theme = useTheme();
   const styles = buildStyle(theme);
 
   return (
-    <div>
-      <NavLink />
-    </div>
+    <Box
+      className='NavLinkGroup'
+      display='flex'
+      flexDirection='column'
+      height='100%'
+      justifyContent='flex-start'
+      {...props}
+    >
+      {children}
+    </Box>
   );
 };
 

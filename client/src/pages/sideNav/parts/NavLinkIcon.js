@@ -7,27 +7,31 @@ import { useTheme } from 'emotion-theming';
 // Widgets
 import { Box } from 'widgets';
 
-// Template
+// NavLinkIcon
 
-const Template = ({ children }) => {
+const NavLinkIcon = ({ children, ...props }) => {
   // Styles and Theme
 
   const theme = useTheme();
   const styles = buildStyle(theme);
 
-  return <Box className='Template'>{children}</Box>;
+  return (
+    <Box bg='cadetblue' className='NavLinkIcon' color='maroon' {...props}>
+      {children}
+    </Box>
+  );
 };
 
 const buildStyle = theme => ({
   //
 });
 
-Template.propTypes = {
-  //
+NavLinkIcon.propTypes = {
+  children: PropTypes.element,
 };
 
-Template.defaultProps = {
-  //
+NavLinkIcon.defaultProps = {
+  children: null,
 };
 
-export default Template;
+export default NavLinkIcon;

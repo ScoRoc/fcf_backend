@@ -2,24 +2,26 @@
 import React, { useDispatch, useEffect, useGlobal } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Route } from 'react-router-dom';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
-import { ThemeProvider } from 'emotion-theming';
+import { useTheme } from 'emotion-theming';
+// Widgets
+import { Box, Text } from 'widgets';
 // Pages
-import Home from './home/Home';
-import Login from './login/Login';
-// Themes
-import themes from 'theme/themes';
+import Dashboard from './dashboard/Dashboard';
+// Components
+import SideNav from './sideNav/SideNav';
 // Constants
 import { URL } from 'constants/index';
 
 // Page
 
-function Page() {
+const Page = props => {
   // Global State
 
+  const isUserAuthenticated = useGlobal('isUserAuthenticated');
   const [themeName] = useGlobal('themeName');
 
   // Dispatchers
@@ -28,10 +30,18 @@ function Page() {
   const logout = useDispatch('logout');
   const setUser = useDispatch('setUser');
 
-  // History and Location
+  // History, Location, and Match
 
   const history = useHistory();
   const location = useLocation();
+  const match = useRouteMatch(URL.APP);
+  // const match = useRouteMatch();
+  console.log('match: ', match);
+
+  // Styles and Theme
+
+  const theme = useTheme();
+  const styles = buildStyles(theme);
 
   // Effects
 
@@ -56,9 +66,10 @@ function Page() {
 
   const handleSuccess = res => {
     console.log('res: ', res);
-    const { from } = location.state || { from: { pathname: URL.ROOT } };
+    const to = `${URL.APP}${URL.DASHBOARD}`;
+    const { from } = location.state || { from: { pathname: to } };
     authenticateUser();
-    history.replace(from);
+    // history.replace(from);
     axios
       .get(`${URL.USERS}/${res.data._id}`)
       .then(res => {
@@ -67,22 +78,51 @@ function Page() {
       .catch(err => handleErrors(err));
   };
 
-  // Styles and Theme
-
-  const theme = themes[themeName];
-  const styles = buildStyles(theme);
-
   // Return
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className='Page' css={styles.page}>
-        <Route exact path={URL.ROOT} component={Home} />
-        <Route path={URL.LOGIN} render={() => <Login />} />
-      </div>
-    </ThemeProvider>
+    <Route
+      {...props}
+      render={({ location }) =>
+        !isUserAuthenticated ? (
+          <Redirect to={{ pathname: URL.LOGIN, state: { from: location } }} />
+        ) : (
+          <Switch>
+            <Box className='Page' css={styles.page}>
+              <SideNav />
+
+              <Box className='PageBody' css={{ flex: 1 }}>
+                <Route path={`${match.path}${URL.DASHBOARD}`}>
+                  <Dashboard />
+                </Route>
+
+                <Route path={`${match.path}${URL.WODS}`}>
+                  <Text>WOD PAGE</Text>
+                </Route>
+
+                <Route path={`${match.path}${URL.ANNOUNCEMENTS}`}>
+                  <Text>ANNOUNCEMENTS PAGE</Text>
+                </Route>
+
+                <Route path={`${match.path}${URL.EVENTS}`}>
+                  <Text>EVENTS PAGE</Text>
+                </Route>
+
+                <Route path={`${match.path}${URL.USERS}`}>
+                  <Text>USERS PAGE</Text>
+                </Route>
+
+                <Route exact path={URL.APP}>
+                  <Dashboard />
+                </Route>
+              </Box>
+            </Box>
+          </Switch>
+        )
+      }
+    />
   );
-}
+};
 
 // buildStyles
 
@@ -94,6 +134,7 @@ const buildStyles = theme => ({
     margin: 0,
     padding: 0,
     overflow: 'hidden',
+    width: '100%',
   },
 });
 

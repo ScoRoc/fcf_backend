@@ -5,20 +5,20 @@ import PropTypes from 'prop-types';
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Widgets
-import { Text } from 'widgets';
+import { Box } from 'widgets';
 
-// NavLink
+// Card
 
-const NavLink = ({ text }) => {
+const Card = ({ children, ...props }) => {
   // Styles and Theme
 
   const theme = useTheme();
   const styles = buildStyle(theme);
 
   return (
-    <div>
-      <Text variant='secondary'>{text}</Text>
-    </div>
+    <Box bg='sienna' className='Card' height='300px' width='100%' {...props}>
+      {children}
+    </Box>
   );
 };
 
@@ -26,12 +26,12 @@ const buildStyle = theme => ({
   //
 });
 
-NavLink.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.array, PropTypes.number, PropTypes.string]),
+Card.propTypes = {
+  //
 };
 
-NavLink.defaultProps = {
-  text: 'NavLink',
+Card.defaultProps = {
+  //
 };
 
-export default NavLink;
+export default Card;

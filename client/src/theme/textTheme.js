@@ -4,16 +4,12 @@ import { css, jsx } from '@emotion/core';
 // Colors
 import * as colors from './colors';
 
-const textBase = css`
-  margin: 0;
-`;
-
 // inputTheme
 
 const textTheme = {
   base: css`
-    ${textBase};
     color: ${colors.purple};
+    margin: 0;
   `,
   // error: css`
   //   ${textBase};

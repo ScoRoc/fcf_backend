@@ -5,37 +5,36 @@ import PropTypes from 'prop-types';
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Widgets
-import { Text } from 'widgets';
+import { Box } from 'widgets';
 
 // NavHeader
 
-const NavHeader = props => {
+const NavHeader = ({ children, ...props }) => {
   // Styles and Theme
 
   const theme = useTheme();
   const styles = buildStyle(theme);
 
   return (
-    <header css={styles.header}>
+    <Box
+      alignItems='center'
+      background='darkgreen'
+      boxSizing='border-box'
+      className='NavHeader'
+      display='flex'
+      height='90px'
+      justifyContent='center'
+      padding='20px'
+      {...props}
+    >
       {/* Nav Header */}
-      <Text style={{ marginRight: '10px' }} variant='secondary'>
-        [logo]
-      </Text>
-      <Text variant='secondary'>Foundation CrossFit</Text>
-    </header>
+      {children}
+    </Box>
   );
 };
 
 const buildStyle = theme => ({
-  header: {
-    alignItems: 'center',
-    background: 'darkgreen',
-    boxSizing: 'border-box',
-    display: 'flex',
-    height: '150px',
-    justifyContent: 'center',
-    padding: '20px',
-  },
+  header: {},
 });
 
 NavHeader.propTypes = {

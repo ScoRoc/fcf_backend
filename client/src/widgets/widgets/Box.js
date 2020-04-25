@@ -1,8 +1,9 @@
 // Libraries
+import React from 'react';
 import styled from '@emotion/styled';
 import { createShouldForwardProp, props } from '@styled-system/should-forward-prop';
 // Custom Props
-import systemProps from 'widgets/systemProps.js';
+import systemProps from 'theme/systemProps.js';
 
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
@@ -13,6 +14,7 @@ export const forwardedProps = [...props, 'cursor', 'd', 'fill', 'stroke', 'trans
 export const shouldForwardProp = createShouldForwardProp(forwardedProps);
 
 export default styled('div', { shouldForwardProp })(
+  { className: 'Box' },
   systemProps,
   (
     { custonPropName }, // write your own prop name and styles associated with it
@@ -26,5 +28,4 @@ export default styled('div', { shouldForwardProp })(
         color: green;
       }
     `,
-  ({ bold }) => bold && { fontWeight: 700 },
 );

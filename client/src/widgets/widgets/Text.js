@@ -6,26 +6,24 @@ import { createShouldForwardProp, props } from '@styled-system/should-forward-pr
 import { css, jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Custom Props
-import systemProps from 'widgets/systemProps.js';
+import systemProps from 'theme/systemProps.js';
 
 // TODO only keep items I'm usings
 export const forwardedProps = [...props, 'cursor', 'd', 'fill', 'stroke', 'transform'];
 
 export const shouldForwardProp = createShouldForwardProp(forwardedProps);
 
-const StyledText = styled('p', { shouldForwardProp })(systemProps);
+const StyledP = styled('p', { shouldForwardProp })(
+  // { background: 'yellow' },
+  systemProps,
+  ({ bold }) => bold && { fontWeight: 700 },
+  ({ variant }) => variant === 'foo' && { fontSize: '50px' },
+);
 
-const Text = props => {
-  const theme = useTheme();
-
-  return (
-    <StyledText
-      css={css`
-        ${theme.text.base}
-      `}
-      {...props}
-    />
-  );
-};
+const Text = ({ children, ...props }) => (
+  <StyledP margin={0} {...props}>
+    {children}
+  </StyledP>
+);
 
 export default Text;

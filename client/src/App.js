@@ -1,10 +1,16 @@
 // Libraries
 import React, { addReducers, setGlobal, useGlobal } from 'reactn';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { ThemeProvider } from 'emotion-theming';
 // Components
-import AppBody from 'page/Page';
+import Login from 'pages/login/Login';
+import Page from 'pages/Page';
+// Widgets
+import { Box } from 'widgets';
+// Constants
+import { URL } from 'constants/index';
 // Themes
-import { THEME_NAMES } from 'theme/themes';
+import themes, { THEME_NAMES } from 'theme/themes';
 
 // Global State
 
@@ -44,10 +50,27 @@ addReducers({
 // App
 
 function App() {
+  const [themeName] = useGlobal('themeName');
+  const theme = themes[themeName];
+
   return (
-    <Router>
-      <AppBody />
-    </Router>
+    <Box className='App'>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Switch>
+            <Route exact path={URL.LOGIN}>
+              <Login />
+            </Route>
+
+            <Route path={URL.APP}>
+              <Page />
+            </Route>
+
+            <Redirect to={`${URL.APP}${URL.DASHBOARD}`} />
+          </Switch>
+        </Router>
+      </ThemeProvider>
+    </Box>
   );
 }
 

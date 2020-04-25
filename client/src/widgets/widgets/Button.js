@@ -7,32 +7,19 @@ import { useTheme } from 'emotion-theming';
 
 // Button
 
-const Button = ({ onClick, variant, ...props }) => {
-  // Theme
+const Button = ({ variant, ...props }) => {
+  // Theme and Styles
 
   const theme = useTheme();
-
-  // Styles
-
   const styles = buildStyles(theme);
 
   // Return
 
   return (
-    <button css={styles[variant]} onClick={onClick} {...props}>
+    <button css={styles[variant]} {...props}>
       {props.children}
     </button>
   );
-};
-
-Button.propTypes = {
-  onClick: PropTypes.func,
-  variant: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
-};
-
-Button.defaultProps = {
-  onClick: null,
-  variant: 'primary',
 };
 
 const buildStyles = theme => {
@@ -69,6 +56,14 @@ const buildStyles = theme => {
       ${base};
     `,
   };
+};
+
+Button.propTypes = {
+  variant: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
+};
+
+Button.defaultProps = {
+  variant: 'primary',
 };
 
 export default Button;

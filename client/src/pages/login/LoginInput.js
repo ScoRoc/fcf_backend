@@ -18,7 +18,7 @@ const LoginInput = ({ label, onChange, type, value, ...props }) => {
   // Return
 
   return (
-    <label css={styles.label} {...props}>
+    <label className='LoginInput' css={styles.label} {...props}>
       <Text color='greyLight'>{label}</Text>
       <Input css={styles.input} onChange={onChange} size='sm' type={type} value={value} />
     </label>

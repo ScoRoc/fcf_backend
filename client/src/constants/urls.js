@@ -1,6 +1,8 @@
 const URL = {
   ANNOUNCEMENTS: '/announcements',
+  APP: '/app',
   AUTH: '/auth',
+  DASHBOARD: '/dashboard',
   EVENTS: '/events',
   LOGIN: '/login',
   ROOT: '/',

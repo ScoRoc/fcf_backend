@@ -6,7 +6,7 @@ import { createShouldForwardProp, props } from '@styled-system/should-forward-pr
 import { css, jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Custom Props
-import systemProps from 'widgets/systemProps.js';
+import systemProps from 'theme/systemProps';
 
 // TODO only keep items I'm usings
 export const forwardedProps = [...props, 'cursor', 'd', 'fill', 'stroke', 'transform'];
@@ -20,6 +20,7 @@ const Input = props => {
 
   return (
     <StyledInput
+      className='Input'
       css={css`
         ${theme.input.base}
       `}
