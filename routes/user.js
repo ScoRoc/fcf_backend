@@ -87,7 +87,7 @@ router.post('/', async (req, res) => {
         createdByUser: createdByUser || APP_USER_ID,
         lastLogin: {
           app: loginFrom === LAST_LOGIN.APP ? new Date() : undefined,
-          // portal: loginFrom === LAST_LOGIN.PORTAL ? new Date() : undefined, // ??? if created from portal they aren't logging in...I think... ???
+          portal: loginFrom === LAST_LOGIN.PORTAL ? new Date() : undefined, // ??? if created from portal they aren't logging in...I think... ???
         },
         updatedByUser: createdByUser || APP_USER_ID,
       },
