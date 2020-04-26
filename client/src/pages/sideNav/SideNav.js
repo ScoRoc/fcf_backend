@@ -2,7 +2,7 @@
 import React, { useDispatch } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { useHistory, useLocation, useRouteMatch, Link } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
@@ -20,7 +20,6 @@ import {
 import { Box, Text } from 'widgets';
 // Constants
 import { URL } from 'constants/urls';
-import themes from 'theme/themes';
 
 // SideNav
 
@@ -29,11 +28,10 @@ const SideNav = props => {
 
   const logout = useDispatch('logout');
 
-  // History, Location, and Match
+  // History and Location
 
   const history = useHistory();
   const location = useLocation();
-  const match = useRouteMatch();
 
   // Styles and Theme
 
@@ -66,9 +64,11 @@ const SideNav = props => {
     const { path, text } = link;
     const icon = link.icon;
     return (
-      <NavLinkTile key={uuidv4()} path={path}>
-        <NavLinkIcon>{icon}</NavLinkIcon>
-        <NavLinkText>{text}</NavLinkText>
+      <NavLinkTile className='side-nav-tile' key={uuidv4()} path={path}>
+        <NavLinkIcon>
+          <Text className='side-nav-icon-placeholder'>{icon}</Text>
+        </NavLinkIcon>
+        <NavLinkText className='side-nav-text-placeholder'>{text}</NavLinkText>
       </NavLinkTile>
     );
   });
@@ -76,7 +76,7 @@ const SideNav = props => {
   return (
     <Box className='SideNav' css={styles.sidenav}>
       <NavLinkGroup>
-        <NavHeader>
+        <NavHeader className='side-nav-header'>
           <Text style={{ marginRight: '10px' }} variant='secondary'>
             [logo]
           </Text>
@@ -85,8 +85,8 @@ const SideNav = props => {
 
         {tiles}
 
-        <NavLogout>
-          <Text onClick={handleClick}>logout</Text>
+        <NavLogout onClick={handleClick}>
+          <Text>logout</Text>
         </NavLogout>
       </NavLinkGroup>
     </Box>

@@ -6,31 +6,27 @@ import { jsx } from '@emotion/core';
 // Widgets
 import { Box } from 'widgets';
 
-// NavLogout
+// CardBody
 
-const NavLogout = ({ children, ...props }) => (
+const CardBody = ({ children, ...props }) => (
   <Box
     alignItems='center'
-    bg='coral'
-    className='NavLogout'
-    cursor='pointer'
+    className='CardBody'
     display='flex'
-    flexDirection='column'
-    height='60px'
+    flex={1}
     justifyContent='center'
-    marginTop='auto'
     {...props}
   >
     {children}
   </Box>
 );
 
-NavLogout.propTypes = {
+CardBody.propTypes = {
   //
 };
 
-NavLogout.defaultProps = {
+CardBody.defaultProps = {
   //
 };
 
-export default NavLogout;
+export default CardBody;

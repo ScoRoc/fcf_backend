@@ -1,79 +1,85 @@
 // Libraries
-import React, { useDispatch, useGlobal } from 'reactn';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 // @jsx jsx
-import { css, jsx } from '@emotion/core';
-import { useTheme } from 'emotion-theming';
+import { jsx } from '@emotion/core';
 // Components
-import { Card } from 'components';
+import { BigCard, ThinCard } from 'components';
 // Widgets
-import { Box, Text } from 'widgets';
+import { Box } from 'widgets';
 
 // Dashboard
 
-const Dashboard = props => {
-  // Global State
-  const [user] = useGlobal('user');
-
-  // Dispathers
-  const logout = useDispatch('logout');
-
-  // History, Location, and Match
-
-  const history = useHistory();
-  const location = useLocation();
-  const match = useRouteMatch();
-
-  // Theme and Styles
-
-  const theme = useTheme();
-  const styles = buildStyles(theme);
-
-  // Return
-
-  return (
+const Dashboard = props => (
+  <Box
+    className='Dashboard'
+    css={{ boxSizing: 'border-box' }}
+    display='grid'
+    flex={1}
+    gridGap='15px 15px'
+    gridTemplateColumns='1fr 1fr'
+    gridTemplateRows='1fr 1fr'
+    height='100%'
+    padding='30px 20px'
+  >
+    <BigCard
+      bodyText='Card 1'
+      footerText='Card 1'
+      icon='[icon]'
+      title='Card 1'
+      className='dashboard-big-card'
+      gridColumn='1'
+      gridRow='1'
+    />
+    <BigCard
+      bodyText='Card 2'
+      footerText='Card 2'
+      icon='[icon]'
+      title='Card 2'
+      className='dashboard-big-card'
+      gridColumn='1'
+      gridRow='2'
+    />
+    <BigCard
+      bodyText='Card 3'
+      footerText='Card 3'
+      icon='[icon]'
+      title='Card 3'
+      className='dashboard-big-card'
+      gridColumn='2'
+      gridRow='1'
+    />
     <Box
-      className='Dashboard'
-      // display='flex'
-      flex={1}
-      height='100%'
-      // justifyContent='space-between'
-      // padding='35px 20px'
-
-      display='grid'
-      gridGap='20px 20px'
-      gridTemplateColumns='2fr 50fr 1fr 50fr 2fr'
-      gridTemplateRows='2fr 3fr 1fr 3fr 2fr'
-      height='100%'
-      paddingTop='30px'
+      bg='transparent'
+      className='dashboard-thin-card-container'
+      gridColumn='2'
+      gridRow='2'
+      display='flex'
+      flexDirection='column'
+      justifyContent='space-between'
     >
-      <Card gridColumn='2' gridRow='1' margin='0 10px' />
-      <Card gridColumn='4' gridRow='1' margin='0 10px' />
-      <Card gridColumn='2' gridRow='2' margin='0 10px' />
-      <Card
-        bg='transparent'
-        gridColumn='4'
-        gridRow='2'
-        display='flex'
-        flexDirection='column'
-        height='100%'
-        justifyContent='space-between'
-        margin='0 10px'
-      >
-        <Card bg='darkslategrey' height='29%' />
-        <Card bg='darkslategrey' height='29%' />
-        <Card bg='darkslategrey' height='29%' />
-      </Card>
+      <ThinCard
+        bg='darkslategrey'
+        className='dashboard-thin-card'
+        leftText='left'
+        rightText='right'
+      />
+      <ThinCard
+        bg='darkslategrey'
+        className='dashboard-thin-card'
+        leftText='left'
+        marginBottom='15px'
+        marginTop='15px'
+        rightText='right'
+      />
+      <ThinCard
+        bg='darkslategrey'
+        className='dashboard-thin-card'
+        leftText='left'
+        rightText='right'
+      />
     </Box>
-  );
-};
-
-const buildStyles = theme => ({
-  p: {
-    // color: theme.color,
-    // color: theme.colors.white,
-  },
-});
+  </Box>
+);
 
 export default Dashboard;

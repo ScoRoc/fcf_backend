@@ -27,11 +27,11 @@ const buildStyle = theme => ({
 });
 
 NavLinkText.propTypes = {
-  children: PropTypes.element,
+  //
 };
 
 NavLinkText.defaultProps = {
-  children: null,
+  //
 };
 
 export default NavLinkText;

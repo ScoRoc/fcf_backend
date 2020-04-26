@@ -9,7 +9,7 @@ import { useTheme } from 'emotion-theming';
 // Parts
 import LoginInput from './LoginInput';
 // Widgets
-import { Button, Text, Input } from 'widgets';
+import { Button, Text } from 'widgets';
 import { ThemeToggle } from 'components';
 // Constants
 import { QUERY_STRING, URL } from 'constants/urls';

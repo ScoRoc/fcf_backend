@@ -41,10 +41,12 @@ const buildStyle = theme => ({
 });
 
 NavLinkTile.propTypes = {
+  //
   text: PropTypes.oneOfType([PropTypes.array, PropTypes.number, PropTypes.string]),
 };
 
 NavLinkTile.defaultProps = {
+  //
   text: 'NavLinkTile',
 };
 

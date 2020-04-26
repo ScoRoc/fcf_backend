@@ -1,6 +1,5 @@
 // Libraries
-// @jsx jsx
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 // Colors
 import * as colors from './colors';
 

@@ -22,7 +22,6 @@ const Page = props => {
   // Global State
 
   const isUserAuthenticated = useGlobal('isUserAuthenticated');
-  const [themeName] = useGlobal('themeName');
 
   // Dispatchers
 
@@ -66,8 +65,8 @@ const Page = props => {
 
   const handleSuccess = res => {
     console.log('res: ', res);
-    const to = `${URL.APP}${URL.DASHBOARD}`;
-    const { from } = location.state || { from: { pathname: to } };
+    // const to = `${URL.APP}${URL.DASHBOARD}`;
+    // const { from } = location.state || { from: { pathname: to } };
     authenticateUser();
     // history.replace(from);
     axios
@@ -130,17 +129,15 @@ const buildStyles = theme => ({
   page: {
     backgroundColor: theme.background,
     display: 'flex',
-    height: '100vh',
+    flex: 1,
     margin: 0,
     padding: 0,
-    overflow: 'hidden',
-    width: '100%',
   },
 });
 
 // CHANGE STRUCTURE AND NAMES SO ITS LIKE THIS
-{
-  /* <Page>
+
+/* <Page>
   <Heaader>
     <Nav />
     <Profile />
@@ -166,7 +163,6 @@ const buildStyles = theme => ({
     <Wod />
   </Body>
 </Page>; */
-}
 
 // folders are lowerCamelCase
 // component folders are lowerCamelCase

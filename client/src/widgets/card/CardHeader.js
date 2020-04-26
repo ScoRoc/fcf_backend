@@ -7,16 +7,25 @@ import { useTheme } from 'emotion-theming';
 // Widgets
 import { Box } from 'widgets';
 
-// Card
+// CardHeader
 
-const Card = ({ children, ...props }) => {
+const CardHeader = ({ children, ...props }) => {
   // Styles and Theme
 
   const theme = useTheme();
   const styles = buildStyle(theme);
 
   return (
-    <Box bg='sienna' className='Card' height='300px' width='100%' {...props}>
+    <Box
+      alignItems='center'
+      bg='lightseagreen'
+      className='CardHeader'
+      display='flex'
+      height='70px'
+      justifyContent='flex-start'
+      padding='0 30px'
+      {...props}
+    >
       {children}
     </Box>
   );
@@ -26,12 +35,12 @@ const buildStyle = theme => ({
   //
 });
 
-Card.propTypes = {
+CardHeader.propTypes = {
   //
 };
 
-Card.defaultProps = {
+CardHeader.defaultProps = {
   //
 };
 
-export default Card;
+export default CardHeader;

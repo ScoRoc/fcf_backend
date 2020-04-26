@@ -8,7 +8,7 @@ export default class ImgCrop extends React.Component {
     super(props);
     this.state = {
       crop: {
-        aspect: 15/8,
+        aspect: 15 / 8,
         width: 30,
         x: 30,
         y: 30,
@@ -20,9 +20,9 @@ export default class ImgCrop extends React.Component {
     // console.log('crop: ', crop);
     this.setState((prevState, props) => {
       props.liftCrop(crop);
-      return { crop }
+      return { crop };
     });
-  }
+  };
 
   // getCroppedImg(image, pixelCrop, fileName) {
   //   console.log('type: ', typeof image)

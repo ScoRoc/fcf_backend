@@ -54,7 +54,7 @@ function App() {
   const theme = themes[themeName];
 
   return (
-    <Box className='App'>
+    <Box className='App' display='flex' height='100vh' width='100vw'>
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>

@@ -1,5 +1,4 @@
 // Libraries
-import React from 'react';
 import styled from '@emotion/styled';
 import { createShouldForwardProp, props } from '@styled-system/should-forward-prop';
 // Custom Props

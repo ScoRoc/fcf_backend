@@ -7,16 +7,25 @@ import { useTheme } from 'emotion-theming';
 // Widgets
 import { Box } from 'widgets';
 
-// NavLinkIcon
+// CardFooter
 
-const NavLinkIcon = ({ children, ...props }) => {
+const CardFooter = ({ children, ...props }) => {
   // Styles and Theme
 
   const theme = useTheme();
   const styles = buildStyle(theme);
 
   return (
-    <Box bg='cadetblue' className='NavLinkIcon' color='maroon' {...props}>
+    <Box
+      alignItems='center'
+      bg='darkmagenta'
+      className='CardFooter'
+      display='flex'
+      height='70px'
+      justifyContent='flex-start'
+      padding='0 30px'
+      {...props}
+    >
       {children}
     </Box>
   );
@@ -26,12 +35,12 @@ const buildStyle = theme => ({
   //
 });
 
-NavLinkIcon.propTypes = {
+CardFooter.propTypes = {
   //
 };
 
-NavLinkIcon.defaultProps = {
+CardFooter.defaultProps = {
   //
 };
 
-export default NavLinkIcon;
+export default CardFooter;

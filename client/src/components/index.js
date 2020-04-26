@@ -1,4 +1,5 @@
-import Card from './components/Card';
-import ThemeToggle from './components/ThemeToggle';
+import BigCard from './bigCard/BigCard';
+import ThemeToggle from './ThemeToggle';
+import ThinCard from './ThinCard';
 
-export { Card, ThemeToggle };
+export { BigCard, ThemeToggle, ThinCard };
