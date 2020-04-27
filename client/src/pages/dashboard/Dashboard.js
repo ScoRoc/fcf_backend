@@ -18,7 +18,7 @@ const Dashboard = props => (
     flex={1}
     gridGap='15px 15px'
     gridTemplateColumns='1fr 1fr'
-    gridTemplateRows='1fr 1fr'
+    gridTemplateRows='repeat(2, auto)'
     height='100%'
     padding='30px 20px'
   >
@@ -37,8 +37,8 @@ const Dashboard = props => (
       icon='[icon]'
       title='Card 2'
       className='dashboard-big-card'
-      gridColumn='1'
-      gridRow='2'
+      gridColumn='2'
+      gridRow='1'
     />
     <BigCard
       bodyText='Card 3'
@@ -46,8 +46,8 @@ const Dashboard = props => (
       icon='[icon]'
       title='Card 3'
       className='dashboard-big-card'
-      gridColumn='2'
-      gridRow='1'
+      gridColumn='1'
+      gridRow='2'
     />
     <Box
       bg='transparent'

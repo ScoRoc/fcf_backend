@@ -11,6 +11,7 @@ import { useTheme } from 'emotion-theming';
 import { Box, Text } from 'widgets';
 // Pages
 import Dashboard from './dashboard/Dashboard';
+import Wod from './wod/Wod';
 // Components
 import SideNav from './sideNav/SideNav';
 // Constants
@@ -96,7 +97,7 @@ const Page = props => {
                 </Route>
 
                 <Route path={`${match.path}${URL.WODS}`}>
-                  <Text>WOD PAGE</Text>
+                  <Wod />
                 </Route>
 
                 <Route path={`${match.path}${URL.ANNOUNCEMENTS}`}>

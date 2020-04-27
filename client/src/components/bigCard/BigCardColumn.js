@@ -6,9 +6,9 @@ import { jsx } from '@emotion/core';
 // Widgets
 import { Box } from 'widgets';
 
-// InnerSection
+// BigCardColumn
 
-const InnerSection = ({ icon, text, ...props }) => {
+const BigCardColumn = ({ icon, text, ...props }) => {
   return (
     <Box
       alignItems='center'
@@ -24,14 +24,14 @@ const InnerSection = ({ icon, text, ...props }) => {
   );
 };
 
-InnerSection.propTypes = {
+BigCardColumn.propTypes = {
   icon: PropTypes.string,
   text: PropTypes.string,
 };
 
-InnerSection.defaultProps = {
+BigCardColumn.defaultProps = {
   icon: null,
   text: null,
 };
 
-export default InnerSection;
+export default BigCardColumn;

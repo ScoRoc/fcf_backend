@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Parts
-import InnerSection from './InnerSection';
+import BigCardColumn from './BigCardColumn';
 // Widgets
 import { Card, CardBody, CardFooter, CardHeader, Separator, Text } from 'widgets';
 
@@ -20,11 +20,11 @@ const BigCard = ({ bodyText, footerText, icon, showFooter, showHeader, title, ..
       </CardHeader>
     )}
     <CardBody justifyContent='space-around'>
-      <InnerSection icon={icon} text={bodyText} />
+      <BigCardColumn icon={icon} text={bodyText} />
       <Separator />
-      <InnerSection icon={icon} text={bodyText} />
+      <BigCardColumn icon={icon} text={bodyText} />
       <Separator />
-      <InnerSection icon={icon} text={bodyText} />
+      <BigCardColumn icon={icon} text={bodyText} />
     </CardBody>
     {showFooter && (
       <CardFooter>
