@@ -1,5 +1,6 @@
 const URL = {
   ANNOUNCEMENTS: '/announcements',
+  ADD: '/add',
   APP: '/app',
   AUTH: '/auth',
   DASHBOARD: '/dashboard',

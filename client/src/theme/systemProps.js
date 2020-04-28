@@ -16,6 +16,7 @@ import {
 } from 'styled-system';
 
 const _config = system({
+  boxSizing: true,
   cursor: true,
   listStyles: true,
   listStylePosition: true,

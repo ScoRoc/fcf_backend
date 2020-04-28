@@ -1,8 +1,6 @@
-import NavHeader from './NavHeader';
-import NavLinkGroup from './NavLinkGroup';
-import NavLinkIcon from './NavLinkIcon';
-import NavLinkText from './NavLinkText';
-import NavLinkTile from './NavLinkTile';
-import NavLogout from './NavLogout';
+import SideNavHeader from './SideNavHeader';
+import SideNavFooter from './SideNavFooter';
+import SideNavLinkTile from './SideNavLinkTile';
+import SideNavSubTile from './SideNavSubTile';
 
-export { NavHeader, NavLinkGroup, NavLinkIcon, NavLinkText, NavLinkTile, NavLogout };
+export { SideNavHeader, SideNavFooter, SideNavLinkTile, SideNavSubTile };

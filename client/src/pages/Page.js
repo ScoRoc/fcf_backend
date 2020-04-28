@@ -36,7 +36,7 @@ const Page = props => {
   const location = useLocation();
   const match = useRouteMatch(URL.APP);
   // const match = useRouteMatch();
-  console.log('match: ', match);
+  // console.log('match: ', match);
 
   // Styles and Theme
 
