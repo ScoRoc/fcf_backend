@@ -21,7 +21,6 @@ const SideNavHeader = ({ ...props }) => {
       width='100%'
       {...props}
     >
-      yooo
       <Text marginRight='10px' variant='secondary'>
         [logo]
       </Text>

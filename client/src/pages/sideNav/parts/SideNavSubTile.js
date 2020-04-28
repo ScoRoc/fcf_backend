@@ -1,11 +1,9 @@
 // Libraries
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
-// Context
-import { SideNavLinkTileContext } from './SideNavLinkTile';
 // Widgets
 import { Box } from 'widgets';
 // Constants
@@ -13,24 +11,25 @@ import { URL } from 'constants/urls';
 
 // SideNavSubTile
 
-const SideNavSubTile = ({ path, width, ...props }) => {
-  const isHovered = useContext(SideNavLinkTileContext);
-
+const SideNavSubTile = ({ isHovered, path, ...props }) => {
   return (
-    <SideNavSubTile
+    <Box
       css={css`
         left: 0;
         position: absolute;
-        transform: translateX(${isHovered ? width : 0});
+        transform: translateX(${isHovered ? '100%' : 0});
         transition: all 250ms;
         top: 0;
-        width: ${width};
       `}
       {...props}
     >
       <Box
         alignItems='center'
         bg='darkblue'
+        // border='1px solid lightgrey'
+        // borderBottom='1px solid lightgrey'
+        // borderRight='1px solid lightgrey'
+        // borderTop='1px solid lightgrey'
         color='red'
         boxSizing='border-box'
         display='flex'
@@ -68,16 +67,18 @@ const SideNavSubTile = ({ path, width, ...props }) => {
           View
         </NavLink>
       </Box>
-    </SideNavSubTile>
+    </Box>
   );
 };
 
 SideNavSubTile.propTypes = {
-  children: PropTypes.element,
+  isHovered: PropTypes.bool,
+  path: PropTypes.string, // must be a valid path string ie. "/wods"
 };
 
 SideNavSubTile.defaultProps = {
-  children: null,
+  isHovered: null,
+  path: '',
 };
 
 export default SideNavSubTile;

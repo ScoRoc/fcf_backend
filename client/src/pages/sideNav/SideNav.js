@@ -44,17 +44,35 @@ const SideNav = props => {
   };
 
   const links = [
-    { icon: '[icon1]', path: `${URL.APP}${URL.DASHBOARD}`, text: 'Dashboard' },
-    { icon: '[icon2]', path: `${URL.APP}${URL.WODS}`, text: 'Wods' },
-    { icon: '[icon3]', path: `${URL.APP}${URL.ANNOUNCEMENTS}`, text: 'Announcements' },
-    { icon: '[icon4]', path: `${URL.APP}${URL.EVENTS}`, text: 'Events' },
-    { icon: '[icon5]', path: `${URL.APP}${URL.USERS}`, text: 'Users' },
+    {
+      icon: '[icon1]',
+      path: `${URL.APP}${URL.DASHBOARD}`,
+      showSideNavSubTile: false,
+      text: 'Dashboard',
+    },
+    { icon: '[icon2]', path: `${URL.APP}${URL.WODS}`, showSideNavSubTile: true, text: 'Wods' },
+    {
+      icon: '[icon3]',
+      path: `${URL.APP}${URL.ANNOUNCEMENTS}`,
+      showSideNavSubTile: true,
+      text: 'Announcements',
+    },
+    { icon: '[icon4]', path: `${URL.APP}${URL.EVENTS}`, showSideNavSubTile: true, text: 'Events' },
+    { icon: '[icon5]', path: `${URL.APP}${URL.USERS}`, showSideNavSubTile: true, text: 'Users' },
   ];
 
-  const tiles = links.map(link => {
-    const { icon, path, text } = link;
+  const tiles = links.map((link, i) => {
+    const { icon, path, showSideNavSubTile, text } = link;
     // TODO change key
-    return <SideNavLinkTile icon={icon} key={`${path}${text}`} path={path} text={text} />;
+    return (
+      <SideNavLinkTile
+        icon={icon}
+        key={`${i}${text}`}
+        path={path}
+        showSideNavSubTile={showSideNavSubTile}
+        text={text}
+      />
+    );
   });
 
   return (
@@ -69,9 +87,7 @@ const SideNav = props => {
       width='250px'
     >
       <SideNavHeader />
-
       {tiles}
-
       <SideNavFooter onClick={handleClick} />
     </Box>
   );

@@ -1,5 +1,5 @@
 // Libraries
-import React, { createContext, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 // @jsx jsx
@@ -9,56 +9,62 @@ import SideNavSubTile from './SideNavSubTile';
 // Widgets
 import { Box, Text } from 'widgets';
 
-const defaultContext = { isHovered: false };
-
-export const SideNavLinkTileContext = createContext(defaultContext);
-
 // SideNavLinkTile
 
-const SideNavLinkTile = ({ icon, path, text, ...props }) => {
-  const [isHovered, setIsHovered] = useState(defaultContext.isHovered);
+const SideNavLinkTile = ({ icon, path, showSideNavSubTile, text, ...props }) => {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <SideNavLinkTileContext.Provider value={isHovered}>
-      <NavLink
-        alignItems='center'
-        backgroundColor='darkblue'
-        border='1px solid lightgrey'
-        className='side-nav-link-tile'
-        css={{ textDecoration: 'none' }}
-        display='flex'
-        height='80px'
-        justifyContent='space-between'
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        padding='0 20px 0 40px'
-        position='relative'
-        to={path}
-        width='100%'
-        zIndex={10}
-        {...props}
-      >
-        <Box css={{ backgroundColor: 'darkblue' }} path={path}>
-          <Text bg='cadetblue' className='side-nav-icon-placeholder' color='maroon'>
+    <Box
+      backgroundColor='darkblue'
+      border='1px solid lightgrey'
+      className='side-nav-link-tile'
+      height='80px'
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      position='relative'
+      width='100%'
+      {...props}
+    >
+      <NavLink css={{ textDecoration: 'none' }} to={path}>
+        <Box
+          alignItems='center'
+          bg={'darkblue'}
+          boxSizing='border-box'
+          className='side-nav-link-main'
+          display='flex'
+          flexDirection='row'
+          height='100%'
+          justifyContent='space-between'
+          padding='0 20px 0 40px'
+          position='relative'
+          width='100%'
+          zIndex={10}
+        >
+          <Text bg='cadetblue' color='maroon'>
             {icon}
           </Text>
-          <Text className='side-nav-text-placeholder' color='white'>
-            {text}
-          </Text>
+          <Text color='white'>{text}</Text>
         </Box>
-
-        <SideNavSubTile />
       </NavLink>
-    </SideNavLinkTileContext.Provider>
+
+      {showSideNavSubTile && <SideNavSubTile isHovered={isHovered} path={path} />}
+    </Box>
   );
 };
 
 SideNavLinkTile.propTypes = {
-  children: PropTypes.element,
+  icon: PropTypes.element,
+  path: PropTypes.string, // must be a valid path string ie. "/wods"
+  showSideNavSubTile: PropTypes.bool,
+  text: PropTypes.string,
 };
 
 SideNavLinkTile.defaultProps = {
-  children: null,
+  icon: null,
+  path: '',
+  showSideNavSubTile: true,
+  text: '',
 };
 
 export default SideNavLinkTile;
