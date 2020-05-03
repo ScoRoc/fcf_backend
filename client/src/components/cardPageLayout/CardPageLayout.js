@@ -17,13 +17,13 @@ const CardPageLayout = ({ children, title, ...props }) => {
   // Animation
 
   const transitions = useTransition(isModalOpen, null, {
-    enter: { backgroundColor: 'rgba(0, 0, 0, .4)' },
-    from: { backgroundColor: 'rgba(0, 0, 0, 0)' },
-    leave: { backgroundColor: 'rgba(0, 0, 0, 0)' },
+    enter: [{ backgroundColor: 'rgba(0, 0, 0, .4)' }, { innerScale: 1 }],
+    from: [{ backgroundColor: 'rgba(0, 0, 0, 0)' }, { innerScale: 0 }],
+    leave: [{ innerScale: 0 }, { backgroundColor: 'rgba(0, 0, 0, 0)' }],
   });
 
   const modal = transitions.map(
-    ({ item, key, props }) =>
+    ({ item, key, props: { innerScale, ...props } }) =>
       item && (
         <Portal>
           <AnimatedBox
@@ -38,15 +38,16 @@ const CardPageLayout = ({ children, title, ...props }) => {
             top='0'
             zIndex='9999'
           >
-            <Box
+            <AnimatedBox
               backgroundColor='white'
               height='300px'
               position='relative'
+              style={{ transform: `scale(${innerScale})` }}
               styledFlex='center center'
               width='300px'
             >
               <Text>hi in portal</Text>
-            </Box>
+            </AnimatedBox>
           </AnimatedBox>
         </Portal>
       ),
