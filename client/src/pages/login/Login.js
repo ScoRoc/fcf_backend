@@ -84,7 +84,7 @@ const Login = props => {
         </Text>
         <div css={styles.logo} />
 
-        <form css={styles.form} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} styledFlex='stretch flex-start column'>
           <LoginInput label='Email' onChange={e => setEmail(e.target.value)} value={email} />
           <LoginInput
             label='Password'
@@ -105,11 +105,6 @@ const Login = props => {
 const buildStyles = theme => ({
   button: {
     marginTop: '40px',
-    width: '100%',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
     width: '100%',
   },
   loginBox: css`

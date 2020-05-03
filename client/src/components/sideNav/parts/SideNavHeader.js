@@ -10,15 +10,11 @@ import { Box, Text } from 'widgets';
 const SideNavHeader = ({ ...props }) => {
   return (
     <Box
-      alignItems='center'
       background='darkgreen'
-      boxSizing='border-box'
       className='side-nav-header'
-      display='flex'
       height='110px'
-      justifyContent='center'
       padding='20px'
-      width='100%'
+      styledFlex='center center'
       {...props}
     >
       <Text marginRight='10px' variant='secondary'>

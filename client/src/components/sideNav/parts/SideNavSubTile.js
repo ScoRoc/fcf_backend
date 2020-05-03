@@ -24,18 +24,11 @@ const SideNavSubTile = ({ isHovered, path, ...props }) => {
       {...props}
     >
       <Box
-        alignItems='center'
         bg='darkblue'
-        // border='1px solid lightgrey'
-        // borderBottom='1px solid lightgrey'
-        // borderRight='1px solid lightgrey'
-        // borderTop='1px solid lightgrey'
         color='red'
-        boxSizing='border-box'
-        display='flex'
         height='80px'
-        justifyContent='space-between'
         padding='0 10px'
+        styledFlex='center space-between'
         width='250px'
       >
         <NavLink

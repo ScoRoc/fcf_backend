@@ -1,5 +1,6 @@
-import BigCard from './bigCard/BigCard';
-import ThemeToggle from './ThemeToggle';
-import ThinCard from './ThinCard';
+import CardPageLayout from './cardPageLayout/CardPageLayout';
+import ItemCard from './itemCard/ItemCard';
+import SideNav from './sideNav/SideNav';
+import ThemeToggle from './themeToggle/ThemeToggle';
 
-export { BigCard, ThemeToggle, ThinCard };
+export { CardPageLayout, ItemCard, SideNav, ThemeToggle };

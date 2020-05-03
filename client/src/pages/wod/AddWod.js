@@ -26,15 +26,7 @@ const AddWod = ({ children }) => {
 
   return (
     <React.Fragment>
-      <Box
-        css={{ boxSizing: 'border-box' }}
-        display='flex'
-        flex={1}
-        flexDirection='column'
-        height='100%'
-        justifyContent='space-between'
-        padding='50px 50px'
-      >
+      <Box flex={1} padding='50px 50px' styledFlex='stretch space-between column'>
         {/* <Calendar /> */}
         {/* <DatePicker /> */}
 
@@ -58,7 +50,7 @@ const AddWod = ({ children }) => {
         <Box bg='grey' width='500px' height='200px'></Box>
       </Box>
 
-      <Box display='flex' width='100%'>
+      <Box styledFlex='stretch'>
         <Box
           css={css`
             align-items: center;

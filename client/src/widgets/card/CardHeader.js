@@ -17,13 +17,11 @@ const CardHeader = ({ children, ...props }) => {
 
   return (
     <Box
-      alignItems='center'
       bg='lightseagreen'
       className='CardHeader'
-      display='flex'
       height='70px'
-      justifyContent='flex-start'
       padding='0 30px'
+      styledFlex='center flex-start'
       {...props}
     >
       {children}

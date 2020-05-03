@@ -9,14 +9,7 @@ import { Box } from 'widgets';
 // CardBody
 
 const CardBody = ({ children, ...props }) => (
-  <Box
-    alignItems='center'
-    className='CardBody'
-    display='flex'
-    flex={1}
-    justifyContent='center'
-    {...props}
-  >
+  <Box className='CardBody' flex={1} styledFlex='center center' {...props}>
     {children}
   </Box>
 );

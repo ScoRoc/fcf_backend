@@ -18,6 +18,7 @@ const SideNavLinkTile = ({ icon, path, showSideNavSubTile, text, ...props }) => 
     <Box
       backgroundColor='darkblue'
       border='1px solid lightgrey'
+      boxSizing='border-box'
       className='side-nav-link-tile'
       height='80px'
       onMouseEnter={() => setIsHovered(true)}
@@ -28,17 +29,11 @@ const SideNavLinkTile = ({ icon, path, showSideNavSubTile, text, ...props }) => 
     >
       <NavLink css={{ textDecoration: 'none' }} to={path}>
         <Box
-          alignItems='center'
           bg={'darkblue'}
-          boxSizing='border-box'
           className='side-nav-link-main'
-          display='flex'
-          flexDirection='row'
-          height='100%'
-          justifyContent='space-between'
           padding='0 20px 0 40px'
           position='relative'
-          width='100%'
+          styledFlex='center space-between'
           zIndex={10}
         >
           <Text bg='cadetblue' color='maroon'>
@@ -48,7 +43,7 @@ const SideNavLinkTile = ({ icon, path, showSideNavSubTile, text, ...props }) => 
         </Box>
       </NavLink>
 
-      {showSideNavSubTile && <SideNavSubTile isHovered={isHovered} path={path} />}
+      {/* {showSideNavSubTile && <SideNavSubTile isHovered={isHovered} path={path} />} */}
     </Box>
   );
 };

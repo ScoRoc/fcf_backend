@@ -11,17 +11,13 @@ import { Box, Text } from 'widgets';
 const SideNavFooter = ({ onClick, ...props }) => {
   return (
     <Box
-      alignItems='center'
       backgroundColor='coral'
       className='sid-nav-footer'
       cursor='pointer'
-      display='flex'
-      flexDirection='column'
       height='60px'
-      justifyContent='center'
       marginTop='auto'
       onClick={onClick}
-      width='100%'
+      styledFlex='center center column'
       {...props}
     >
       <Text>logout</Text>

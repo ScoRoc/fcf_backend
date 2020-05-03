@@ -10,10 +10,12 @@ import { useTheme } from 'emotion-theming';
 // Widgets
 import { Box, Text } from 'widgets';
 // Pages
+import AnnouncementsPage from './announcements/AnnouncementsPage';
 import Dashboard from './dashboard/Dashboard';
-import Wod from './wod/Wod';
+import EventsPage from './events/EventsPage';
+import WodsPage from './wod/WodsPage';
 // Components
-import SideNav from './sideNav/SideNav';
+import { SideNav } from 'components';
 // Constants
 import { URL } from 'constants/index';
 
@@ -38,10 +40,9 @@ const Page = props => {
   // const match = useRouteMatch();
   // console.log('match: ', match);
 
-  // Styles and Theme
+  // Theme
 
   const theme = useTheme();
-  const styles = buildStyles(theme);
 
   // Effects
 
@@ -87,25 +88,33 @@ const Page = props => {
         !isUserAuthenticated ? (
           <Redirect to={{ pathname: URL.LOGIN, state: { from: location } }} />
         ) : (
-          <Switch>
-            <Box className='Page' css={styles.page}>
-              <SideNav />
+          <Box
+            className='Page'
+            backgroundColor={theme.background}
+            flex={1}
+            margin={0}
+            overflow='hidden'
+            padding={0}
+            styledFlex='stretch'
+          >
+            <SideNav />
 
-              <Box className='PageBody' css={{ flex: 1 }}>
+            <Box className='PageBody' flex={1}>
+              <Switch>
                 <Route path={`${match.path}${URL.DASHBOARD}`}>
                   <Dashboard />
                 </Route>
 
                 <Route path={`${match.path}${URL.WODS}`}>
-                  <Wod />
+                  <WodsPage />
                 </Route>
 
                 <Route path={`${match.path}${URL.ANNOUNCEMENTS}`}>
-                  <Text>ANNOUNCEMENTS PAGE</Text>
+                  <AnnouncementsPage />
                 </Route>
 
                 <Route path={`${match.path}${URL.EVENTS}`}>
-                  <Text>EVENTS PAGE</Text>
+                  <EventsPage />
                 </Route>
 
                 <Route path={`${match.path}${URL.USERS}`}>
@@ -115,26 +124,14 @@ const Page = props => {
                 <Route exact path={URL.APP}>
                   <Dashboard />
                 </Route>
-              </Box>
+              </Switch>
             </Box>
-          </Switch>
+          </Box>
         )
       }
     />
   );
 };
-
-// buildStyles
-
-const buildStyles = theme => ({
-  page: {
-    backgroundColor: theme.background,
-    display: 'flex',
-    flex: 1,
-    margin: 0,
-    padding: 0,
-  },
-});
 
 // CHANGE STRUCTURE AND NAMES SO ITS LIKE THIS
 
@@ -148,7 +145,7 @@ const buildStyles = theme => ({
       <Grid>
         <Announcement />
         <Event />
-        <Wod />
+        <WodsPage />
         <Daily />
       </Grid>
     </Home>
@@ -161,7 +158,7 @@ const buildStyles = theme => ({
     </Login>
     <Manager />
     <User />
-    <Wod />
+    <WodsPage />
   </Body>
 </Page>; */
 

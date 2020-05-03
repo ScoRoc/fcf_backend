@@ -3,8 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
-// Components
-import { BigCard, ThinCard } from 'components';
+// Dashboard Components
+import DashboardBigCard from './DashboardBigCard';
+import DashboardThinCard from './DashboardThinCard';
 // Widgets
 import { Box } from 'widgets';
 
@@ -18,53 +19,55 @@ const Dashboard = props => (
     flex={1}
     gridGap='15px 15px'
     gridTemplateColumns='1fr 1fr'
-    gridTemplateRows='repeat(2, auto)'
+    gridTemplateRows='1fr 1fr'
     height='100%'
     padding='30px 20px'
   >
-    <BigCard
+    <DashboardBigCard
       bodyText='Card 1'
-      footerText='Card 1'
-      icon='[icon]'
-      title='Card 1'
       className='dashboard-big-card'
+      footerText='Card 1'
       gridColumn='1'
       gridRow='1'
-    />
-    <BigCard
-      bodyText='Card 2'
-      footerText='Card 2'
+      title='Card 1'
       icon='[icon]'
-      title='Card 2'
+      text='Card 1'
+    />
+
+    <DashboardBigCard
+      bodyText='Card 2'
       className='dashboard-big-card'
+      footerText='Card 2'
       gridColumn='2'
       gridRow='1'
-    />
-    <BigCard
-      bodyText='Card 3'
-      footerText='Card 3'
+      title='Card 2'
       icon='[icon]'
-      title='Card 3'
+      text='Card 2'
+    />
+    <DashboardBigCard
+      bodyText='Card 3'
       className='dashboard-big-card'
+      footerText='Card 3'
       gridColumn='1'
       gridRow='2'
+      title='Card 3'
+      icon='[icon]'
+      text='Card 3'
     />
     <Box
       bg='transparent'
       className='dashboard-thin-card-container'
       gridColumn='2'
       gridRow='2'
-      display='flex'
-      flexDirection='column'
-      justifyContent='space-between'
+      styledFlex='stretch space-between column'
     >
-      <ThinCard
+      <DashboardThinCard
         bg='darkslategrey'
         className='dashboard-thin-card'
         leftText='left'
         rightText='right'
       />
-      <ThinCard
+      <DashboardThinCard
         bg='darkslategrey'
         className='dashboard-thin-card'
         leftText='left'
@@ -72,7 +75,7 @@ const Dashboard = props => (
         marginTop='15px'
         rightText='right'
       />
-      <ThinCard
+      <DashboardThinCard
         bg='darkslategrey'
         className='dashboard-thin-card'
         leftText='left'

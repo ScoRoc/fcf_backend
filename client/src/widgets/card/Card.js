@@ -9,16 +9,7 @@ import { Box } from 'widgets';
 // Card
 
 const Card = ({ children, ...props }) => (
-  <Box
-    bg='sienna'
-    className='Card'
-    display='flex'
-    flexDirection='column'
-    height='100%'
-    justifyContent='space-between'
-    width='100%'
-    {...props}
-  >
+  <Box bg='sienna' className='Card' styledFlex='stretch space-between column' {...props}>
     {children}
   </Box>
 );

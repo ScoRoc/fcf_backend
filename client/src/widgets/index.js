@@ -1,7 +1,21 @@
-import Box from './widgets/Box';
-import Button from './widgets/Button';
-import Card, { CardBody, CardFooter, CardHeader, Separator } from './card/index';
-import Input from './widgets/Input';
-import Text from './widgets/Text';
+import { AnimatedBox, Box } from './baseWidgets/Box';
+import Button from './baseWidgets/Button';
+import Card, { CardBody, CardColumn, CardFooter, CardHeader, Separator } from './card/index';
+import Input from './baseWidgets/Input';
+import Text from './baseWidgets/Text';
+import TitleBar from './titleBar/TitleBar';
 
-export { Box, Button, Card, CardBody, CardFooter, CardHeader, Input, Separator, Text };
+export {
+  AnimatedBox,
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardColumn,
+  CardFooter,
+  CardHeader,
+  Input,
+  Separator,
+  Text,
+  TitleBar,
+};

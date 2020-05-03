@@ -80,11 +80,9 @@ const SideNav = props => {
       bg={theme.colors.greyDark}
       className='SideNav'
       color={theme.colors.white}
-      display='flex'
-      flexDirection='column'
-      height='100%'
-      justifyContent='flex-start'
+      styledFlex='stretch flex-start column'
       width='250px'
+      zIndex='100'
     >
       <SideNavHeader />
       {tiles}

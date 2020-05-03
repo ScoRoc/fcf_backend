@@ -9,7 +9,8 @@ import { useTheme } from 'emotion-theming';
 import systemProps from 'theme/systemProps';
 
 // TODO only keep items I'm usings
-export const forwardedProps = [...props, 'cursor', 'd', 'fill', 'stroke', 'transform'];
+// export const forwardedProps = [...props, 'cursor', 'd', 'fill', 'stroke', 'transform'];
+export const forwardedProps = [...props, 'cursor'];
 
 export const shouldForwardProp = createShouldForwardProp(forwardedProps);
 
