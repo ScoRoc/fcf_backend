@@ -1,8 +1,8 @@
 // Colors
 import * as colors from './colors';
 // Themes
-import inputTheme from './inputTheme';
-import textTheme from './textTheme';
+import inputTheme from './input-theme';
+import textTheme from './text-theme';
 
 // theme names
 export const THEME_NAMES = {

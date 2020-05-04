@@ -3,12 +3,12 @@ import React, { addReducers, setGlobal, useGlobal } from 'reactn';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'emotion-theming';
 // Components
-import Login from 'pages/login/Login';
-import Page from 'pages/Page';
-// Widgets
-import { Box } from 'widgets';
+import Login from 'pages/Login';
+import AppRouter from './AppRouter';
+// Atoms
+import { Box } from 'atoms';
 // Constants
-import { URL } from 'constants/index';
+import { URL } from 'utils/constants';
 // Themes
 import themes, { THEME_NAMES } from 'theme/themes';
 
@@ -63,7 +63,7 @@ function App() {
             </Route>
 
             <Route path={URL.APP}>
-              <Page />
+              <AppRouter />
             </Route>
 
             <Redirect to={`${URL.APP}${URL.DASHBOARD}`} />

@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
-// Widgets
-import { Box } from 'widgets';
+// Atoms
+import { Box } from 'atoms';
 
 // Template
 
