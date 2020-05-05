@@ -1,8 +1,8 @@
 // Libraries
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Portal from '@reach/portal';
-import { animated, useTransition } from 'react-spring';
+import { useTransition } from 'react-spring';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
@@ -16,44 +16,91 @@ const CardPageLayout = ({ children, title, ...props }) => {
   // State
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Refs
+
+  const modalRef = useRef(null);
+
+  // Functions
+
+  const handleClick = e => {
+    if (!modalRef?.current?.contains(e.target)) {
+      setIsModalOpen(false);
+    }
+  };
+
   // Animation
 
-  // const transitions = useTransition(isModalOpen, null, {
-  //   enter: [{ backgroundColor: 'rgba(0, 0, 0, .4)' }, { innerScale: 1 }],
-  //   from: [{ backgroundColor: 'rgba(0, 0, 0, 0)' }, { innerScale: 0 }],
-  //   leave: [{ innerScale: 0 }, { backgroundColor: 'rgba(0, 0, 0, 0)' }],
-  // });
+  const transitions = useTransition(isModalOpen, null, {
+    config: {
+      clamp: true,
+      friction: 24,
+      mass: 0.8,
+      tension: 270,
+      velocity: 0,
+    },
+    enter: [
+      {
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        height: '0px',
+        opacity: 1,
+        scale: 1,
+        width: '300px',
+      },
+      { height: '300px' },
+    ],
+    from: {
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      height: '0px',
+      interpolate: 0,
+      opacity: 1,
+      scale: 1,
+      width: '300px',
+    },
+    leave: [
+      { width: '0px' },
+      {
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        opacity: 0,
+        scale: 0,
+      },
+    ],
+  });
 
-  // const modal = transitions.map(
-  //   ({ item, key, props: { innerScale, ...props } }) =>
-  //     item && (
-  //       <Portal>
-  //         <AnimatedBox
-  //           backgroundColor='rgba(0, 0, 0, .4)'
-  //           key={key}
-  //           left='0'
-  //           onClick={() => setIsModalOpen(false)}
-  //           paddingLeft='250px'
-  //           position='absolute'
-  //           style={props}
-  //           styledFlex='center center'
-  //           top='0'
-  //           zIndex='9999'
-  //         >
-  //           <AnimatedBox
-  //             backgroundColor='white'
-  //             height='300px'
-  //             position='relative'
-  //             style={{ transform: `scale(${innerScale})` }}
-  //             styledFlex='center center'
-  //             width='300px'
-  //           >
-  //             <Text>hi in portal</Text>
-  //           </AnimatedBox>
-  //         </AnimatedBox>
-  //       </Portal>
-  //     ),
-  // );
+  const modal = transitions.map(
+    ({ item, key, props: { height, opacity, scale, width, ...props } }) =>
+      item && (
+        <Portal>
+          <AnimatedBox
+            key={key}
+            left='0'
+            onClick={handleClick}
+            paddingLeft='250px'
+            position='absolute'
+            style={props}
+            styledFlex='center center'
+            top='0'
+            zIndex='9999'
+          >
+            <AnimatedBox
+              backgroundColor='white'
+              overflow='hidden'
+              position='relative'
+              ref={modalRef}
+              style={{
+                height,
+                opacity,
+                transform: scale.interpolate(scale => `scale(${scale})`),
+                width,
+              }}
+              styledFlex='center center'
+              width='300px'
+            >
+              <Text>hi in portal</Text>
+            </AnimatedBox>
+          </AnimatedBox>
+        </Portal>
+      ),
+  );
 
   // Return
 
@@ -92,7 +139,7 @@ const CardPageLayout = ({ children, title, ...props }) => {
           </AnimatedBox>
         </Portal>
       )} */}
-      {/* {modal} */}
+      {modal}
     </Box>
   );
 };
