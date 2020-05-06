@@ -39,9 +39,9 @@ const Input = forwardRef(
           className='Input'
           css={css`
             ${styles[variant]}
-            left: 0;
+            left: 2;
             position: absolute;
-            top: 0;
+            top: 2;
 
             &:focus {
               background-color: ${theme.colors.offWhite};
@@ -63,13 +63,14 @@ const Input = forwardRef(
           <Box
             css={css`
               background-color: green;
-              height: 50px;
+              height: 48px;
               margin: 0;
               position: absolute;
-              right: 0;
-              top: 0;
-              width: 50px;
+              right: 2px;
+              top: 2px;
+              width: 48px;
             `}
+            cursor='pointer'
             onClick={onCloseIconClick}
           />
         )}

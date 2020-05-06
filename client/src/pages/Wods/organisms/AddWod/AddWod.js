@@ -18,7 +18,7 @@ const AddWod = ({ children, ...props }) => {
 
   const [date, setDate] = useState(null);
   const [focused, setFocused] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [name, setName] = useState('');
 
   // Refs
 
@@ -30,7 +30,7 @@ const AddWod = ({ children, ...props }) => {
     const clearText = e => {
       e.preventDefault();
       if (e.key === 'Escape' || (e.key === 'Backspace' && e.shiftKey)) {
-        setInputValue('');
+        setName('');
       }
     };
 
@@ -41,7 +41,7 @@ const AddWod = ({ children, ...props }) => {
   // Functions
 
   const handleCloseIconClick = e => {
-    setInputValue('');
+    setName('');
     // this is valid 2020 ecma
     // eslint-disable-next-line no-unused-expressions
     inputRef.current?.focus();
@@ -52,7 +52,7 @@ const AddWod = ({ children, ...props }) => {
   return (
     <Box padding='10px' styledFlex='center space-between column'>
       <Box padding='20px 50px' styledFlex='flex-start space-between column'>
-        <Box alignSelf='flex-start'>
+        <Box alignSelf='flex-start' marginTop='40px'>
           <SingleDatePicker
             date={date} // momentPropTypes.momentObj or null
             enableOutsideDays
@@ -68,16 +68,21 @@ const AddWod = ({ children, ...props }) => {
           />
         </Box>
 
-        <Text>Name</Text>
-        <Input
-          onChange={e => setInputValue(e.target.value)}
-          onCloseIconClick={handleCloseIconClick}
-          ref={inputRef}
-          value={inputValue}
-        />
+        <Box marginBottom='20px' width='100%'>
+          <Text marginBottom='30px'>Name</Text>
+          <Input
+            onChange={e => setName(e.target.value)}
+            onCloseIconClick={handleCloseIconClick}
+            ref={inputRef}
+            value={name}
+          />
+        </Box>
 
-        <Text>Description</Text>
-        <Box bg='grey' width='500px' height='200px'></Box>
+        <Box width='100%'>
+          <Text marginBottom='30px'>Description</Text>
+          <Box bg='grey' width='500px' height='200px' />
+          <textarea />
+        </Box>
       </Box>
 
       <Box height='auto' styledFlex='flex-end'>
