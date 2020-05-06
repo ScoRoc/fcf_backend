@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { jsx } from '@emotion/core';
 // Organisms
 import CardPageLayout from 'organisms/CardPageLayout';
+import Modal from 'organisms/Modal';
 // Announcement Molecules
 import { AnnouncementCard } from '../../molecules';
 // Announcement Organisms
@@ -55,6 +56,10 @@ const AnnouncementsTemplate = props => {
   return (
     <CardPageLayout className='AnnouncementsTemplate' title='Announcements'>
       {announcementCards}
+
+      <Modal>
+        <p>Announcements Modal</p>
+      </Modal>
     </CardPageLayout>
   );
 };

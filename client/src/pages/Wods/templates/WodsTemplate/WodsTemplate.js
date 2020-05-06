@@ -5,42 +5,13 @@ import PropTypes from 'prop-types';
 import { jsx } from '@emotion/core';
 // Organisms
 import CardPageLayout from 'organisms/CardPageLayout';
+import Modal from 'organisms/Modal';
 // Wods Organisms
 import { WodCard, AddWod } from '../../organisms';
 
-// Placeholder
-
-const wods = [
-  {
-    date: '[date1]',
-    description: 'heres a lovely shovely wodily wod wod',
-    name: 'Wod Name 1',
-  },
-  {
-    date: '[date2]',
-    description: 'heres a lovely shovely wodily wod wod',
-    name: 'Wod Name 2',
-  },
-  {
-    date: '[date3]',
-    description: 'heres a lovely shovely wodily wod wod',
-    name: 'Wod Name 3',
-  },
-  {
-    date: '[date4]',
-    description: 'heres a lovely shovely wodily wod wod',
-    name: 'Wod Name 4',
-  },
-  {
-    date: '[date5]',
-    description: 'heres a lovely shovely wodily wod wod',
-    name: 'Wod Name 5',
-  },
-];
-
 // WodsPage
 
-const WodsPage = props => {
+const WodsPage = ({ wods, ...props }) => {
   // Wods
 
   const wodCards = wods.map((wod, i) => {
@@ -53,6 +24,10 @@ const WodsPage = props => {
   return (
     <CardPageLayout className='WodsPage' title='WODs'>
       {wodCards}
+
+      <Modal height='650px' width='650px'>
+        <AddWod />
+      </Modal>
     </CardPageLayout>
   );
 };

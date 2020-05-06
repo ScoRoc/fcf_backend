@@ -1,13 +1,13 @@
 // Libraries
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { animated, config, useSpring } from 'react-spring';
+import { config, useSpring } from 'react-spring';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
 import { Text } from 'atoms';
 // Organisms
-import Card, { AnimatedCard, CardColumn, Separator } from 'organisms/Card';
+import { AnimatedCard, CardColumn, Separator } from 'organisms/Card';
 
 // ItemCard
 
@@ -56,11 +56,11 @@ const ItemCard = ({ children, ...props }) => {
 };
 
 ItemCard.propTypes = {
-  children: PropTypes.element,
+  // children: PropTypes.element,
 };
 
 ItemCard.defaultProps = {
-  children: null,
+  // children: null,
 };
 
 export default ItemCard;
