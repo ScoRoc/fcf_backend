@@ -49,7 +49,7 @@ const SideNavLinkTile = ({ icon, path, showSideNavSubTile, text, ...props }) => 
 };
 
 SideNavLinkTile.propTypes = {
-  icon: PropTypes.element,
+  icon: PropTypes.string, // TODO update prop type
   path: PropTypes.string, // must be a valid path string ie. "/wods"
   showSideNavSubTile: PropTypes.bool,
   text: PropTypes.string,

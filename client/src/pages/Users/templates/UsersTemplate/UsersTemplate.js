@@ -9,6 +9,8 @@ import { jsx } from '@emotion/core';
 import AddWod from './AddWod';
 // Atoms
 import { Box, Text } from 'atoms';
+// Organisms
+import Modal from 'organisms/Modal';
 // Utils
 import { URL } from 'utils/constants';
 
@@ -25,6 +27,10 @@ const UsersPage = props => {
   return (
     <Box className='UsersPage' flex={1} styledFlex='center flex-start column'>
       <Text>Users page</Text>
+
+      <Modal>
+        <p>Users Modal</p>
+      </Modal>
     </Box>
   );
 };

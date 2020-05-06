@@ -12,6 +12,8 @@ import ItemLongCard from 'organisms/ItemLongCard';
 // WodCard
 
 const WodCard = ({ date, description, name, ...props }) => {
+  // Return
+
   return (
     <ItemLongCard className='WodCard' marginBottom='20px' {...props}>
       <CardColumn>

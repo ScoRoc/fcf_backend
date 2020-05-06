@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import PropTypes from 'prop-types';
+import { animated } from 'react-spring';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
@@ -23,3 +24,7 @@ Card.defaultProps = {
 };
 
 export default Card;
+
+const AnimatedCard = animated(Card);
+
+export { AnimatedCard };

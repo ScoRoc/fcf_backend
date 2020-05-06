@@ -8,7 +8,7 @@ import { Box, Button, Text } from 'atoms';
 
 // CardPageTitleBar
 
-const CardPageTitleBar = ({ onClick, title, ...props }) => {
+const CardPageTitleBar = ({ onButtonClick, title, ...props }) => {
   return (
     <Box
       className='CardPageTitleBar'
@@ -17,7 +17,7 @@ const CardPageTitleBar = ({ onClick, title, ...props }) => {
       {...props}
     >
       <Text>{title}</Text>
-      <Button onClick={onClick}>Add New</Button>
+      <Button onClick={onButtonClick}>Add New</Button>
     </Box>
   );
 };
