@@ -9,20 +9,23 @@ import 'react-dates/lib/css/_datepicker.css';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
 // Atoms
-import { Box, Input, Text } from 'atoms';
+import { Box, Input, Text, TextArea } from 'atoms';
 
 // AddWod
 
 const AddWod = ({ children, ...props }) => {
+  // Refs
+
+  // const clearButtonRef = useRef(null);
+  const inputRef = useRef(null);
+  // const textAreaRef = useRef(null);
+
   // State
 
   const [date, setDate] = useState(null);
   const [focused, setFocused] = useState(false);
   const [name, setName] = useState('');
-
-  // Refs
-
-  const inputRef = useRef(null);
+  // const [textAreaRefs, setTextAreaRefs] = useState({ clearButtonRef, textAreaRef });
 
   // Effects
 
@@ -38,9 +41,13 @@ const AddWod = ({ children, ...props }) => {
     return () => window.removeEventListener('keyup', clearText);
   }, []);
 
+  // useEffect(() => {
+  // setTextAreaRefs({ clearButtonRef, textAreaRef });
+  // }, [clearButtonRef, textAreaRef]);
+
   // Functions
 
-  const handleCloseIconClick = e => {
+  const handleClearIconClick = e => {
     setName('');
     // this is valid 2020 ecma
     // eslint-disable-next-line no-unused-expressions
@@ -72,7 +79,7 @@ const AddWod = ({ children, ...props }) => {
           <Text marginBottom='30px'>Name</Text>
           <Input
             onChange={e => setName(e.target.value)}
-            onCloseIconClick={handleCloseIconClick}
+            onClearIconClick={handleClearIconClick}
             ref={inputRef}
             value={name}
           />
@@ -80,8 +87,8 @@ const AddWod = ({ children, ...props }) => {
 
         <Box width='100%'>
           <Text marginBottom='30px'>Description</Text>
-          <Box bg='grey' width='500px' height='200px' />
-          <textarea />
+          {/* <TextArea marginBottom='40px' ref={textAreaRefs} /> */}
+          <TextArea marginBottom='40px' />
         </Box>
       </Box>
 

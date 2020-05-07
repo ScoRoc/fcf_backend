@@ -12,7 +12,7 @@ import { Box } from './Box';
 // Input
 
 const Input = forwardRef(
-  ({ onChange, onCloseIconClick, showCloseIcon, value, variant, ...props }, ref) => {
+  ({ onChange, onClearIconClick, showCloseIcon, value, variant, ...props }, ref) => {
     // Theme and Styles
     const theme = useTheme();
 
@@ -71,7 +71,7 @@ const Input = forwardRef(
               width: 48px;
             `}
             cursor='pointer'
-            onClick={onCloseIconClick}
+            onClick={onClearIconClick}
           />
         )}
       </Box>
@@ -81,7 +81,7 @@ const Input = forwardRef(
 
 Input.propTypes = {
   onChange: PropTypes.func,
-  onCloseIconClick: PropTypes.func,
+  onClearIconClick: PropTypes.func,
   showCloseIcon: PropTypes.bool,
   value: PropTypes.string,
   variant: PropTypes.oneOf(['error', 'primary', 'success']),
@@ -89,7 +89,7 @@ Input.propTypes = {
 
 Input.defaultProps = {
   onChange: null,
-  onCloseIconClick: null,
+  onClearIconClick: null,
   showCloseIcon: true,
   value: null,
   variant: 'primary',
