@@ -1,4 +1,5 @@
-import AddWod from './AddWod/AddWod';
 import WodCard from './WodCard/WodCard';
+import WodModal from './WodModal/WodModal';
+import WodsSkeletonScreen from './WodsSkeletonScreen/WodsSkeletonScreen';
 
-export { AddWod, WodCard };
+export { WodCard, WodModal, WodsSkeletonScreen };

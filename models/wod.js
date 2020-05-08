@@ -30,6 +30,10 @@ const wodSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
       },
     },
+    name: {
+      required: true,
+      type: String,
+    },
   },
   {
     timestamps: {

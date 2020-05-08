@@ -14,7 +14,7 @@ import { useTraceableState } from 'hooks';
 
 // Modal
 
-const Modal = ({ children, height, width, ...props }) => {
+const Modal = ({ children, height, shouldUseOverlayClick, width, ...props }) => {
   // Refs
 
   const modalRef = useRef(null);
@@ -31,13 +31,13 @@ const Modal = ({ children, height, width, ...props }) => {
 
   useEffect(() => {
     if (isOpen) {
-      // this is valid 2020 ecma
+      // TODO delete comment as this is valid 2020 ecma
       // eslint-disable-next-line no-unused-expressions
       onOpen?.();
       setTraceableState(isOpen);
     }
     if (prevIsOpen === true && !isOpen) {
-      // this is valid 2020 ecma
+      // TODO delete comment as this is valid 2020 ecma
       // eslint-disable-next-line no-unused-expressions
       onClose?.();
       setTraceableState(isOpen);
@@ -48,9 +48,9 @@ const Modal = ({ children, height, width, ...props }) => {
 
   const handleClick = e => {
     if (!modalRef?.current?.contains(e.target)) {
-      // this is valid 2020 ecma
+      // TODO delete comment as this is valid 2020 ecma
       // eslint-disable-next-line no-unused-expressions
-      onOverlayClick?.();
+      shouldUseOverlayClick && onOverlayClick?.();
     }
   };
 
@@ -118,11 +118,13 @@ const Modal = ({ children, height, width, ...props }) => {
 };
 
 Modal.propTypes = {
-  height: PropTypes.string, // valid height string
-  width: PropTypes.string, // valid width string
+  shouldUseOverlayClick: PropTypes.bool,
+  height: PropTypes.string.isRequired, // valid height string
+  width: PropTypes.string.isRequired, // valid width string
 };
 
 Modal.defaultProps = {
+  shouldUseOverlayClick: true,
   height: '300px',
   width: '300px',
 };

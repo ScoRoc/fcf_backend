@@ -1,3 +1,3 @@
-import { QUERY_STRING, URL } from './urls';
+import { API, PATHS, QUERY_STRING } from './urls';
 
-export { QUERY_STRING, URL };
+export { API, PATHS, QUERY_STRING };

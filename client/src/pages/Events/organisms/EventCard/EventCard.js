@@ -34,17 +34,17 @@ const EventCard = ({ category, date, name, url, ...props }) => {
 };
 
 EventCard.propTypes = {
-  category: PropTypes.string,
-  date: PropTypes.string,
-  name: PropTypes.string,
-  url: PropTypes.string,
+  category: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 EventCard.defaultProps = {
-  category: '',
-  date: '',
-  name: '',
-  url: '',
+  category: null,
+  date: null,
+  name: null,
+  url: null,
 };
 
 export default EventCard;

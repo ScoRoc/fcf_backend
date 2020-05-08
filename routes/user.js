@@ -8,7 +8,8 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../models/user');
 // Constants
 const { APP_USER_ID, TOKEN_DURATION } = require('../constants/globals');
-const { LAST_LOGIN, ROLES } = require('../constants/enums');
+const { LAST_LOGIN } = require('../constants/maps');
+const { ROLES } = require('../constants/enums');
 
 // GET - all users
 

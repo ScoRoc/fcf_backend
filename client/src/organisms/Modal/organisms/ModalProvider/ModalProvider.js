@@ -36,8 +36,8 @@ const ModalProvider = ({ children, isOpen, onClose, onOpen, onOverlayClick, setI
 
   return (
     <ModalContext.Provider
-      className='ModalProvider'
-      value={{ isOpen, onClose, onOpen, onOverlayClick }}
+      className='ModalContextProvider'
+      value={{ isOpen, onClose, onOpen, onOverlayClick, setIsOpen }}
     >
       {children}
     </ModalContext.Provider>
@@ -45,7 +45,7 @@ const ModalProvider = ({ children, isOpen, onClose, onOpen, onOverlayClick, setI
 };
 
 ModalProvider.propTypes = {
-  isOpen: PropTypes.bool,
+  isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
   onOverlayClick: PropTypes.func,

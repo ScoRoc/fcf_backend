@@ -39,10 +39,10 @@ const DashboardBigCard = ({ children, icon, showHeader, text, title, ...props })
 );
 
 DashboardBigCard.propTypes = {
-  icon: PropTypes.string,
+  icon: PropTypes.string.isRequired,
   showHeader: PropTypes.bool,
-  text: PropTypes.string,
-  title: PropTypes.string,
+  text: PropTypes.string.isRequired,
+  title: PropTypes.string, // required if showHeader={true} // which is the default
 };
 
 DashboardBigCard.defaultProps = {

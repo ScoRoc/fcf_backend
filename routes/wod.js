@@ -5,15 +5,19 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const Wod = require('../models/wod');
 // Helper Functions
 const { isDateString } = require('../utils/dateHelpers');
+// Maps
+const { WODS } = require('../constants/maps');
 
 // GET - all wods
 
 router.get('/', (req, res) => {
   // TODO - add query string for options
+  const { direction } = req.query;
+
   Wod.find({}, (err, wods) => {
     if (err) return res.send(err);
 
-    res.json({ wods });
+    res.json({ wods: direction === WODS.DIRECTION.ASC.value ? wods : wods.reverse() });
   });
 });
 
@@ -45,19 +49,19 @@ router.get('/:id', (req, res) => {
 
 router.post('/', async (req, res) => {
   const { createdByUser } = req.query;
-  const { date, description } = req.body; // TODO NEEDS VALIDATION
+  const { date, description, name } = req.body; // TODO NEEDS VALIDATION
 
   // Validation
 
   if (!isDateString(date)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The date field is not a valid date.',
     });
   }
 
   if (createdByUser !== undefined && !ObjectId.isValid(createdByUser)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The createdByUser field is invalid and should either be null or a valid user._id',
     });
@@ -73,6 +77,7 @@ router.post('/', async (req, res) => {
         createdByUser,
         updatedByUser: createdByUser,
       },
+      name,
     },
     (err, wod) => {
       if (err) return res.send(err);

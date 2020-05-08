@@ -1,5 +1,5 @@
 // Libraries
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useGlobal, useRef, useState } from 'reactn';
 import PropTypes from 'prop-types';
 // Airbnb Cal
 import { SingleDatePicker } from 'react-dates';
@@ -9,23 +9,33 @@ import 'react-dates/lib/css/_datepicker.css';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
 // Atoms
-import { Box, Input, Text, TextArea } from 'atoms';
+import { Box, Button, Input, Text, TextArea } from 'atoms';
+// Hooks
+import { usePrevious } from 'hooks';
 
-// AddWod
+// WodModal
 
-const AddWod = ({ children, ...props }) => {
+const WodModal = ({ initialData, onCancel, onSave, setIsOpen }) => {
+  // Global State
+
+  const [isLoading] = useGlobal('isLoading');
+
   // Refs
 
-  // const clearButtonRef = useRef(null);
   const inputRef = useRef(null);
-  // const textAreaRef = useRef(null);
 
   // State
 
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(initialData?.date);
+  const [description, setDescription] = useState(initialData?.description);
   const [focused, setFocused] = useState(false);
-  const [name, setName] = useState('');
-  // const [textAreaRefs, setTextAreaRefs] = useState({ clearButtonRef, textAreaRef });
+  const [name, setName] = useState(initialData?.name);
+
+  console.log('initialData: ', initialData);
+
+  // usePrevious
+
+  const prevIsLoading = usePrevious(isLoading);
 
   // Effects
 
@@ -41,17 +51,33 @@ const AddWod = ({ children, ...props }) => {
     return () => window.removeEventListener('keyup', clearText);
   }, []);
 
-  // useEffect(() => {
-  // setTextAreaRefs({ clearButtonRef, textAreaRef });
-  // }, [clearButtonRef, textAreaRef]);
+  useEffect(() => {
+    if (prevIsLoading && !isLoading) {
+      setIsOpen(false);
+    }
+  }, [isLoading]);
 
   // Functions
 
+  const handleCancel = e => {
+    // TODO delete comment as this is valid 2020 ecma
+    // eslint-disable-next-line no-unused-expressions
+    onCancel?.(e);
+    setIsOpen(false);
+  };
+
   const handleClearIconClick = e => {
     setName('');
-    // this is valid 2020 ecma
+    // TODO delete comment as this is valid 2020 ecma
     // eslint-disable-next-line no-unused-expressions
     inputRef.current?.focus();
+  };
+
+  const handleSave = () => {
+    console.log('handle save');
+    // TODO delete comment as this is valid 2020 ecma
+    // eslint-disable-next-line no-unused-expressions
+    onSave?.({ date, description, name });
   };
 
   // Return
@@ -80,6 +106,7 @@ const AddWod = ({ children, ...props }) => {
           <Input
             onChange={e => setName(e.target.value)}
             onClearIconClick={handleClearIconClick}
+            placeholder='ex. Cindy'
             ref={inputRef}
             value={name}
           />
@@ -87,13 +114,18 @@ const AddWod = ({ children, ...props }) => {
 
         <Box width='100%'>
           <Text marginBottom='30px'>Description</Text>
-          {/* <TextArea marginBottom='40px' ref={textAreaRefs} /> */}
-          <TextArea marginBottom='40px' />
+          <TextArea
+            marginBottom='40px'
+            onChange={e => setDescription(e.target.value)}
+            onClearButtonClick={() => setDescription('')}
+            placeholder='Add WOD description...'
+            value={description}
+          />
         </Box>
       </Box>
 
       <Box height='auto' styledFlex='flex-end'>
-        <Box
+        <Button
           css={css`
             align-items: center;
             background-color: grey;
@@ -111,10 +143,11 @@ const AddWod = ({ children, ...props }) => {
               background-color: #666;
             }
           `}
+          onClick={handleCancel}
         >
-          <Text>Cancel</Text>
-        </Box>
-        <Box
+          Cancel
+        </Button>
+        <Button
           css={css`
             align-items: center;
             background-color: #93dba5;
@@ -132,20 +165,36 @@ const AddWod = ({ children, ...props }) => {
               background-color: #85ca96;
             }
           `}
+          onClick={handleSave}
         >
-          <Text>Save</Text>
-        </Box>
+          Save
+        </Button>
       </Box>
+      {isLoading && <Text>Loading...</Text>}
     </Box>
   );
 };
 
-AddWod.propTypes = {
-  children: PropTypes.element,
+WodModal.propTypes = {
+  initialData: PropTypes.shape({
+    date: PropTypes.object, // moment object
+    description: PropTypes.string,
+    name: PropTypes.string,
+  }),
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
-AddWod.defaultProps = {
-  children: null,
+WodModal.defaultProps = {
+  initialData: {
+    date: null,
+    description: '',
+    name: '',
+  },
+  onCancel: null,
+  onSave: null,
+  setIsOpen: null,
 };
 
-export default AddWod;
+export default WodModal;

@@ -22,11 +22,11 @@ const Separator = ({ children }) => {
 };
 
 Separator.propTypes = {
-  children: PropTypes.element,
+  // children: PropTypes.element,
 };
 
 Separator.defaultProps = {
-  children: null,
+  // children: null,
 };
 
 export default Separator;

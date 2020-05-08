@@ -7,7 +7,7 @@ import { css, jsx } from '@emotion/core';
 // Atoms
 import { Box } from 'atoms';
 // utils
-import { URL } from 'utils/constants';
+import { PATHS } from 'utils/constants';
 
 // SideNavSubTile
 
@@ -41,7 +41,7 @@ const SideNavSubTile = ({ isHovered, path, ...props }) => {
             textDecoration: 'none',
             width: '100%',
           }}
-          to={`${path}${URL.ADD}`}
+          to={`${path}${PATHS.ADD}`}
         >
           Add
         </NavLink>
@@ -65,8 +65,8 @@ const SideNavSubTile = ({ isHovered, path, ...props }) => {
 };
 
 SideNavSubTile.propTypes = {
-  isHovered: PropTypes.bool,
-  path: PropTypes.string, // must be a valid path string ie. "/wods"
+  isHovered: PropTypes.bool.isRequired,
+  path: PropTypes.string.isRequired, // must be a valid path string ie. "/wods"
 };
 
 SideNavSubTile.defaultProps = {

@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
   // Validation
 
   if (!Object.values(LOGIN_FROM).includes(loginFrom)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       loginFrom: LOGIN_FROM,
       _msg:

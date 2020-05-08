@@ -11,7 +11,7 @@ import { Box } from 'atoms';
 // SideNav Molecules
 import { SideNavFooter, SideNavHeader, SideNavLinkTile } from '../../molecules';
 // Utils
-import { URL } from 'utils/constants/urls';
+import { PATHS } from 'utils/constants/urls';
 
 // SideNav
 
@@ -33,10 +33,10 @@ const SideNav = props => {
 
   const handleClick = () => {
     logout();
-    const { from } = location.state || { from: { pathname: URL.LOGIN } };
+    const { from } = location.state || { from: { pathname: PATHS.LOGIN } };
     history.replace(from);
     axios
-      .delete(URL.AUTH)
+      .delete(PATHS.AUTH)
       .then(res => {
         console.log('res: ', res);
       })
@@ -46,19 +46,29 @@ const SideNav = props => {
   const links = [
     {
       icon: '[icon1]',
-      path: `${URL.APP}${URL.DASHBOARD}`,
+      path: `${PATHS.APP}${PATHS.DASHBOARD}`,
       showSideNavSubTile: false,
       text: 'Dashboard',
     },
-    { icon: '[icon2]', path: `${URL.APP}${URL.WODS}`, showSideNavSubTile: true, text: 'Wods' },
+    { icon: '[icon2]', path: `${PATHS.APP}${PATHS.WODS}`, showSideNavSubTile: false, text: 'Wods' },
     {
       icon: '[icon3]',
-      path: `${URL.APP}${URL.ANNOUNCEMENTS}`,
-      showSideNavSubTile: true,
+      path: `${PATHS.APP}${PATHS.ANNOUNCEMENTS}`,
+      showSideNavSubTile: false,
       text: 'Announcements',
     },
-    { icon: '[icon4]', path: `${URL.APP}${URL.EVENTS}`, showSideNavSubTile: true, text: 'Events' },
-    { icon: '[icon5]', path: `${URL.APP}${URL.USERS}`, showSideNavSubTile: true, text: 'Users' },
+    {
+      icon: '[icon4]',
+      path: `${PATHS.APP}${PATHS.EVENTS}`,
+      showSideNavSubTile: false,
+      text: 'Events',
+    },
+    {
+      icon: '[icon5]',
+      path: `${PATHS.APP}${PATHS.USERS}`,
+      showSideNavSubTile: false,
+      text: 'Users',
+    },
   ];
 
   const tiles = links.map((link, i) => {

@@ -30,15 +30,15 @@ const AnnouncementCard = ({ description, img, url, ...props }) => {
 };
 
 AnnouncementCard.propTypes = {
-  description: PropTypes.string,
-  img: PropTypes.string,
-  url: PropTypes.string,
+  description: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 AnnouncementCard.defaultProps = {
-  description: '',
-  img: '',
-  url: '',
+  description: null,
+  img: null,
+  url: null,
 };
 
 export default AnnouncementCard;

@@ -45,9 +45,9 @@ const events = [
   },
 ];
 
-// EventsPage
+// EventsTemplate
 
-const EventsPage = props => {
+const EventsTemplate = props => {
   // Wods
 
   const eventCards = events.map((event, i) => {
@@ -58,7 +58,7 @@ const EventsPage = props => {
   // Return
 
   return (
-    <CardPageLayout className='EventsPage' title='Events'>
+    <CardPageLayout className='EventsTemplate' title='Events'>
       {eventCards}
 
       <Modal>
@@ -68,12 +68,12 @@ const EventsPage = props => {
   );
 };
 
-EventsPage.propTypes = {
+EventsTemplate.propTypes = {
   //
 };
 
-EventsPage.defaultProps = {
+EventsTemplate.defaultProps = {
   //
 };
 
-export default EventsPage;
+export default EventsTemplate;

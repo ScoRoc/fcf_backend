@@ -11,7 +11,15 @@ import { AnimatedCard, CardColumn, Separator } from 'organisms/Card';
 
 // ItemCard
 
-const ItemCard = ({ children, ...props }) => {
+const ItemCard = ({
+  children,
+  deleteItem,
+  setIsModalOpen,
+  showViewedBy,
+  totalLiked,
+  totalViewedBy,
+  ...props
+}) => {
   // State
 
   const [isHovered, setIsHovered] = useState(false);
@@ -44,23 +52,36 @@ const ItemCard = ({ children, ...props }) => {
       {children}
       <Separator />
       <CardColumn>
-        <Text>[icon1] [number]</Text>
-        <Text>[icon2] [number]</Text>
+        {showViewedBy && <Text>[icon1] {totalViewedBy}</Text>}
+        <Text>[icon2] {totalLiked}</Text>
       </CardColumn>
       <Separator />
-      <CardColumn>
-        <Text>[edit] [trash]</Text>
+      <CardColumn flexDirection='row'>
+        <Text cursor='pointer' onClick={setIsModalOpen}>
+          [edit]
+        </Text>
+        <Text cursor='pointer' onClick={deleteItem}>
+          [trash]
+        </Text>
       </CardColumn>
     </AnimatedCard>
   );
 };
 
 ItemCard.propTypes = {
-  // children: PropTypes.element,
+  deleteItem: PropTypes.func.isRequired,
+  setIsModalOpen: PropTypes.func.isRequired,
+  showViewedBy: PropTypes.bool,
+  totalLiked: PropTypes.number,
+  totalViewedBy: PropTypes.number,
 };
 
 ItemCard.defaultProps = {
-  // children: null,
+  deleteItem: null,
+  setIsModalOpen: null,
+  showViewedBy: true,
+  totalLiked: null,
+  totalViewedBy: null,
 };
 
 export default ItemCard;

@@ -1,5 +1,5 @@
 // Libraries
-import React, { forwardRef, useEffect, useRef, useCallback } from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
@@ -9,20 +9,14 @@ import StyledTextArea from './StyledTextArea';
 // Atoms
 import { Box } from './Box';
 import Button from './Button';
-// Hooks
-import { mergeRefs, useDimensions } from 'hooks';
 
 // TextArea
-
+// if showing clearButton then passing height is required
 const TextArea = forwardRef(
-  ({ onChange, onClearButtonClick, showClearButton, value, variant, ...props }, ref) => {
-    ///////////////////////////////////////
-    //              TODO                 //
-    // NEED TO SET TEXTAREA FIXED HEIGHT //
-    //    AND HAVE TEXT SCROLL WITHIN    //
-    //  THEN AUTO FIX BUTTON TO TEXTAREA //
-    ///////////////////////////////////////
-
+  (
+    { clearButtonPosition, height, onChange, onClearButtonClick, value, variant, ...props },
+    ref,
+  ) => {
     // Theme and Styles
     const theme = useTheme();
 
@@ -43,26 +37,34 @@ const TextArea = forwardRef(
 
     // Style
 
-    const styleMap = {
+    const clearButtonStyleMap = {
       bottomLeft: css`
-        ${'' /* bottom: ${buttonContaineDimensions.height - }; */}
+        bottom: 0;
+        left: 0;
       `,
-      bottomRight: css``,
-      topLeft: css``,
-      topLeft: css``,
+      bottomRight: css`
+        bottom: 0;
+        right: 0;
+      `,
+      topLeft: css`
+        left: 0;
+        top: 0;
+      `,
+      topRight: css`
+        right: 0;
+        top: 0;
+      `,
     };
 
     // Return
 
     return (
-      <Box className='TextAreaBox' position='relative' width='100%'>
+      <Box className='TextAreaBox' height={height} position='relative' width='100%'>
         <StyledTextArea
           className='TextArea'
           css={css`
             ${styles[variant]}
-            ${'' /* left: 2; */}
-            ${'' /* position: absolute; */}
-            ${'' /* top: 2; */}
+            resize: none;
 
             &:focus {
               background-color: ${theme.colors.offWhite};
@@ -73,27 +75,26 @@ const TextArea = forwardRef(
               color: ${theme.colors.yellow};
             }
           `}
+          height={height}
           onChange={onChange}
-          onResize={handleResize}
-          ref={localTextAreaRef}
           value={value}
           variant={variant}
           {...props}
         />
 
-        {showClearButton && (
-          <Box position='relative' bottom='3px' margin='0' right='0px'>
-            <Button
-              css={css`
-                position: absolute;
-              `}
-              cursor='pointer'
-              onClick={onClearButtonClick}
-              ref={ref?.clearButtonRef}
-            >
-              Clear
-            </Button>
-          </Box>
+        {clearButtonPosition !== 'disabled' && (
+          <Button
+            className='TextAreaClearButton'
+            css={css`
+              position: absolute;
+              ${clearButtonStyleMap[clearButtonPosition]}
+            `}
+            cursor='pointer'
+            onClick={onClearButtonClick}
+            ref={ref?.clearButtonRef}
+          >
+            Clear
+          </Button>
         )}
       </Box>
     );
@@ -101,18 +102,26 @@ const TextArea = forwardRef(
 );
 
 TextArea.propTypes = {
-  onChange: PropTypes.func,
+  clearButtonPosition: PropTypes.oneOf([
+    'bottomLeft',
+    'bottomRight',
+    'disabled',
+    'topLeft',
+    'topRight',
+  ]),
+  height: PropTypes.string, // valid height string
+  onChange: PropTypes.func.isRequired,
   onClearButtonClick: PropTypes.func,
-  showClearButton: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['error', 'primary', 'success']),
 };
 
 TextArea.defaultProps = {
+  clearButtonPosition: 'bottomRight',
+  height: '200px',
   onChange: null,
   onClearButtonClick: null,
-  showClearButton: true,
-  value: null,
+  value: '',
   variant: 'primary',
 };
 

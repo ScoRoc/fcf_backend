@@ -8,7 +8,7 @@ import AppRouter from './AppRouter';
 // Atoms
 import { Box } from 'atoms';
 // Constants
-import { URL } from 'utils/constants';
+import { PATHS, QUERY_STRING } from 'utils/constants';
 // Themes
 import themes, { THEME_NAMES } from 'theme/themes';
 
@@ -20,6 +20,10 @@ setGlobal({
   isUserAuthenticated: false,
   themeName: THEME_NAMES.MAIN,
   user: null,
+  wods: {
+    data: [],
+    direction: 'desc',
+  },
 });
 
 addReducers({
@@ -34,11 +38,52 @@ addReducers({
     await dispatch.clearUser();
     await dispatch.deauthenticateUser();
   },
+  removeWod: async (globalState, dispatch, _id) => {
+    const cachedWods = globalState.cache.wods;
+    delete cachedWods.data[_id];
+    await dispatch.setCache({ data: cachedWods, key: 'wods' });
+
+    const { wods } = globalState;
+    delete wods.data[_id];
+    return { wods };
+  },
   setCache: (globalState, dispatch, { data, key }) => ({
-    ...globalState.cache,
-    cache: { [key]: data },
+    cache: { ...globalState.cache, [key]: data },
   }),
-  setUser: (globalState, dispatch, user) => ({ user }),
+  setUser: async (globalState, dispatch, user) => {
+    await dispatch.setCache({ data: user, key: 'user' });
+    return { user };
+  },
+  setWod: async (globalState, dispatch, { direction = QUERY_STRING.DIRECTION.DESC.value, wod }) => {
+    console.log('wod in setWod: ', wod);
+    return {
+      wods: {
+        data: { ...globalState.wods.data, [wod._id]: wod },
+        direction,
+        // wods:
+        // direction === QUERY_STRING.DIRECTION.DESC.value
+        //   ? [wod, ...globalState.wods.data]
+        //   : [...globalState.wods.data, wod],
+      },
+    };
+  },
+  setWods: async (
+    globalState,
+    dispatch,
+    { data, direction = QUERY_STRING.DIRECTION.DESC.value },
+  ) => {
+    const wodData = data.reduce((wods, wod) => {
+      wods[wod._id] = wod;
+      return wods;
+    }, {});
+    const newWodsState = {
+      ...globalState.wods,
+      data: wodData,
+      direction: direction || globalState.wods.direction,
+    };
+    await dispatch.setCache({ data: newWodsState, key: 'wods' });
+    return { wods: newWodsState };
+  },
   // updateUserCache: (globalState, dispatch, user) => ({ // Do I actually need this ???
   //   cache: {
   //     ...globalState.cache,
@@ -58,15 +103,15 @@ function App() {
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>
-            <Route exact path={URL.LOGIN}>
+            <Route exact path={PATHS.LOGIN}>
               <Login />
             </Route>
 
-            <Route path={URL.APP}>
+            <Route path={PATHS.APP}>
               <AppRouter />
             </Route>
 
-            <Redirect to={`${URL.APP}${URL.DASHBOARD}`} />
+            <Redirect to={`${PATHS.APP}${PATHS.DASHBOARD}`} />
           </Switch>
         </Router>
       </ThemeProvider>

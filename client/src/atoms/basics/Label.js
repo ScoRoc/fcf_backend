@@ -11,11 +11,11 @@ export const forwardedProps = [...props, 'cursor', 'd', 'fill', 'stroke', 'trans
 
 export const shouldForwardProp = createShouldForwardProp(forwardedProps);
 
-const Text = styled('p', { shouldForwardProp })(
+const Label = styled('label', { shouldForwardProp })(
   { margin: '0' },
   systemProps,
   ({ bold }) => bold && { fontWeight: 700 },
   ({ variant }) => variant === 'foo' && { fontSize: '50px' },
 );
 
-export default Text;
+export default Label;
