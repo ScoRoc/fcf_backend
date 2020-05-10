@@ -1,7 +1,8 @@
 // Libraries
-import React, { useRef, useState } from 'reactn';
+import React, { useCallback, useRef, useState } from 'reactn';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { useDropzone } from 'react-dropzone';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
@@ -20,6 +21,24 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   const [img, setImg] = useState(announcement ? announcement.img : '');
   const [url, setUrl] = useState(announcement ? announcement.url : '');
 
+  // Dropzone
+
+  const onDrop = useCallback(acceptedFiles => {
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader();
+
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
+      reader.onload = () => {
+        console.log('here');
+      };
+      reader.readAsArrayBuffer(file);
+      console.log('file: ', file);
+    });
+  }, []);
+
+  const { getInputProps, getRootProps } = useDropzone({ onDrop });
+
   // Functions
 
   const handleClearIconClick = e => {
@@ -34,13 +53,23 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   return (
     <Box padding='10px' styledFlex='center space-between column'>
       <Box padding='20px 50px' styledFlex='flex-start space-between column'>
-        <Box alignSelf='flex-start' marginTop='40px'>
-          <Input
-            onChange={e => setImg(e.target.value)}
-            onClearIconClick={handleClearIconClick}
-            placeholder='img placeholder'
-            ref={inputRef}
-            value={img}
+        <Box
+          {...getRootProps({
+            style: {
+              alignSelf: 'flexStart',
+              backgroundColor: 'green',
+              height: '100px',
+              marginTop: '40px',
+              width: '100%',
+            },
+          })}
+        >
+          <input
+            // onChange={e => setImg(e.target.value)}
+            // onClearIconClick={handleClearIconClick}
+            // placeholder='announcement-image-input'
+            // value={img}
+            {...getInputProps()}
           />
         </Box>
 
