@@ -8,19 +8,18 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../models/user');
 // Constants
 const { APP_USER_ID, TOKEN_DURATION } = require('../constants/globals');
-const { LAST_LOGIN, ROLES } = require('../constants/enums');
+const { LAST_LOGIN } = require('../constants/maps');
+const { ROLES } = require('../constants/enums');
 
 // GET - all users
 
 router.get('/', (req, res) => {
   // TODO - add query string for options rollup data, populate, etc.
 
-  // Find users
-
   User.find({}, (err, users) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
-    res.json({ users });
+    res.status(200).json({ users });
   });
 });
 
@@ -33,7 +32,7 @@ router.get('/:id', (req, res) => {
   // Validate
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should be a valid user._id',
     });
@@ -42,9 +41,9 @@ router.get('/:id', (req, res) => {
   // Get user
 
   User.findById(id, (err, user) => {
-    if (err) return res.send(err);
+    if (err) return res.status(400).send(err);
 
-    res.json({ user });
+    res.status(200).json({ user });
   });
 });
 
@@ -57,7 +56,7 @@ router.post('/', async (req, res) => {
   // Validation
 
   if (loginFrom && !Object.values(LAST_LOGIN).includes(loginFrom)) {
-    return res.send({
+    return res.status(400).send({
       enumValues: LAST_LOGIN,
       error: true,
       _msg:
@@ -66,14 +65,14 @@ router.post('/', async (req, res) => {
   }
 
   if (createdByUser !== undefined && !ObjectId.isValid(createdByUser)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The createdByUser field is invalid and should either be null or a valid user._id',
     });
   }
 
   if (await User.findOne({ email: req.body.email })) {
-    return res.send({ error: true, _msg: 'There is already a user with that email.' });
+    return res.status(200).send({ error: true, _msg: 'There is already a user with that email.' });
   }
 
   // Create user
@@ -97,7 +96,7 @@ router.post('/', async (req, res) => {
     (err, createdUser) => {
       // Error creating user
 
-      if (err) return res.send(err);
+      if (err) return res.status(500).send(err);
 
       // Remove password
 
@@ -107,9 +106,9 @@ router.post('/', async (req, res) => {
 
       if (loginFrom === LAST_LOGIN.APP) {
         const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: TOKEN_DURATION });
-        return res.cookie('token', token, { httpOnly: true }).status(200).send(user);
+        return res.cookie('token', token, { httpOnly: true }).status(201).send(user);
       } else {
-        return res.send({ user });
+        return res.status(201).send({ user });
       }
     },
   );
@@ -124,14 +123,14 @@ router.patch('/:id', (req, res) => {
   // Validation
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should a valid user._id',
     });
   }
 
   if (!ObjectId.isValid(updatedByUser)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The updatedByUser field is invalid and should be a valid user._id',
     });
@@ -140,7 +139,7 @@ router.patch('/:id', (req, res) => {
   // Update user
 
   User.findById(id, (err, userToUpdate) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
     userToUpdate.set({
       ...req.body, // TODO need to do validation
@@ -156,7 +155,7 @@ router.patch('/:id', (req, res) => {
           .send({ msg: 'An error occurred when attempting to update the user.' });
       }
 
-      res.json({ user: updatedUser.toObject() });
+      res.status(200).json({ user: updatedUser.toObject() });
     });
   });
 });
@@ -170,7 +169,7 @@ router.delete('/:id', (req, res) => {
   // Validation
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should be a valid user._id',
     });
@@ -183,7 +182,7 @@ router.delete('/:id', (req, res) => {
       return res.status(500).send({ msg: 'An error occurred when attempting to delete the user.' });
     }
 
-    return res.send({ msg: 'Successfully deleted user.' });
+    return res.status(204).send({ msg: 'Successfully deleted user.' });
   });
 });
 

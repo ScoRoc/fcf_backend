@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import { config, useSpring } from 'react-spring';
 // @jsx jsx
 import { jsx } from '@emotion/core';
-// Atoms
-import { Text } from 'atoms';
 // Organisms
-import { AnimatedCard, CardColumn, Separator } from 'organisms/Card';
+import { AnimatedCard } from 'organisms/Card';
 
-// ItemCard
+// AnimatedLongCard
 
-const ItemCard = ({ children, ...props }) => {
+const AnimatedLongCard = ({ children, ...props }) => {
   // State
 
   const [isHovered, setIsHovered] = useState(false);
@@ -29,7 +27,7 @@ const ItemCard = ({ children, ...props }) => {
   return (
     <AnimatedCard
       boxShadow='2px 4px 6px green'
-      className='ItemCard'
+      className='AnimatedLongCard'
       height='200px'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -42,25 +40,16 @@ const ItemCard = ({ children, ...props }) => {
       {...props}
     >
       {children}
-      <Separator />
-      <CardColumn>
-        <Text>[icon1] [number]</Text>
-        <Text>[icon2] [number]</Text>
-      </CardColumn>
-      <Separator />
-      <CardColumn>
-        <Text>[edit] [trash]</Text>
-      </CardColumn>
     </AnimatedCard>
   );
 };
 
-ItemCard.propTypes = {
-  // children: PropTypes.element,
+AnimatedLongCard.propTypes = {
+  //
 };
 
-ItemCard.defaultProps = {
-  // children: null,
+AnimatedLongCard.defaultProps = {
+  //
 };
 
-export default ItemCard;
+export default AnimatedLongCard;

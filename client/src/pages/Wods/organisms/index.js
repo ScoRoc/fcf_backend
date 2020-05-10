@@ -1,4 +1,3 @@
-import AddWod from './AddWod/AddWod';
-import WodCard from './WodCard/WodCard';
+import WodModal from './WodModal/WodModal';
 
-export { AddWod, WodCard };
+export { WodModal };

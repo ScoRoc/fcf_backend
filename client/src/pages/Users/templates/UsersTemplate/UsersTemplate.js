@@ -12,20 +12,20 @@ import { Box, Text } from 'atoms';
 // Organisms
 import Modal from 'organisms/Modal';
 // Utils
-import { URL } from 'utils/constants';
+import { PATHS } from 'utils/constants';
 
-// UsersPage
+// UsersTemplate
 
-const UsersPage = props => {
+const UsersTemplate = props => {
   // Match
 
-  const match = useRouteMatch(`${URL.APP}${URL.WODS}`);
+  const match = useRouteMatch(`${PATHS.APP}${PATHS.WODS}`);
   // console.log('match: ', match);
 
   // Return
 
   return (
-    <Box className='UsersPage' flex={1} styledFlex='center flex-start column'>
+    <Box className='UsersTemplate' flex={1} styledFlex='center flex-start column'>
       <Text>Users page</Text>
 
       <Modal>
@@ -35,12 +35,12 @@ const UsersPage = props => {
   );
 };
 
-UsersPage.propTypes = {
+UsersTemplate.propTypes = {
   //
 };
 
-UsersPage.defaultProps = {
+UsersTemplate.defaultProps = {
   //
 };
 
-export default UsersPage;
+export default UsersTemplate;

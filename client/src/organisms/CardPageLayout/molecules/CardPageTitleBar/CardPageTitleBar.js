@@ -11,7 +11,9 @@ import { Box, Button, Text } from 'atoms';
 const CardPageTitleBar = ({ onButtonClick, title, ...props }) => {
   return (
     <Box
+      alignSelf='flex-start'
       className='CardPageTitleBar'
+      height='auto'
       marginBottom='20px'
       styledFlex='center space-between'
       {...props}
@@ -23,13 +25,13 @@ const CardPageTitleBar = ({ onButtonClick, title, ...props }) => {
 };
 
 CardPageTitleBar.propTypes = {
-  onClick: PropTypes.func,
-  title: PropTypes.string,
+  onButtonClick: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 CardPageTitleBar.defaultProps = {
-  onClick: null,
-  title: '',
+  onButtonClick: null,
+  title: null,
 };
 
 export default CardPageTitleBar;

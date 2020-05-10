@@ -7,22 +7,39 @@ import Login from 'pages/Login';
 import AppRouter from './AppRouter';
 // Atoms
 import { Box } from 'atoms';
+// Reducers
+import announcementReducers from 'pages/Announcements/logic/AnnouncementsLogic/reducers';
+import eventReducers from 'pages/Events/logic/EventsLogic/reducers';
+import wodReducers from 'pages/Wods/logic/WodsLogic/reducers';
 // Constants
-import { URL } from 'utils/constants';
+import { PATHS } from 'utils/constants';
 // Themes
 import themes, { THEME_NAMES } from 'theme/themes';
 
 // Global State
 
 setGlobal({
+  announcements: {
+    data: [],
+  },
   cache: {},
+  events: {
+    data: [],
+  },
   isLoading: false,
   isUserAuthenticated: false,
   themeName: THEME_NAMES.MAIN,
   user: null,
+  wods: {
+    data: [],
+    direction: 'desc',
+  },
 });
 
 addReducers({
+  ...announcementReducers,
+  ...eventReducers,
+  ...wodReducers,
   authenticateUser: (globalState, dispatch) => ({ isUserAuthenticated: true }),
   clearUser: (globalState, dispatch) => ({ user: null }),
   deauthenticateUser: (globalState, dispatch) => ({ isUserAuthenticated: false }),
@@ -35,10 +52,12 @@ addReducers({
     await dispatch.deauthenticateUser();
   },
   setCache: (globalState, dispatch, { data, key }) => ({
-    ...globalState.cache,
-    cache: { [key]: data },
+    cache: { ...globalState.cache, [key]: data },
   }),
-  setUser: (globalState, dispatch, user) => ({ user }),
+  setUser: async (globalState, dispatch, user) => {
+    await dispatch.setCache({ data: user, key: 'user' });
+    return { user };
+  },
   // updateUserCache: (globalState, dispatch, user) => ({ // Do I actually need this ???
   //   cache: {
   //     ...globalState.cache,
@@ -58,15 +77,15 @@ function App() {
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>
-            <Route exact path={URL.LOGIN}>
+            <Route exact path={PATHS.LOGIN}>
               <Login />
             </Route>
 
-            <Route path={URL.APP}>
+            <Route path={PATHS.APP}>
               <AppRouter />
             </Route>
 
-            <Redirect to={`${URL.APP}${URL.DASHBOARD}`} />
+            <Redirect to={`${PATHS.APP}${PATHS.DASHBOARD}`} />
           </Switch>
         </Router>
       </ThemeProvider>

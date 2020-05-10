@@ -20,8 +20,8 @@ const DashboardThinCard = ({ leftText, rightText, ...props }) => (
 );
 
 DashboardThinCard.propTypes = {
-  leftText: PropTypes.string,
-  rightText: PropTypes.string,
+  leftText: PropTypes.string.isRequired,
+  rightText: PropTypes.string.isRequired,
 };
 
 DashboardThinCard.defaultProps = {

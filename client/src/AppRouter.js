@@ -17,7 +17,7 @@ import Wods from 'pages/Wods';
 // Organisms
 import SideNav from 'organisms/SideNav';
 // Utils
-import { URL } from 'utils/constants';
+import { PATHS } from 'utils/constants';
 
 // Page
 
@@ -36,7 +36,7 @@ const Page = props => {
 
   const history = useHistory();
   const location = useLocation();
-  const match = useRouteMatch(URL.APP);
+  const match = useRouteMatch(PATHS.APP);
   // const match = useRouteMatch();
   // console.log('match: ', match);
 
@@ -47,12 +47,12 @@ const Page = props => {
   // Effects
 
   useEffect(() => {
-    // axios
-    //   .get(URL.AUTH)
-    //   .then(res => {
-    //     res.status === 200 ? handleSuccess(res) : handleErrors(res);
-    //   })
-    //   .catch(err => handleErrors(err));
+    axios
+      .get(PATHS.AUTH)
+      .then(res => {
+        res.status === 200 ? handleSuccess(res) : handleErrors(res);
+      })
+      .catch(err => handleErrors(err));
   }, []);
 
   // Handle Fetch User Response
@@ -60,19 +60,22 @@ const Page = props => {
   const handleErrors = err => {
     // console.log('err: ', err);
     // console.log('if error, error.response: ', err.response);
-    const { from } = location.state || { from: { pathname: URL.LOGIN } };
+    const { from } = location.state || { from: { pathname: PATHS.LOGIN } };
     logout();
     history.replace(from);
   };
 
   const handleSuccess = res => {
     console.log('res: ', res);
-    // const to = `${URL.APP}${URL.DASHBOARD}`;
-    // const { from } = location.state || { from: { pathname: to } };
+    // const to = `${PATHS.APP}${PATHS.ANNOUNCEMENTS}`;
+    // const to = `${PATHS.APP}${PATHS.DASHBOARD}`;
+    const to = `${PATHS.APP}${PATHS.EVENTS}`;
+    // const to = `${PATHS.APP}${PATHS.WODS}`;
+    const { from } = location.state || { from: { pathname: to } };
     authenticateUser();
-    // history.replace(from);
+    history.replace(from);
     axios
-      .get(`${URL.USERS}/${res.data._id}`)
+      .get(`${PATHS.USERS}/${res.data._id}`)
       .then(res => {
         setUser(res.data.user);
       })
@@ -86,7 +89,7 @@ const Page = props => {
       {...props}
       render={({ location }) =>
         !isUserAuthenticated ? (
-          <Redirect to={{ pathname: URL.LOGIN, state: { from: location } }} />
+          <Redirect to={{ pathname: PATHS.LOGIN, state: { from: location } }} />
         ) : (
           <Box
             className='Page'
@@ -101,27 +104,27 @@ const Page = props => {
 
             <Box className='PageBody' flex={1}>
               <Switch>
-                <Route path={`${match.path}${URL.DASHBOARD}`}>
+                <Route path={`${match.path}${PATHS.DASHBOARD}`}>
                   <Dashboard />
                 </Route>
 
-                <Route path={`${match.path}${URL.WODS}`}>
+                <Route path={`${match.path}${PATHS.WODS}`}>
                   <Wods />
                 </Route>
 
-                <Route path={`${match.path}${URL.ANNOUNCEMENTS}`}>
+                <Route path={`${match.path}${PATHS.ANNOUNCEMENTS}`}>
                   <Announcements />
                 </Route>
 
-                <Route path={`${match.path}${URL.EVENTS}`}>
+                <Route path={`${match.path}${PATHS.EVENTS}`}>
                   <Events />
                 </Route>
 
-                <Route path={`${match.path}${URL.USERS}`}>
+                <Route path={`${match.path}${PATHS.USERS}`}>
                   <Text>USERS PAGE</Text>
                 </Route>
 
-                <Route exact path={URL.APP}>
+                <Route exact path={PATHS.APP}>
                   <Dashboard />
                 </Route>
               </Switch>

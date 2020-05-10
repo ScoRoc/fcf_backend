@@ -1,79 +1,107 @@
 // Libraries
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Organisms
 import CardPageLayout from 'organisms/CardPageLayout';
-import Modal from 'organisms/Modal';
+import Modal, { ModalProvider } from 'organisms/Modal';
+// Event Molecules
+import { EventCard, EventsSkeletonScreen } from '../../molecules';
 // Event Organisms
-// import AddEvent from './AddEvent';
-import { EventCard } from '../../organisms';
+import { EventModal } from '../../organisms';
 
-// Placeholder
+// EventsTemplate
 
-const events = [
-  {
-    category: 'social',
-    date: '[date1]',
-    name: 'Event Name 1',
-    url: 'http://www.google.com',
-  },
-  {
-    category: 'competition',
-    date: '[date2]',
-    name: 'Event Name 2',
-    url: 'http://www.google.com',
-  },
-  {
-    category: 'community',
-    date: '[date3]',
-    name: 'Event Name 3',
-    url: 'http://www.google.com',
-  },
-  {
-    category: 'social',
-    date: '[date4]',
-    name: 'Event Name 4',
-    url: 'http://www.google.com',
-  },
-  {
-    category: 'competition',
-    date: '[date5]',
-    name: 'Event Name 5',
-    url: 'http://www.google.com',
-  },
-];
+const EventsTemplate = ({ events, deleteEvent, isLoading, patchEvent, postEvent, ...props }) => {
+  // State
 
-// EventsPage
+  const [currentEvent, setCurrentEvent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-const EventsPage = props => {
-  // Wods
+  // Functions
+
+  const handleCloseModal = () => {
+    setCurrentEvent(null);
+    setIsModalOpen(false);
+  };
+
+  const handleSaveEvent = ({ _id, endDate, name, startDate, type, url }) => {
+    _id
+      ? patchEvent({ _id, endDate, name, startDate, type, url })
+      : postEvent({ endDate, name, startDate, type, url });
+    setCurrentEvent(null);
+    setIsModalOpen(false);
+  };
+
+  // Event
 
   const eventCards = events.map((event, i) => {
-    const { category, date, name, url } = event;
-    return <EventCard category={category} date={date} key={`${i}${name}`} name={name} url={url} />;
+    console.log('event: ', event);
+    const handleSetIsModalOpen = () => {
+      setCurrentEvent(event);
+      setIsModalOpen(true);
+    };
+
+    return (
+      <EventCard
+        key={`${i}${event.name}`}
+        onPencilIconClick={handleSetIsModalOpen}
+        onTrashIconClick={() => deleteEvent(event._id)}
+        event={event}
+      />
+    );
   });
 
   // Return
 
   return (
-    <CardPageLayout className='EventsPage' title='Events'>
-      {eventCards}
+    <ModalProvider
+      isOpen={isModalOpen}
+      onClose={() => console.log('closing...')}
+      onOpen={() => console.log('opening...')}
+      onOverlayClick={handleCloseModal}
+      setIsOpen={setIsModalOpen}
+    >
+      <CardPageLayout
+        className='EventsTemplate'
+        onButtonClick={() => setIsModalOpen(true)}
+        title='Events'
+        {...props}
+      >
+        {isLoading
+          ? [
+              <EventsSkeletonScreen key='one' />,
+              <EventsSkeletonScreen key='two' />,
+              <EventsSkeletonScreen key='three' />,
+            ]
+          : eventCards}
 
-      <Modal>
-        <p>Events Modal</p>
-      </Modal>
-    </CardPageLayout>
+        <Modal height='650px' width='650px'>
+          <EventModal event={currentEvent} onCancel={handleCloseModal} onSave={handleSaveEvent} />
+        </Modal>
+      </CardPageLayout>
+    </ModalProvider>
   );
 };
 
-EventsPage.propTypes = {
-  //
+EventsTemplate.propTypes = {
+  deleteEvent: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(
+    PropTypes.object,
+    // PropTypes.shape({
+    // event shape
+    // }), // TODO should this be required ??
+  ),
+  patchEvent: PropTypes.func.isRequired,
+  postEvent: PropTypes.func.isRequired,
 };
 
-EventsPage.defaultProps = {
-  //
+EventsTemplate.defaultProps = {
+  events: null,
+  deleteEvent: null,
+  patchEvent: null,
+  postEvent: null,
 };
 
-export default EventsPage;
+export default EventsTemplate;

@@ -1,5 +1,5 @@
 // Libraries
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
@@ -8,25 +8,44 @@ import { useTheme } from 'emotion-theming';
 import StyledInput from './StyledInput';
 // Atoms
 import { Box } from './Box';
+// Hooks
+import { mergeRefs } from 'hooks';
 
 // Input
 
 const Input = forwardRef(
-  ({ onChange, onCloseIconClick, showCloseIcon, value, variant, ...props }, ref) => {
+  (
+    { clearButtonStyles, onChange, onClearIconClick, showCloseIcon, value, variant, ...props },
+    ref,
+  ) => {
+    // State
+
+    const [inputHeight, setInputHeight] = useState(0);
+
+    // Callback Refs
+
+    const inputRef = useCallback(node => {
+      if (node !== null) {
+        setInputHeight(node.getBoundingClientRect().height);
+      }
+    }, []);
+
     // Theme and Styles
     const theme = useTheme();
 
+    const borderWidth = 2;
+
     const styles = {
       error: {
-        border: `2px solid ${theme.colors.red}`,
+        border: `${borderWidth}px solid ${theme.colors.red}`,
         color: `${theme.colors.black}`,
       },
       primary: {
-        border: `2px solid ${theme.colors.black}`,
+        border: `${borderWidth}px solid ${theme.colors.black}`,
         color: `${theme.colors.black}`,
       },
       success: {
-        border: `2px solid ${theme.colors.green}`,
+        border: `${borderWidth}px solid ${theme.colors.green}`,
         color: `${theme.colors.black}`,
       },
     };
@@ -39,9 +58,6 @@ const Input = forwardRef(
           className='Input'
           css={css`
             ${styles[variant]}
-            left: 2;
-            position: absolute;
-            top: 2;
 
             &:focus {
               background-color: ${theme.colors.offWhite};
@@ -53,7 +69,7 @@ const Input = forwardRef(
             }
           `}
           onChange={onChange}
-          ref={ref}
+          ref={mergeRefs(ref, inputRef)}
           value={value}
           variant={variant}
           {...props}
@@ -61,17 +77,16 @@ const Input = forwardRef(
 
         {showCloseIcon && (
           <Box
-            css={css`
-              background-color: green;
-              height: 48px;
-              margin: 0;
-              position: absolute;
-              right: 2px;
-              top: 2px;
-              width: 48px;
-            `}
+            backgroundColor='green'
+            css={clearButtonStyles}
+            height={inputHeight - 2 * borderWidth}
+            margin='0'
+            position='absolute'
+            right={`${borderWidth}px`}
+            top={`${borderWidth}px`}
+            width={inputHeight - 2 * borderWidth}
             cursor='pointer'
-            onClick={onCloseIconClick}
+            onClick={onClearIconClick}
           />
         )}
       </Box>
@@ -80,18 +95,21 @@ const Input = forwardRef(
 );
 
 Input.propTypes = {
-  onChange: PropTypes.func,
-  onCloseIconClick: PropTypes.func,
+  // clearButtonStyles: PropTypes.style,
+  clearButtonStyles: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
+  onClearIconClick: PropTypes.func,
   showCloseIcon: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['error', 'primary', 'success']),
 };
 
 Input.defaultProps = {
+  clearButtonStyles: {},
   onChange: null,
-  onCloseIconClick: null,
+  onClearIconClick: null,
   showCloseIcon: true,
-  value: null,
+  value: '',
   variant: 'primary',
 };
 

@@ -2,54 +2,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Atoms
-import { Button, Text, Input } from 'atoms';
+import { Label, Text, Input } from 'atoms';
 
 // LoginInput
 
 const LoginInput = ({ label, onChange, type, value, ...props }) => {
-  // Styles and Theme
+  // Theme
 
   const theme = useTheme();
-  const styles = buildStyle(theme);
 
   // Return
 
   return (
-    <label className='LoginInput' css={styles.label} {...props}>
+    <Label
+      className='LoginInput'
+      css={css`
+        color: ${theme.colors.greyLight};
+        fontsize: ${theme.sizes.sm};
+      `}
+      marginBottom='40px'
+      width='100%'
+      {...props}
+    >
       <Text color='greyLight'>{label}</Text>
-      <Input css={styles.input} onChange={onChange} size='sm' type={type} value={value} />
-    </label>
+      <Input
+        clearButtonStyles={{ top: '12px' }}
+        marginTop='10px'
+        onChange={onChange}
+        type={type}
+        value={value}
+        width='100%'
+      />
+    </Label>
   );
 };
 
-const buildStyle = theme => ({
-  input: {
-    marginTop: '10px',
-    width: '100%',
-  },
-  label: {
-    color: theme.colors.greyLight,
-    fontSize: theme.sizes.sm,
-    marginBottom: '40px',
-    width: '100%',
-  },
-});
-
 LoginInput.propTypes = {
-  label: PropTypes.string,
-  onChange: PropTypes.func,
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['password', 'text']),
-  value: PropTypes.string,
+  value: PropTypes.string.isRequired,
 };
 
 LoginInput.defaultProps = {
-  label: 'Add a label',
+  label: null,
   onChange: null,
   type: 'text',
-  value: '',
+  value: null,
 };
 
 export default LoginInput;

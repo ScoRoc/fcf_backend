@@ -5,6 +5,7 @@ const wodSchema = new mongoose.Schema(
     date: {
       required: true,
       type: Date,
+      unique: true,
     },
     description: {
       maxlength: 75,
@@ -29,6 +30,10 @@ const wodSchema = new mongoose.Schema(
         ref: 'User',
         type: mongoose.Schema.Types.ObjectId,
       },
+    },
+    name: {
+      required: true,
+      type: String,
     },
   },
   {

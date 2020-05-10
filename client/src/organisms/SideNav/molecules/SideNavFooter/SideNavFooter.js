@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
@@ -8,7 +7,7 @@ import { Box, Text } from 'atoms';
 
 // SideNavFooter
 
-const SideNavFooter = ({ onClick, ...props }) => {
+const SideNavFooter = ({ ...props }) => {
   return (
     <Box
       backgroundColor='coral'
@@ -16,21 +15,12 @@ const SideNavFooter = ({ onClick, ...props }) => {
       cursor='pointer'
       height='60px'
       marginTop='auto'
-      onClick={onClick}
       styledFlex='center center column'
       {...props}
     >
       <Text>logout</Text>
     </Box>
   );
-};
-
-SideNavFooter.propTypes = {
-  onClick: PropTypes.func,
-};
-
-SideNavFooter.defaultProps = {
-  onClick: null,
 };
 
 export default SideNavFooter;

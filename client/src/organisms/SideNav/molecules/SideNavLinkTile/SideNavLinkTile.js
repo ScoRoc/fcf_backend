@@ -43,23 +43,23 @@ const SideNavLinkTile = ({ icon, path, showSideNavSubTile, text, ...props }) => 
         </Box>
       </NavLink>
 
-      {/* {showSideNavSubTile && <SideNavSubTile isHovered={isHovered} path={path} />} */}
+      {showSideNavSubTile && <SideNavSubTile isHovered={isHovered} path={path} />}
     </Box>
   );
 };
 
 SideNavLinkTile.propTypes = {
-  icon: PropTypes.string, // TODO update prop type
-  path: PropTypes.string, // must be a valid path string ie. "/wods"
+  icon: PropTypes.string.isRequired, // TODO update prop type
+  path: PropTypes.string.isRequired, // must be a valid path string ie. "/wods"
   showSideNavSubTile: PropTypes.bool,
-  text: PropTypes.string,
+  text: PropTypes.string.isRequired,
 };
 
 SideNavLinkTile.defaultProps = {
   icon: null,
-  path: '',
-  showSideNavSubTile: true,
-  text: '',
+  path: null,
+  showSideNavSubTile: false,
+  text: null,
 };
 
 export default SideNavLinkTile;

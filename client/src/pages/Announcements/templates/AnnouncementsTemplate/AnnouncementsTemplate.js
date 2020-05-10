@@ -1,75 +1,117 @@
 // Libraries
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Organisms
 import CardPageLayout from 'organisms/CardPageLayout';
-import Modal from 'organisms/Modal';
+import Modal, { ModalProvider } from 'organisms/Modal';
 // Announcement Molecules
-import { AnnouncementCard } from '../../molecules';
+import { AnnouncementCard, AnnouncementsSkeletonScreen } from '../../molecules';
 // Announcement Organisms
-// import AddAnnouncement from './AddAnnouncement';
-
-// Placeholder
-
-const announcements = [
-  {
-    description: 'here is todays announcement yay fun stuff time',
-    img: '[img1]',
-    url: 'http://www.google.com',
-  },
-  {
-    description: 'here is todays announcement yay fun stuff time',
-    img: '[img2]',
-    url: 'http://www.google.com',
-  },
-  {
-    description: 'here is todays announcement yay fun stuff time',
-    img: '[img3]',
-    url: 'http://www.google.com',
-  },
-  {
-    description: 'here is todays announcement yay fun stuff time',
-    img: '[img4]',
-    url: 'http://www.google.com',
-  },
-  {
-    description: 'here is todays announcement yay fun stuff time',
-    img: '[img5]',
-    url: 'http://www.google.com',
-  },
-];
+import { AnnouncementModal } from '../../organisms';
 
 // AnnouncementsTemplate
 
-const AnnouncementsTemplate = props => {
-  // Wods
+const AnnouncementsTemplate = ({
+  announcements,
+  deleteAnnouncement,
+  isLoading,
+  patchAnnouncement,
+  postAnnouncement,
+  ...props
+}) => {
+  // State
+
+  const [currentAnnouncement, setCurrentAnnouncement] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Functions
+
+  const handleCloseModal = () => {
+    setCurrentAnnouncement(null);
+    setIsModalOpen(false);
+  };
+
+  const handleSaveAnnouncement = ({ _id, description, img, url }) => {
+    _id
+      ? patchAnnouncement({ _id, description, img, url })
+      : postAnnouncement({ description, img, url });
+    setCurrentAnnouncement(null);
+    setIsModalOpen(false);
+  };
+
+  // Announcement
 
   const announcementCards = announcements.map((announcement, i) => {
-    const { description, img, url } = announcement;
-    return <AnnouncementCard description={description} img={img} key={`${i}${url}`} url={url} />;
+    const handleSetIsModalOpen = () => {
+      setCurrentAnnouncement(announcement);
+      setIsModalOpen(true);
+    };
+
+    return (
+      <AnnouncementCard
+        key={`${i}${announcement.url}`}
+        onPencilIconClick={handleSetIsModalOpen}
+        onTrashIconClick={() => deleteAnnouncement(announcement._id)}
+        announcement={announcement}
+      />
+    );
   });
 
   // Return
 
   return (
-    <CardPageLayout className='AnnouncementsTemplate' title='Announcements'>
-      {announcementCards}
+    <ModalProvider
+      isOpen={isModalOpen}
+      onClose={() => console.log('closing...')}
+      onOpen={() => console.log('opening...')}
+      onOverlayClick={handleCloseModal}
+      setIsOpen={setIsModalOpen}
+    >
+      <CardPageLayout
+        className='AnnouncementsTemplate'
+        onButtonClick={() => setIsModalOpen(true)}
+        title='Announcements'
+        {...props}
+      >
+        {isLoading
+          ? [
+              <AnnouncementsSkeletonScreen key='one' />,
+              <AnnouncementsSkeletonScreen key='two' />,
+              <AnnouncementsSkeletonScreen key='three' />,
+            ]
+          : announcementCards}
 
-      <Modal>
-        <p>Announcements Modal</p>
-      </Modal>
-    </CardPageLayout>
+        <Modal height='650px' width='650px'>
+          <AnnouncementModal
+            announcement={currentAnnouncement}
+            onCancel={handleCloseModal}
+            onSave={handleSaveAnnouncement}
+          />
+        </Modal>
+      </CardPageLayout>
+    </ModalProvider>
   );
 };
 
 AnnouncementsTemplate.propTypes = {
-  //
+  announcements: PropTypes.arrayOf(
+    PropTypes.object,
+    // PropTypes.shape({
+    // announcement shape
+    // }), // TODO should this be required ??
+  ),
+  deleteAnnouncement: PropTypes.func.isRequired,
+  patchAnnouncement: PropTypes.func.isRequired,
+  postAnnouncement: PropTypes.func.isRequired,
 };
 
 AnnouncementsTemplate.defaultProps = {
-  //
+  announcements: null,
+  deleteAnnouncement: null,
+  patchAnnouncement: null,
+  postAnnouncement: null,
 };
 
 export default AnnouncementsTemplate;
