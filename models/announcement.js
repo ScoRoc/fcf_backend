@@ -1,66 +1,29 @@
 const mongoose = require('mongoose');
 
-const announcementSchema = new mongoose.Schema(
-  {
-    // COMMENTED OUT FOR TESTING
-    // cloudinary: {
-    //   imgUrl: {
-    //     // from Cloudinary
-    //     required: true,
-    //     type: String,
-    //   },
-    //   public_id: {
-    //     // from Cloudinary
-    //     required: true,
-    //     type: String,
-    //   },
-    // },
-    description: {
-      maxlength: 150,
-      minlength: 1,
-      required: true,
-      trim: true,
-      type: String,
-    },
-    likedBy: [
-      {
-        ref: 'User',
-        type: mongoose.Schema.Types.ObjectId,
-      },
-    ],
-    meta: {
-      createdByUser: {
-        immutable: true,
-        ref: 'User',
-        required: true,
-        type: mongoose.Schema.Types.ObjectId,
-      },
-      updatedByUser: {
-        ref: 'User',
-        type: mongoose.Schema.Types.ObjectId,
-      },
-    },
-    url: {
-      // url when clicking on text
-      required: false,
-      trim: true,
-      type: String,
-    },
-    viewedBy: [
-      {
-        // which users have clicked on the url
-        ref: 'User',
-        type: mongoose.Schema.Types.ObjectId,
-      },
-    ],
+const announcementSchema = new mongoose.Schema({
+  announcementText: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 150,
+    trim: true,
   },
-  {
-    timestamps: {
-      createdAt: 'meta.dateCreated',
-      updatedAt: 'meta.dateUpdated',
-    },
+  imgUrl: {
+    type: String,
   },
-);
+  likes: {
+    type: [String],
+    required: true,
+  },
+  public_id: {
+    type: String,
+  },
+  url: {
+    type: String,
+    required: false,
+    trim: true,
+  }
+});
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
 

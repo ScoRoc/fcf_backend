@@ -1,0 +1,116 @@
+@import '../_variables';
+
+%btn-hover {
+  color: $yellow;
+  background: lighten($greyDark, 10%);
+  box-shadow: 0 0 .8em .2em rgba(darken($greyDark, 10%), .6) inset;
+  border-radius: .5em;
+  transform: scale(1.04, 1.1);
+}
+
+%btn-active {
+  color: $yellow;
+  background: darken($greyDark, 3%);
+  box-shadow: 0 0 .8em .2em rgba(darken($greyDark, 15%), .6) inset;
+  border-radius: 0;
+  transform: scale(.95);
+  transition: 125ms;
+}
+
+%button {
+  height: 2.5em;
+  width: 100%;
+  margin-top: 1em;
+  color: $white;
+  font-size: 1em;
+  background: $greyDark;
+  border: none;
+  transition: 250ms;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    @extend %btn-hover;
+  }
+
+  &:active {
+    @extend %btn-active;
+  }
+}
+
+%button--teal {
+  color: $yellow;
+  background: $teal;
+
+  &:hover {
+    background: lighten($teal, 8%);
+    box-shadow: 0 0 .8em .2em rgba(darken($teal, 15%), .6) inset;
+  }
+
+  &:active {
+    background: darken($teal, 8%);
+    box-shadow: 0 0 .8em .2em rgba(darken($teal, 22%), .6) inset;
+  }
+}
+
+%button--dark-red {
+  color: $yellow;
+  background: $redBtnBg;
+
+  &:hover {
+    background: lighten($redBtnBg, 6%);
+    box-shadow: 0 0 .8em .2em rgba(darken($redBtnBg, 10%), .6) inset;
+  }
+
+  &:active {
+    background: darken($redBtnBg, 4%);
+    box-shadow: 0 0 .8em .2em rgba(darken($redBtnBg, 15%), .6) inset;
+  }
+}
+
+// %button--outline {
+//   background: $teal;
+//   border: 5px solid $greyDark;
+//
+//   &:hover {
+//     background: $greyDark;
+//     border: 2px solid $white;
+//     box-shadow: none;
+//     border-radius: 0;
+//     transform: scale(1);
+//   }
+// }
+
+%button--announcement-strip {
+  width: 35%;
+  margin: 0;
+  font-size: .8em;
+
+  @media screen and (min-width: 1200px) {
+    width: 20%;
+    font-size: 1.1em;
+  }
+
+  @media screen and (min-width: 900px) and (max-width: 1200px) {
+    width: 25%;
+    font-size: 1.1em;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 900px) {
+    width: 25%;
+    font-size: 1em;
+  }
+
+  @media screen and (min-width: 600px) and (max-width: 768px) {
+    width: 30%;
+    font-size: 1em;
+  }
+
+  @media screen and (min-width: 475px) and (max-width: 600px) {
+    font-size: .9em;
+  }
+}
+
+%button--event-strip {
+  @extend %button--announcement-strip;
+}
