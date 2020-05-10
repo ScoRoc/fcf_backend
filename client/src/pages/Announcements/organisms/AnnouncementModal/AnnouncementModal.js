@@ -23,6 +23,8 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
     aspect: 16 / 9,
     unit: '%',
     width: 30,
+    x: 30,
+    y: 30,
   });
   const [description, setDescription] = useState(announcement ? announcement.description : '');
   const [img, setImg] = useState(announcement ? announcement.img : '');
@@ -41,14 +43,10 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
-        console.log('reader onload');
-        console.log('file: ', file);
-        console.log('reader.result: ', reader.result);
         setImg(reader.result);
         reader.readAsDataURL(file);
       };
       reader.readAsArrayBuffer(file);
-      console.log('file: ', file);
     });
   }, []);
 
@@ -112,20 +110,19 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
             />
           </Box>
 
-          {/* <Box
-            backgroundColor='tomato'
-            className='img-preview'
-            flex={1}
-            height='100%'
-            marginLeft='5px'
-          /> */}
-          <ReactCrop
-            crop={crop}
-            onChange={c => setCrop(c)}
-            onComplete={prop => console.log('onComplete prop: ', prop)}
-            onImageLoaded={onLoad}
-            src={img}
-          />
+          <Box border='2px dashed orchid' height='100%' width='50%'>
+            {img && (
+              <ReactCrop
+                crop={crop}
+                keepSelection={true}
+                onChange={setCrop}
+                onComplete={prop => console.log('onComplete prop: ', prop)}
+                onImageLoaded={onLoad}
+                src={img}
+                style={{ width: '100%' }}
+              />
+            )}
+          </Box>
         </Box>
 
         <Box marginBottom='20px' width='100%'>
