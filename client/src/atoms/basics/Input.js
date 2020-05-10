@@ -95,7 +95,8 @@ const Input = forwardRef(
 );
 
 Input.propTypes = {
-  clearButtonStyles: PropTypes.style,
+  // clearButtonStyles: PropTypes.style,
+  clearButtonStyles: PropTypes.object,
   onChange: PropTypes.func.isRequired,
   onClearIconClick: PropTypes.func,
   showCloseIcon: PropTypes.bool,
@@ -108,7 +109,7 @@ Input.defaultProps = {
   onChange: null,
   onClearIconClick: null,
   showCloseIcon: true,
-  value: null,
+  value: '',
   variant: 'primary',
 };
 

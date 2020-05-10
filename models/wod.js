@@ -5,6 +5,7 @@ const wodSchema = new mongoose.Schema(
     date: {
       required: true,
       type: Date,
+      unique: true,
     },
     description: {
       maxlength: 75,

@@ -45,7 +45,7 @@ const QUERY_STRING = {
   UPDATED_BY_USER: {
     PARAM: {
       key: 'PARAM',
-      value: 'createdByUser',
+      value: 'updatedByUser',
     },
   },
 };

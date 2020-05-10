@@ -6,91 +6,99 @@ import moment from 'moment';
 import { jsx } from '@emotion/core';
 // Organisms
 import CardPageLayout from 'organisms/CardPageLayout';
-import Modal from 'organisms/Modal';
+import Modal, { ModalProvider } from 'organisms/Modal';
+// Wods Molecules
+import { WodCard, WodsSkeletonScreen } from '../../molecules';
 // Wods Organisms
-import { WodModal, WodCard, WodsSkeletonScreen } from '../../organisms';
+import { WodModal } from '../../organisms';
 
 // WodsTemplate
 // maybe use isLoading ?? maybe from global?
-const WodsTemplate = ({ deleteWod, isLoading, onCancel, patchWod, postWod, wods, ...props }) => {
+const WodsTemplate = ({ deleteWod, isLoading, patchWod, postWod, wods, ...props }) => {
   // State
 
-  const [editingWod, setEditingWod] = useState(null);
+  const [currentWod, setCurrentWod] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Functions
+
+  const handleCloseModal = () => {
+    setCurrentWod(null);
+    setIsModalOpen(false);
+  };
+
+  const handleSaveWod = ({ _id, date, description, name }) => {
+    _id ? patchWod({ _id, date, description, name }) : postWod({ date, description, name });
+    setCurrentWod(null);
+    setIsModalOpen(false);
+  };
 
   // Wods
 
   const wodCards = wods.map((wod, i) => {
-    console.log('wod: ', wod);
-    const { date, description, likedBy, name } = wod;
+    // console.log('wod: ', wod);
     const handleSetIsModalOpen = () => {
-      setEditingWod(wod);
+      setCurrentWod(wod);
       setIsModalOpen(true);
     };
 
     return (
       <WodCard
-        date={date}
-        deleteWod={() => deleteWod(wod._id)}
-        description={description}
-        patchWod={patchWod}
-        key={`${i}${name}`}
-        name={name}
-        patchWod={patchWod}
-        setIsModalOpen={handleSetIsModalOpen}
-        totalLiked={likedBy.length}
+        key={`${i}${wod.name}`}
+        onPencilIconClick={handleSetIsModalOpen}
+        onTrashIconClick={() => deleteWod(wod._id)}
+        wod={wod}
       />
     );
   });
 
-  const initialData = editingWod && {
-    date: moment(editingWod.date),
-    description: editingWod.description,
-    name: editingWod.name,
-  };
-
   // Return
 
   return (
-    <CardPageLayout
-      className='WodsTemplate'
-      isModalOpen={isModalOpen}
-      setIsModalOpen={setIsModalOpen}
-      title='WODs'
-      {...props}
+    <ModalProvider
+      isOpen={isModalOpen}
+      onClose={() => console.log('closing...')}
+      onOpen={() => console.log('opening...')}
+      onOverlayClick={handleCloseModal}
+      setIsOpen={setIsModalOpen}
     >
-      {isLoading
-        ? [
-            <WodsSkeletonScreen key='one' />,
-            <WodsSkeletonScreen key='two' />,
-            <WodsSkeletonScreen key='three' />,
-          ]
-        : wodCards}
+      <CardPageLayout
+        className='WodsTemplate'
+        onButtonClick={() => setIsModalOpen(true)}
+        title='Wods'
+        {...props}
+      >
+        {isLoading
+          ? [
+              <WodsSkeletonScreen key='one' />,
+              <WodsSkeletonScreen key='two' />,
+              <WodsSkeletonScreen key='three' />,
+            ]
+          : wodCards}
 
-      <Modal height='650px' width='650px'>
-        <WodModal
-          initialData={initialData}
-          onCancel={onCancel}
-          onSave={postWod}
-          setIsOpen={setIsModalOpen}
-        />
-      </Modal>
-    </CardPageLayout>
+        <Modal height='650px' width='650px'>
+          <WodModal onCancel={handleCloseModal} onSave={handleSaveWod} wod={currentWod} />
+        </Modal>
+      </CardPageLayout>
+    </ModalProvider>
   );
 };
 
 WodsTemplate.propTypes = {
-  onCancel: PropTypes.func,
-  postWod: PropTypes.func,
+  deleteWod: PropTypes.func.isRequired,
+  patchWod: PropTypes.func.isRequired,
+  postWod: PropTypes.func.isRequired,
   wods: PropTypes.arrayOf(
-    PropTypes.shape({
-      // wod shape
-    }), // TODO should this be required ??
+    PropTypes.object,
+    // PropTypes.shape({
+    // wod shape
+    // }), // TODO should this be required ??
   ),
 };
 
 WodsTemplate.defaultProps = {
-  onCancel: null,
+  deleteWod: null,
+  patchWod: null,
   postWod: null,
   wods: [],
 };

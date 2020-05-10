@@ -7,38 +7,56 @@ import { jsx } from '@emotion/core';
 import { Text } from 'atoms';
 // Organisms
 import { CardColumn, Separator } from 'organisms/Card';
-import ItemLongCard from 'organisms/ItemLongCard';
+import AnimatedLongCard from 'organisms/AnimatedLongCard';
 
 // AnnouncementCard
 
-const AnnouncementCard = ({ description, img, url, ...props }) => {
-  return (
-    <ItemLongCard className='AnnouncementCard' marginBottom='20px' {...props}>
-      <CardColumn>
-        <Text>{img}</Text>
-      </CardColumn>
-      <Separator />
-      <CardColumn>
-        <Text>{description}</Text>
-      </CardColumn>
-      <Separator />
-      <CardColumn>
-        <Text>{url}</Text>
-      </CardColumn>
-    </ItemLongCard>
-  );
-};
+const AnnouncementCard = ({
+  announcement,
+  announcement: { description, img, likedBy, url, viewedBy },
+  onPencilIconClick,
+  onTrashIconClick,
+  ...props
+}) => (
+  <AnimatedLongCard className='AnnouncementCard' marginBottom='20px' {...props}>
+    <CardColumn>
+      <Text>{img}</Text>
+    </CardColumn>
+    <Separator />
+    <CardColumn>
+      <Text>{description}</Text>
+    </CardColumn>
+    <Separator />
+    <CardColumn>
+      <Text>{url}</Text>
+    </CardColumn>
+    <Separator />
+    <CardColumn>
+      <Text>[icon1] {viewedBy.length}</Text>
+      <Text>[icon2] {likedBy.length}</Text>
+    </CardColumn>
+    <Separator />
+    <CardColumn flexDirection='row'>
+      <Text cursor='pointer' onClick={onPencilIconClick}>
+        [edit]
+      </Text>
+      <Text cursor='pointer' onClick={onTrashIconClick}>
+        [trash]
+      </Text>
+    </CardColumn>
+  </AnimatedLongCard>
+);
 
 AnnouncementCard.propTypes = {
-  description: PropTypes.string.isRequired,
-  img: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
+  announcement: PropTypes.object,
+  onPencilIconClick: PropTypes.func.isRequired,
+  onTrashIconClick: PropTypes.func.isRequired,
 };
 
 AnnouncementCard.defaultProps = {
-  description: null,
-  img: null,
-  url: null,
+  announcement: null,
+  onPencilIconClick: null,
+  onTrashIconClick: null,
 };
 
 export default AnnouncementCard;

@@ -15,9 +15,9 @@ router.get('/', (req, res) => {
   const { direction } = req.query;
 
   Wod.find({}, (err, wods) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
-    res.json({ wods: direction === WODS.DIRECTION.ASC.value ? wods : wods.reverse() });
+    res.status(200).json({ wods: direction === WODS.DIRECTION.ASC.value ? wods : wods.reverse() });
   });
 });
 
@@ -30,7 +30,7 @@ router.get('/:id', (req, res) => {
   // Validate
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should be a valid wod._id',
     });
@@ -39,9 +39,9 @@ router.get('/:id', (req, res) => {
   // Get wod
 
   Wod.findById(id, (err, wod) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
-    res.json({ wod });
+    res.status(200).json({ wod });
   });
 });
 
@@ -80,9 +80,9 @@ router.post('/', async (req, res) => {
       name,
     },
     (err, wod) => {
-      if (err) return res.send(err);
+      if (err) return res.status(500).send(err);
 
-      res.json({ wod });
+      res.status(201).json({ wod });
     },
   );
 });
@@ -96,14 +96,14 @@ router.patch('/:id', (req, res) => {
   // Validation
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should a valid user._id',
     });
   }
 
   if (!ObjectId.isValid(updatedByUser)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The updatedByUser field is invalid and should be a valid user._id',
     });
@@ -112,7 +112,7 @@ router.patch('/:id', (req, res) => {
   // Update user
 
   Wod.findById(id, (err, wodToUpdate) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
     wodToUpdate.set({
       ...req.body, // TODO need to do validation
@@ -127,7 +127,7 @@ router.patch('/:id', (req, res) => {
           .status(500)
           .send({ msg: 'An error occurred when attempting to update the wod.' });
 
-      res.json({ wod: updatedWod.toObject() });
+      res.status(200).json({ wod: updatedWod.toObject() });
     });
   });
 });
@@ -141,7 +141,7 @@ router.delete('/:id', (req, res) => {
   // Validation
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should be a valid wod._id',
     });
@@ -154,7 +154,7 @@ router.delete('/:id', (req, res) => {
       return res.status(500).send({ msg: 'An error occurred when attempting to delete the wod.' });
     }
 
-    return res.send({ msg: 'Successfully deleted wod' });
+    return res.status(204).send({ msg: 'Successfully deleted wod' });
   });
 });
 
@@ -171,9 +171,9 @@ router.put('/like', async (req, res) => {
     (err, updatedWod) => {
       if (err) {
         console.log('err: ', err);
-        res.send({ err });
+        res.status(500).send({ err });
       } else {
-        res.send({ msg: 'Successfully updated the wod', updatedWod });
+        res.status(200).send({ msg: 'Successfully updated the wod', updatedWod });
       }
     },
   );

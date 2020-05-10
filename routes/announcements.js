@@ -28,10 +28,11 @@ const upload = multer({ storage });
 // GET - all announcements
 
 router.get('/', (req, res) => {
+  // TODO - add query string for options
   Announcement.find({}, (err, announcements) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
-    res.json({ announcements });
+    res.status(200).json({ announcements });
   });
 });
 
@@ -44,7 +45,7 @@ router.get('/:id', (req, res) => {
   // Validate
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should be a valid user._id',
     });
@@ -53,9 +54,9 @@ router.get('/:id', (req, res) => {
   // Get announcement
 
   Announcement.findById(id, (err, announcement) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
-    res.json({ announcement });
+    res.status(200).json({ announcement });
   });
 });
 
@@ -68,7 +69,7 @@ router.post('/', upload.single('imgFile'), (req, res) => {
   // Validation
 
   if (!isHttpUrl(url)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg:
         'The url field was not a valid url . See the urlFormat field in this response for the valid format.',
@@ -78,7 +79,7 @@ router.post('/', upload.single('imgFile'), (req, res) => {
 
   // if (createdByUser !== undefined && !ObjectId.isValid(createdByUser)) {
   if (!ObjectId.isValid(createdByUser)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The createdByUser field is invalid and should be a valid user._id',
     });
@@ -110,9 +111,9 @@ router.post('/', upload.single('imgFile'), (req, res) => {
       url,
     },
     (err, announcement) => {
-      if (err) return res.send(err);
+      if (err) return res.status(500).send(err);
 
-      res.json({ announcement });
+      res.status(201).json({ announcement });
     },
   );
   // },
@@ -128,14 +129,14 @@ router.patch('/:id', (req, res) => {
   // Validation
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
-      _msg: 'The id field is invalid and should a valid announcement._id',
+      _msg: 'The id field is invalid and should be a valid announcement._id',
     });
   }
 
   if (!ObjectId.isValid(updatedByUser)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The updatedByUser field is invalid and should be a valid user._id',
     });
@@ -144,7 +145,7 @@ router.patch('/:id', (req, res) => {
   // Update announcement
 
   Announcement.findById(id, (err, announcementToUpdate) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
     announcementToUpdate.set({
       ...req.body, // TODO need to do validation
@@ -159,7 +160,7 @@ router.patch('/:id', (req, res) => {
           .status(500)
           .send({ msg: 'An error occurred when attempting to update the announcement.' });
 
-      res.json({ announcement: updatedAnnouncement.toObject() });
+      res.status(200).json({ announcement: updatedAnnouncement.toObject() });
     });
   });
 });
@@ -173,7 +174,7 @@ router.delete('/:id', (req, res) => {
   // Validation
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should be a valid announcement._id',
     });
@@ -189,7 +190,7 @@ router.delete('/:id', (req, res) => {
     }
 
     // cloudinary.v2.api.delete_resources([req.body.public_id], (err, result) => {
-    return res.send({ msg: 'Successfully deleted announcement' });
+    return res.status(204).send({ msg: 'Successfully deleted announcement' });
     // });
   });
 });
@@ -205,11 +206,13 @@ router.put('/like', async (req, res) => {
     { [operation]: { likes: userId } },
     { new: true },
     (err, updatedAnnouncement) => {
-      if (err) return res.send({ err });
+      if (err) return res.status(500).send({ err });
 
       const data = { announcement: updatedAnnouncement, userId };
       req.app.io.of('/announcements').emit('announcementLikeUpdate', data);
-      return res.send({ msg: 'Successfully updated the announcement', updatedAnnouncement });
+      return res
+        .status(200)
+        .send({ msg: 'Successfully updated the announcement', updatedAnnouncement });
     },
   );
 });

@@ -88,19 +88,11 @@ const LoginTemplate = ({ handleSubmit }) => {
 };
 
 LoginTemplate.propTypes = {
-  email: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  password: PropTypes.string.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
 };
 
 LoginTemplate.defaultProps = {
-  email: null,
   handleSubmit: null,
-  password: null,
-  setEmail: null,
-  setPassword: null,
 };
 
 export default LoginTemplate;

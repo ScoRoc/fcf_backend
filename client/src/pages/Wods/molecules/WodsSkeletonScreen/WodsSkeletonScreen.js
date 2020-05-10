@@ -6,9 +6,9 @@ import { jsx } from '@emotion/core';
 // Atoms
 import { Box } from 'atoms';
 
-// WodCard
+// WodsSkeletonCard
 
-const WodCard = props => {
+const WodsSkeletonCard = props => {
   // Return
 
   return (
@@ -19,20 +19,16 @@ const WodCard = props => {
       marginBottom='20px'
       width='100%'
       {...props}
-    ></Box>
+    />
   );
 };
 
-WodCard.propTypes = {
-  date: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+WodsSkeletonCard.propTypes = {
+  //
 };
 
-WodCard.defaultProps = {
-  date: null,
-  description: null,
-  name: null,
+WodsSkeletonCard.defaultProps = {
+  //
 };
 
-export default WodCard;
+export default WodsSkeletonCard;

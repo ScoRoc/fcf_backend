@@ -89,7 +89,7 @@ router.post('/', (req, res) => {
           // Error saving user
           if (err) {
             console.log('An error occurred while saving the user: ', err);
-            res.send('err: ', err);
+            res.status(500).send('err: ', err);
           }
 
           // Create and send token, along with user

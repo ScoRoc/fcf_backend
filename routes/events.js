@@ -14,19 +14,18 @@ const { EVENT_TYPES } = require('../constants/enums');
 // GET - all events
 
 router.get('/', (req, res) => {
+  // TODO - add query string for options
   const { sortBy = 'none' } = req.query;
 
-  // Find events
-
   Event.find({}, (err, events) => {
-    if (err) return res.send(err);
+    if (err) return res.status(400).send(err);
 
     const sortMap = {
       month: events => sortByMonth(events), // TODO NEED TO CLEAN UP INTERNAL FUNCS
       none: events => sort({ arr: events, sortByKey: 'startDate' }),
     };
 
-    res.json({ events: sortMap[sortBy](events) });
+    res.status(200).json({ events: sortMap[sortBy](events) });
   });
 });
 
@@ -39,7 +38,7 @@ router.get('/:id', (req, res) => {
   // Validate
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should be a valid event._id',
     });
@@ -50,7 +49,7 @@ router.get('/:id', (req, res) => {
   Event.findById(id, (err, event) => {
     if (err) return res.send(err);
 
-    res.json({ event });
+    res.status(200).json({ event });
   });
 });
 
@@ -63,28 +62,28 @@ router.post('/', (req, res) => {
   // Validation
 
   if (!createdByUser || !ObjectId.isValid(createdByUser)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The createdByUser field is invalid and should either be null or a valid user._id',
     });
   }
 
   if (endDate && !isDateString(endDate)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The endDate field is not a valid date.',
     });
   }
 
   if (!isDateString(startDate)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The startDate field is not a valid date.',
     });
   }
 
   if (!Object.values(EVENT_TYPES).includes(type)) {
-    return res.send({
+    return res.status(400).send({
       enumValues: EVENT_TYPES,
       error: true,
       _msg:
@@ -93,7 +92,7 @@ router.post('/', (req, res) => {
   }
 
   if (!isHttpUrl(url)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The url field is not a valid url or it does not start with http or https.',
     });
@@ -103,20 +102,20 @@ router.post('/', (req, res) => {
 
   Event.create(
     {
-      endDate: endDate && new Date(endDate),
+      endDate: endDate && endDate,
       meta: {
         createdByUser,
         updatedByUser: createdByUser,
       },
       name,
-      startDate: new Date(startDate),
+      startDate: startDate,
       type,
       url,
     },
     (err, event) => {
-      if (err) return res.send(err);
+      if (err) return res.status(500).send(err);
 
-      res.json({ event });
+      res.status(201).json({ event });
     },
   );
 });
@@ -130,14 +129,14 @@ router.patch('/:id', (req, res) => {
   // Validation
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should a valid user._id',
     });
   }
 
   if (!ObjectId.isValid(updatedByUser)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The updatedByUser field is invalid and should be a valid user._id',
     });
@@ -146,7 +145,7 @@ router.patch('/:id', (req, res) => {
   // Update event
 
   Event.findById(id, (err, eventToUpdate) => {
-    if (err) return res.send(err);
+    if (err) return res.status(500).send(err);
 
     eventToUpdate.set({
       ...req.body, // TODO need to do validation
@@ -161,7 +160,7 @@ router.patch('/:id', (req, res) => {
           .status(500)
           .send({ msg: 'An error occurred when attempting to update the event.' });
 
-      res.json({ event: updatedEvent.toObject() });
+      res.status(200).json({ event: updatedEvent.toObject() });
     });
   });
 });
@@ -175,7 +174,7 @@ router.delete('/:id', (req, res) => {
   // Validation
 
   if (!ObjectId.isValid(id)) {
-    return res.send({
+    return res.status(400).send({
       error: true,
       _msg: 'The id field is invalid and should be a valid event._id',
     });
@@ -190,7 +189,7 @@ router.delete('/:id', (req, res) => {
         .send({ msg: 'An error occurred when attempting to delete the event.' });
     }
 
-    return res.send({ msg: 'Successfully deleted event' });
+    return res.status(204).send({ msg: 'Successfully deleted event' });
   });
 });
 
@@ -205,11 +204,11 @@ router.put('/like', async (req, res) => {
     { [operation]: { likes: userId } },
     { new: true },
     (err, updatedEvent) => {
-      if (err) return res.send({ err });
+      if (err) return res.status(500).send({ err });
 
       const data = { event: updatedEvent, userId };
       req.app.io.of('/events').emit('eventLikeUpdate', data);
-      return res.send({ msg: 'Successfully updated the event', updatedEvent });
+      return res.status(200).send({ msg: 'Successfully updated the event', updatedEvent });
     },
   );
 });

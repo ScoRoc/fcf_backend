@@ -1,3 +1,3 @@
-import EventCard from './EventCard/EventCard';
+import EventModal from './EventModal/EventModal';
 
-export { EventCard };
+export { EventModal };
