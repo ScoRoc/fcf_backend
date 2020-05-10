@@ -3,10 +3,12 @@ import React, { useCallback, useRef, useState } from 'reactn';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { useDropzone } from 'react-dropzone';
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
-import { Box, Button, Input, Text, TextArea } from 'atoms';
+import { Box, Button, Input, Span, Text, TextArea } from 'atoms';
 
 // AnnouncementModal
 
@@ -17,9 +19,18 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
 
   // State
 
+  const [crop, setCrop] = useState({
+    aspect: 16 / 9,
+    unit: '%',
+    width: 30,
+  });
   const [description, setDescription] = useState(announcement ? announcement.description : '');
   const [img, setImg] = useState(announcement ? announcement.img : '');
   const [url, setUrl] = useState(announcement ? announcement.url : '');
+
+  // Refs
+
+  const imgRef = useRef(null);
 
   // Dropzone
 
@@ -30,7 +41,11 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
-        console.log('here');
+        console.log('reader onload');
+        console.log('file: ', file);
+        console.log('reader.result: ', reader.result);
+        setImg(reader.result);
+        reader.readAsDataURL(file);
       };
       reader.readAsArrayBuffer(file);
       console.log('file: ', file);
@@ -38,6 +53,12 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   }, []);
 
   const { getInputProps, getRootProps } = useDropzone({ onDrop });
+
+  // React Image Crop
+
+  const onLoad = useCallback(img => {
+    imgRef.current = img;
+  }, []);
 
   // Functions
 
@@ -53,23 +74,57 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   return (
     <Box padding='10px' styledFlex='center space-between column'>
       <Box padding='20px 50px' styledFlex='flex-start space-between column'>
-        <Box
-          {...getRootProps({
-            style: {
-              alignSelf: 'flexStart',
-              backgroundColor: 'green',
-              height: '100px',
-              marginTop: '40px',
-              width: '100%',
-            },
-          })}
-        >
-          <input
-            // onChange={e => setImg(e.target.value)}
-            // onClearIconClick={handleClearIconClick}
-            // placeholder='announcement-image-input'
-            // value={img}
-            {...getInputProps()}
+        <Box className='img-container' height='200px' styledFlex='default space-between'>
+          <Box
+            {...getRootProps({
+              style: {
+                alignItems: 'center',
+                border: '2px dashed orange',
+                borderRadius: '4px',
+                className: 'img-dropzone',
+                display: 'flex',
+                flex: 1,
+                flexDirection: 'column',
+                height: '100%',
+                justifyContent: 'center',
+                marginRight: '5px',
+                outline: 'none',
+              },
+            })}
+          >
+            <Box backgroundColor='aqua' height='40px' width='40px' />
+            <Text>Drop files to upload</Text>
+            <Box>
+              or{' '}
+              <Span cursor='pointer' display='inline'>
+                {'>>browse<<'}
+              </Span>
+            </Box>
+
+            <input
+              // onChange={e => setImg(e.target.value)}
+              // onClearIconClick={handleClearIconClick}
+              // placeholder='announcement-image-input'
+              // value={img}
+              {...getInputProps({
+                multiple: false,
+              })}
+            />
+          </Box>
+
+          {/* <Box
+            backgroundColor='tomato'
+            className='img-preview'
+            flex={1}
+            height='100%'
+            marginLeft='5px'
+          /> */}
+          <ReactCrop
+            crop={crop}
+            onChange={c => setCrop(c)}
+            onComplete={prop => console.log('onComplete prop: ', prop)}
+            onImageLoaded={onLoad}
+            src={img}
           />
         </Box>
 
