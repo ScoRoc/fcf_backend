@@ -1,0 +1,44 @@
+@import '../../sass/variables';
+@import '../../sass/silent-classes';
+
+.AddManager {
+  padding: 1.5em 0;
+  background: $greyMediumDark;
+
+  h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  &__body {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+.add-manager-form {
+  @extend %add-manager-wrappers;
+
+  label {
+    width: 100%;
+    margin-bottom: 1em;
+    font-size: 1em;
+  }
+
+  input {
+    width: 100%;
+    font-size: 1em;
+  }
+}
+
+.successful-new-manager {
+  @extend %add-manager-wrappers;
+
+  h3 {
+    text-decoration: underline;
+  }
+}
+
+.placeholder {
+  width: 30vw;
+}
