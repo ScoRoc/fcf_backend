@@ -1,97 +1,96 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { login, logout } from './redux/modules/auth';
+// Libraries
+import React, { addReducers, setGlobal, useGlobal } from 'reactn';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { ThemeProvider } from 'emotion-theming';
+// Components
+import Login from 'pages/Login';
+import AppRouter from './AppRouter';
+// Atoms
+import { Box } from 'atoms';
+// Reducers
+import announcementReducers from 'pages/Announcements/logic/AnnouncementsLogic/reducers';
+import eventReducers from 'pages/Events/logic/EventsLogic/reducers';
+import wodReducers from 'pages/Wods/logic/WodsLogic/reducers';
+// Constants
+import { PATHS } from 'utils/constants';
+// Themes
+import themes, { THEME_NAMES } from 'theme/themes';
 
-import './App.min.css';
-import HomePage from './pages/home/HomePage';
-import SignInPage from './pages/signin/SignInPage';
-import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
-import EventsPage from './pages/events/EventsPage';
-import WodPage from './pages/wod/WodPage';
-import UsersPage from './pages/users/UsersPage';
-import DisplayedUserPage from './pages/users/DisplayedUserPage';
-import ManagersPage from './pages/managers/ManagersPage';
-import DisplayedManagerPage from './pages/managers/DisplayedManagerPage';
-import AddManagerPage from './pages/managers/AddManagerPage';
+// Global State
 
-import Footer from './page-sections/Footer';
-// import Main from './page-sections/Main';
-import Header from './page-sections/Header';
-import LoadingFirstPage from './components/LoadingFirstPage';
+setGlobal({
+  announcements: {
+    data: [],
+  },
+  cache: {},
+  events: {
+    data: [],
+  },
+  isLoading: false,
+  isUserAuthenticated: false,
+  themeName: THEME_NAMES.MAIN,
+  user: null,
+  wods: {
+    data: [],
+    direction: 'desc',
+  },
+});
 
-class App extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+addReducers({
+  ...announcementReducers,
+  ...eventReducers,
+  ...wodReducers,
+  authenticateUser: (globalState, dispatch) => ({ isUserAuthenticated: true }),
+  clearUser: (globalState, dispatch) => ({ user: null }),
+  deauthenticateUser: (globalState, dispatch) => ({ isUserAuthenticated: false }),
+  login: async (globalState, dispatch, user) => {
+    await dispatch.setUser(user);
+    await dispatch.authenticateUser();
+  },
+  logout: async (globalState, dispatch) => {
+    await dispatch.clearUser();
+    await dispatch.deauthenticateUser();
+  },
+  setCache: (globalState, dispatch, { data, key }) => ({
+    cache: { ...globalState.cache, [key]: data },
+  }),
+  setUser: async (globalState, dispatch, user) => {
+    await dispatch.setCache({ data: user, key: 'user' });
+    return { user };
+  },
+  // updateUserCache: (globalState, dispatch, user) => ({ // Do I actually need this ???
+  //   cache: {
+  //     ...globalState.cache,
+  //     [user._id]: user,
+  //   },
+  // }),
+});
 
-  componentDidMount() {
-    const token = localStorage.getItem('fcf_backend');
-    if (token === 'undefined' || !token) {
-      this.props.logout();
+// App
 
-    } else {
-      axios.post('/manager/validate', {token}).then(result => {
-        const { data } = result;
-        const { manager, token } = data;
-        this.props.login(manager, token);
-      }).catch(err => console.log('err: ', err));
-    }
-  }
+function App() {
+  const [themeName] = useGlobal('themeName');
+  const theme = themes[themeName];
 
-  render() {
-    return (
-      <Router>
-        <div className="App">
-          <Header />
-          {/* <AddManagerPage /> */}
-          {/* <Main manager={manager} liftManager={this.liftManager} /> */}
-          <main className='main flex1'>
-            <Route exact path='/' render={() => <LoadingFirstPage />} />
-            <Route path='/home' render={() => <HomePage />} />
-            <Route path='/announcements' render={() => <AnnouncementsPage />} />
-            <Route path='/events' render={() => <EventsPage />} />
-            <Route path='/wod' render={() => <WodPage />} />
-            <Route path='/users' render={() => <UsersPage />} />
-            <Route path='/user' render={() => (
-              <DisplayedUserPage
-                displayedUser={this.props.displayedUser}
-                superUser={this.props.manager.superUser}
-              />
-            )} />
-            <Route path='/managers' render={() => <ManagersPage />} />
-            <Route path='/manager' render={() => (
-              <DisplayedManagerPage
-                displayedManager={this.props.displayedManager}
-                superUser={this.props.manager.superUser}
-              />
-            )} />
-            <Route path='/add-manager' render={() => <AddManagerPage />} />
-            <Route path='/signin' render={() => <SignInPage />} />
-          </main>
-          {/* <Main /> */}
-          <Footer />
-        </div>
-      </Router>
-    );
-  }
+  return (
+    <Box className='App' display='flex' height='100vh' width='100vw'>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Switch>
+            <Route exact path={PATHS.LOGIN}>
+              <Login />
+            </Route>
+
+            <Route path={PATHS.APP}>
+              <AppRouter />
+            </Route>
+
+            <Redirect to={`${PATHS.APP}${PATHS.DASHBOARD}`} />
+          </Switch>
+        </Router>
+      </ThemeProvider>
+    </Box>
+  );
 }
 
-const mapStateToProps = state => {
-  return {
-    manager: state.auth.manager,
-    token: state.auth.token,
-    displayedUser: state.displayedUser,
-    displayedManager: state.displayedManager,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    login: (manager, token) => dispatch(login(manager, token)),
-    logout: () => dispatch(logout()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -12,7 +12,16 @@
   },
   "plugins": ["prettier"],
   "rules": {
+    "eqeqeq": "error",
     "linebreak-style": ["error", "unix"],
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "all"
+      }
+    ],
     "singleQuotes": 0
   }
 }

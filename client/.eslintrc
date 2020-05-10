@@ -1,0 +1,34 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "plugin:prettier/recommended", "plugin:react/recommended"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020
+  },
+  "plugins": ["prettier", "react", "react-hooks"],
+  "rules": {
+    "eqeqeq": "error",
+    "jsx-quotes": ["error", "prefer-single"],
+    "linebreak-style": ["error", "unix"],
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "all"
+      }
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhuastive-deps": "warn",
+    "singleQuotes": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
