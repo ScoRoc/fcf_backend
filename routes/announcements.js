@@ -64,7 +64,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', upload.single('imgFile'), (req, res) => {
   const { createdByUser } = req.query;
-  const { description, crop, url } = req.body;
+  const { crop, description, url } = req.body;
 
   // Validation
 

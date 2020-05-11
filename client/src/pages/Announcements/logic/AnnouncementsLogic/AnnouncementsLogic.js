@@ -41,23 +41,25 @@ const AnnouncementsLogic = () => {
 
   // API Callbacks
 
-  const deleteAnnouncement = _id => {
+  const deleteAnnouncement = async _id => {
     const url = `${baseUrl}/${_id}`;
 
     // setIsLoading(true);
-    axios.delete(url).then(res => {
+    await axios.delete(url).then(res => {
       console.log('res: ', res);
       // const updatedAnnouncements = {};
       // setIsLoading(false);
       removeAnnouncement(_id);
+      // TODO Fix return to be based off if error or not
+      return true;
     });
   };
 
   // const getAnnouncements = ({ direction = QUERY_STRING.DIRECTION.DESC.value } = {}) => {
-  const getAnnouncements = () => {
+  const getAnnouncements = async () => {
     setIsLoading(true);
     // need to build queryString iterator
-    return axios
+    await axios
       .get(baseUrl, {
         // params: {
         //   [QUERY_STRING.DIRECTION.PARAM.value]: direction,
@@ -69,40 +71,62 @@ const AnnouncementsLogic = () => {
         setIsLoading(false);
         // setAnnouncements({ data: res.data.announcements, direction });
         setAnnouncements({ data: res.data.announcements });
+        // TODO Fix return to be based off if error or not
+        return true;
       });
   };
 
-  const patchAnnouncement = ({ _id, description, img, url }) => {
+  const patchAnnouncement = async ({ _id, crop, description, imgFile, url }) => {
     console.log('in patch');
+
+    if (!description || !imgFile || !url) {
+      console.log('description, imgFile, and url need to be filled out');
+      return false;
+    }
+
+    if (!crop || crop.height <= 0 || crop.width <= 0) {
+      console.log('crop must exist and have a height and width larger than 0');
+      return false;
+    }
 
     const qs = `?${QUERY_STRING.UPDATED_BY_USER.PARAM.value}=${user._id}`;
     const patchUrl = `${baseUrl}/${_id}${qs}`;
     // setIsLoading(true);
-    axios.patch(patchUrl, { description, img, url }).then(res => {
+    await axios.patch(patchUrl, { crop, description, imgFile, url }).then(res => {
       console.log('res: ', res);
       // setIsLoading(false);
       // res.status === 200 ? handleSuccess(res) : handleErrors(res);
       setAnnouncement({ announcement: res.data.announcement });
+      // TODO Fix return to be based off if error or not
+      return true;
     });
   };
 
-  const postAnnouncement = ({ description, img, url }) => {
+  const postAnnouncement = async ({ crop, description, imgFile, url }) => {
     console.log('in post');
     // TODO handle error validation
     // if (!date) throw new Error();
-    if (!description || !img || !url) {
-      return void console.log('description, img, and url need to be filled out');
+    if (!description || !imgFile || !url) {
+      console.log('description, imgFile, and url need to be filled out');
+      return false;
+    }
+
+    if (!crop || crop.height <= 0 || crop.width <= 0) {
+      console.log('crop must exist and have a height and width larger than 0');
+      return false;
     }
 
     const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
     const postUrl = `${baseUrl}${qs}`;
     console.log('user: ', user);
     // setIsLoading(true);
-    axios.post(postUrl, { description, img, url }).then(res => {
+    await axios.post(postUrl, { crop, description, imgFile, url }).then(res => {
       console.log('res: ', res);
       // res.status === 200 ? handleSuccess(res) : handleErrors(res);
       // setIsLoading(false);
       setAnnouncement({ announcement: res.data.announcement });
+      // TODO Fix return to be based off if error or not
+      return true;
     });
   };
 

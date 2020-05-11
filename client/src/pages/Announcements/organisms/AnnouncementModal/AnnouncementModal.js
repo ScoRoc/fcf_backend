@@ -1,13 +1,14 @@
 // Libraries
-import React, { useCallback, useRef, useState } from 'reactn';
+import React, { useRef, useState } from 'reactn';
 import PropTypes from 'prop-types';
-import { useDropzone } from 'react-dropzone';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
-import { Box, Button, Input, Span, Text, TextArea } from 'atoms';
+import { Box, Button, Input, Text, TextArea } from 'atoms';
 // Organisms
-import ImgCrop from 'organisms/ImgCrop';
+import Dropzone from 'organisms/Dropzone';
+import ImgCropper from 'organisms/ImgCropper';
+import LabeledInput from 'organisms/LabeledInput';
 
 // AnnouncementModal
 
@@ -24,22 +25,6 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
 
   const inputRef = useRef(null);
 
-  // Dropzone
-
-  const onDrop = useCallback(acceptedFiles => {
-    const file = acceptedFiles[0];
-    setImgFile(file);
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImgBlob(reader.result);
-    };
-
-    reader.readAsDataURL(file);
-  }, []);
-
-  const { getInputProps, getRootProps } = useDropzone({ onDrop });
-
   // Functions
 
   const handleClearIconClick = e => {
@@ -49,18 +34,12 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
     inputRef.current?.focus();
   };
 
+  const handleLoad = ({ event, reader }) => {
+    setImgBlob(reader.result);
+  };
+
   const handleSaveClick = e => {
-    // THESE SHOULD BE MOVED TO THE LOGIC FILE
-
-    if (!crop || crop.height <= 0 || crop.width <= 0) {
-      return void console.log('crop must exist and have a height and width larger than 0');
-    }
-
-    if (!imgFile) {
-      return void console.log('Must have an imgFile');
-    }
-
-    onSave({ _id: announcement && announcement._id, crop, description, imgFile, url });
+    onSave({ _id: announcement && announcement._id, crop, description, imgBlob, imgFile, url });
   };
 
   // Return
@@ -68,51 +47,33 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   return (
     <Box padding='10px' styledFlex='center space-between column'>
       <Box padding='20px 50px' styledFlex='flex-start space-between column'>
-        <Box className='img-container' height='200px' styledFlex='default space-between'>
-          <Box
-            {...getRootProps({
-              style: {
-                alignItems: 'center',
-                border: '2px dashed orange',
-                borderRadius: '4px',
-                className: 'img-dropzone',
-                display: 'flex',
-                flex: 1,
-                flexDirection: 'column',
-                height: '100%',
-                justifyContent: 'center',
-                marginRight: '5px',
-                outline: 'none',
-              },
-            })}
-          >
-            <Box backgroundColor='aqua' height='40px' width='40px' />
-            <Text>Drop files to upload</Text>
-            <Box>
-              or{' '}
-              <Span cursor='pointer' display='inline'>
-                {'>>browse<<'}
-              </Span>
-            </Box>
+        <Box
+          className='announcement-modal-img-container'
+          height='240px'
+          marginBottom='10px'
+          styledFlex='stretch space-between'
+        >
+          <Dropzone flex={1} marginRight='5px' onLoad={handleLoad} onNewFile={setImgFile} />
 
-            <input
-              {...getInputProps({
-                multiple: false,
-              })}
-            />
-          </Box>
-
-          <ImgCrop
+          <ImgCropper
+            flex={1}
             imgBlob={imgBlob}
-            liftCrop={crop => {
-              console.log('crop in liftCrop in modal: ', crop);
-              setCrop(crop);
+            imgContainerStyle={{ height: '210px' }}
+            imgStyle={{ height: '210px' }}
+            initialCrop={{
+              aspect: 16 / 9,
+              unit: '%',
+              width: 50,
+              x: 25,
+              y: 25,
             }}
+            liftCrop={setCrop}
+            marginLeft='5px'
+            width='auto'
           />
         </Box>
 
-        <Box marginBottom='20px' width='100%'>
-          <Text marginBottom='30px'>Url</Text>
+        <LabeledInput label='Url'>
           <Input
             onChange={e => setUrl(e.target.value)}
             onClearIconClick={handleClearIconClick}
@@ -120,18 +81,17 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
             ref={inputRef}
             value={url}
           />
-        </Box>
-
-        <Box width='100%'>
-          <Text marginBottom='30px'>Description</Text>
+        </LabeledInput>
+        <LabeledInput label='Description'>
           <TextArea
-            marginBottom='40px'
+            height='150px'
+            marginBottom='10px'
             onChange={e => setDescription(e.target.value)}
             onClearButtonClick={() => setDescription('')}
             placeholder='Add Announcement description...'
             value={description}
           />
-        </Box>
+        </LabeledInput>
       </Box>
 
       <Box height='auto' styledFlex='flex-end'>

@@ -33,12 +33,14 @@ const AnnouncementsTemplate = ({
     setIsModalOpen(false);
   };
 
-  const handleSaveAnnouncement = ({ _id, description, img, url }) => {
-    _id
-      ? patchAnnouncement({ _id, description, img, url })
-      : postAnnouncement({ description, img, url });
-    setCurrentAnnouncement(null);
-    setIsModalOpen(false);
+  const handleSaveAnnouncement = async ({ _id, crop, description, imgFile, url }) => {
+    const success = _id
+      ? await patchAnnouncement({ _id, crop, description, imgFile, url })
+      : await postAnnouncement({ crop, description, imgFile, url });
+    if (success) {
+      setCurrentAnnouncement(null);
+      setIsModalOpen(false);
+    }
   };
 
   // Announcement
