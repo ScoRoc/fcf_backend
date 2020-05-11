@@ -3,36 +3,25 @@ import React, { useCallback, useRef, useState } from 'reactn';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { useDropzone } from 'react-dropzone';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
 import { Box, Button, Input, Span, Text, TextArea } from 'atoms';
+// Organisms
+import ImgCrop from 'organisms/ImgCrop';
 
 // AnnouncementModal
 
 const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
-  // Refs
-
-  const inputRef = useRef(null);
-
   // State
 
-  const [crop, setCrop] = useState({
-    aspect: 16 / 9,
-    unit: '%',
-    width: 30,
-    x: 30,
-    y: 30,
-  });
   const [description, setDescription] = useState(announcement ? announcement.description : '');
-  const [img, setImg] = useState(announcement ? announcement.img : '');
+  const [img, setImg] = useState(announcement ? announcement.img : null);
   const [url, setUrl] = useState(announcement ? announcement.url : '');
 
   // Refs
 
-  const imgRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Dropzone
 
@@ -43,6 +32,7 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
+        console.log('calling reader.onload');
         setImg(reader.result);
         reader.readAsDataURL(file);
       };
@@ -51,12 +41,6 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   }, []);
 
   const { getInputProps, getRootProps } = useDropzone({ onDrop });
-
-  // React Image Crop
-
-  const onLoad = useCallback(img => {
-    imgRef.current = img;
-  }, []);
 
   // Functions
 
@@ -110,19 +94,7 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
             />
           </Box>
 
-          <Box border='2px dashed orchid' height='100%' width='50%'>
-            {img && (
-              <ReactCrop
-                crop={crop}
-                keepSelection={true}
-                onChange={setCrop}
-                onComplete={prop => console.log('onComplete prop: ', prop)}
-                onImageLoaded={onLoad}
-                src={img}
-                style={{ width: '100%' }}
-              />
-            )}
-          </Box>
+          <ImgCrop img={img} />
         </Box>
 
         <Box marginBottom='20px' width='100%'>
