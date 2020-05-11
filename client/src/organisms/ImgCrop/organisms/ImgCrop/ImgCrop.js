@@ -1,5 +1,5 @@
 // Libraries
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -10,53 +10,43 @@ import { Box } from 'atoms';
 
 // ImgCrop
 
-const ImgCrop = ({ img, ...props }) => {
-  // State
-
+const ImgCrop = ({ imgBlob, liftCrop, ...props }) => {
   const [crop, setCrop] = useState({
     aspect: 16 / 9,
     unit: '%',
-    height: 50,
     width: 50,
     x: 25,
     y: 25,
   });
 
-  // Effects
-
-  useEffect(() => {
-    console.log('in useEffect [img]: ', img);
-  }, [img]);
+  const handleChange = crop => {
+    setCrop(crop);
+    liftCrop(crop);
+  };
 
   return (
-    <Box border='2px dashed orchid' height='100%' width='50%'>
-      {img && (
-        <ReactCrop
-          crop={crop}
-          imageStyle={{ height: '200px' }}
-          keepSelection={true}
-          onChange={(crop, percentCrop) => {
-            console.log('in onChange');
-            setCrop(percentCrop);
-          }}
-          onComplete={(crop, percentCrop) => console.log('onComplete percentCrop: ', percentCrop)}
-          // onImageLoaded={onLoad}
-          ruleOfThirds
-          src={img}
-          style={{ height: '100%', width: '100%' }}
-          {...props}
-        />
-      )}
+    <Box border='2px dashed orchid' styledFlex='default center' width='50%'>
+      <ReactCrop
+        crop={crop}
+        imageStyle={{ height: '200px' }}
+        onChange={handleChange}
+        ruleOfThirds
+        src={imgBlob}
+        style={{ height: '100%', margin: '0 auto', width: 'auto' }}
+        {...props}
+      />
     </Box>
   );
 };
 
 ImgCrop.propTypes = {
-  img: PropTypes.oneOfType([PropTypes.object, PropTypes.string]), // img file type ??
+  imgBlob: PropTypes.oneOfType([PropTypes.object, PropTypes.string]), // imgBlob file type ??
+  liftCrop: PropTypes.func.isRequired,
 };
 
 ImgCrop.defaultProps = {
-  img: null,
+  imgBlob: null,
+  liftCrop: null,
 };
 
 export default ImgCrop;

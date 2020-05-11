@@ -1,7 +1,6 @@
 // Libraries
 import React, { useCallback, useRef, useState } from 'reactn';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { useDropzone } from 'react-dropzone';
 // @jsx jsx
 import { jsx } from '@emotion/core';
@@ -15,8 +14,10 @@ import ImgCrop from 'organisms/ImgCrop';
 const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   // State
 
+  const [crop, setCrop] = useState(null);
   const [description, setDescription] = useState(announcement ? announcement.description : '');
-  const [img, setImg] = useState(announcement ? announcement.img : null);
+  const [imgBlob, setImgBlob] = useState(announcement ? announcement.imgBlob : null);
+  const [imgFile, setImgFile] = useState(announcement ? announcement.imgFile : null);
   const [url, setUrl] = useState(announcement ? announcement.url : '');
 
   // Refs
@@ -26,18 +27,15 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   // Dropzone
 
   const onDrop = useCallback(acceptedFiles => {
-    acceptedFiles.forEach(file => {
-      const reader = new FileReader();
+    const file = acceptedFiles[0];
+    setImgFile(file);
 
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = () => {
-        console.log('calling reader.onload');
-        setImg(reader.result);
-        reader.readAsDataURL(file);
-      };
-      reader.readAsArrayBuffer(file);
-    });
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImgBlob(reader.result);
+    };
+
+    reader.readAsDataURL(file);
   }, []);
 
   const { getInputProps, getRootProps } = useDropzone({ onDrop });
@@ -49,6 +47,20 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
     // TODO delete comment as this is valid 2020 ecma
     // eslint-disable-next-line no-unused-expressions
     inputRef.current?.focus();
+  };
+
+  const handleSaveClick = e => {
+    // THESE SHOULD BE MOVED TO THE LOGIC FILE
+
+    if (!crop || crop.height <= 0 || crop.width <= 0) {
+      return void console.log('crop must exist and have a height and width larger than 0');
+    }
+
+    if (!imgFile) {
+      return void console.log('Must have an imgFile');
+    }
+
+    onSave({ _id: announcement && announcement._id, crop, description, imgFile, url });
   };
 
   // Return
@@ -84,17 +96,19 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
             </Box>
 
             <input
-              // onChange={e => setImg(e.target.value)}
-              // onClearIconClick={handleClearIconClick}
-              // placeholder='announcement-image-input'
-              // value={img}
               {...getInputProps({
                 multiple: false,
               })}
             />
           </Box>
 
-          <ImgCrop img={img} />
+          <ImgCrop
+            imgBlob={imgBlob}
+            liftCrop={crop => {
+              console.log('crop in liftCrop in modal: ', crop);
+              setCrop(crop);
+            }}
+          />
         </Box>
 
         <Box marginBottom='20px' width='100%'>
@@ -122,11 +136,7 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
 
       <Box height='auto' styledFlex='flex-end'>
         <Button onClick={onCancel}>Cancel</Button>
-        <Button
-          onClick={() => onSave({ _id: announcement && announcement._id, description, img, url })}
-        >
-          Save
-        </Button>
+        <Button onClick={handleSaveClick}>Save</Button>
       </Box>
     </Box>
   );
