@@ -16,10 +16,13 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   // State
 
   const [crop, setCrop] = useState(null);
-  const [description, setDescription] = useState(announcement ? announcement.description : '');
+  const [dimensions, setDimensions] = useState(null);
+  // const [description, setDescription] = useState(announcement ? announcement.description : '');
+  const [description, setDescription] = useState('yo yo yoooo');
   const [imgBlob, setImgBlob] = useState(announcement ? announcement.imgBlob : null);
   const [imgFile, setImgFile] = useState(announcement ? announcement.imgFile : null);
-  const [url, setUrl] = useState(announcement ? announcement.url : '');
+  // const [url, setUrl] = useState(announcement ? announcement.url : '');
+  const [url, setUrl] = useState('http://www.google.com');
 
   // Refs
 
@@ -34,12 +37,25 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
     inputRef.current?.focus();
   };
 
+  const handleLiftImg = ({ crop, dimensions }) => {
+    setCrop(crop);
+    setDimensions(dimensions);
+  };
+
   const handleLoad = ({ event, reader }) => {
     setImgBlob(reader.result);
   };
 
   const handleSaveClick = e => {
-    onSave({ _id: announcement && announcement._id, crop, description, imgBlob, imgFile, url });
+    onSave({
+      _id: announcement && announcement._id,
+      crop,
+      description,
+      dimensions,
+      imgBlob,
+      imgFile,
+      url,
+    });
   };
 
   // Return
@@ -58,8 +74,8 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
           <ImgCropper
             flex={1}
             imgBlob={imgBlob}
-            imgContainerStyle={{ height: '210px' }}
-            imgStyle={{ height: '210px' }}
+            imgContainerStyle={{ height: '236px' }}
+            imgStyle={{ maxHeight: '236px' }}
             initialCrop={{
               aspect: 16 / 9,
               unit: '%',
@@ -67,7 +83,7 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
               x: 25,
               y: 25,
             }}
-            liftCrop={setCrop}
+            liftImg={handleLiftImg}
             marginLeft='5px'
             width='auto'
           />

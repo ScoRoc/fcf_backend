@@ -17,13 +17,14 @@ const unlinkAsync = promisify(fs.unlink);
 // const upload = multer({ dest: './uploads' });
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log('file in destination: ', file);
     cb(null, './uploads');
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-const upload = multer({ storage });
+const multerUpload = multer({ storage });
 
 // GET - all announcements
 
@@ -62,9 +63,23 @@ router.get('/:id', (req, res) => {
 
 // POST - create a new announcement
 
-router.post('/', upload.single('imgFile'), (req, res) => {
+router.post('/', multerUpload.single('imgFile'), (req, res) => {
   const { createdByUser } = req.query;
-  const { crop, description, url } = req.body;
+  const { description, url } = req.body;
+  const height = parseFloat(req.body.height);
+  const imgHeight = parseFloat(req.body.imgHeight);
+  const imgWidth = parseFloat(req.body.imgWidth);
+  const width = parseFloat(req.body.width);
+  const x = parseFloat(req.body.x) / 100;
+  const y = parseFloat(req.body.y) / 100;
+
+  console.log('req.body: ', req.body);
+  console.log('imgHeight: ', imgHeight);
+  console.log('imgWidth: ', imgWidth);
+  console.log('height; ', height);
+  console.log('width: ', width);
+  console.log('x: ', x);
+  console.log('y: ', y);
 
   // Validation
 
@@ -85,19 +100,25 @@ router.post('/', upload.single('imgFile'), (req, res) => {
     });
   }
 
-  // const height = parseInt(req.body.height) / 100;
-  // const width = parseInt(req.body.width) / 100;
-  // const x = parseInt(req.body.x) / 100;
-  // const y = parseInt(req.body.y) / 100;
-  // cloudinary.v2.uploader.upload(
-  //   req.file.path,
-  //   {
-  //     eager: [{ width, height, x, y, crop: 'crop' }],
-  //   },
-  //   async (err, result) => {
-  //     await unlinkAsync(req.file.path);
-  //     const imgUrl = result.eager[0].url;
-  //     const { public_id } = result;
+  cloudinary.v2.uploader.upload(
+    req.file.path,
+    {
+      eager: [{ height, width, x, y, crop: 'crop' }],
+      // height,
+      // width,
+      // x,
+      // y,
+      // crop: 'crop',
+    },
+    async (err, result) => {
+      console.log('in cloudinary callback...');
+      await unlinkAsync(req.file.path);
+      const imgUrl = result.eager[0].url;
+      const { public_id } = result;
+    },
+  );
+  return res.json({ announcement: { ...req.body, likedBy: [], viewedBy: [] } });
+
   // Announcement.create({ announcementText, imgUrl, public_id, url }, (err, announcement) => {
   Announcement.create(
     {

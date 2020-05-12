@@ -33,11 +33,13 @@ const AnnouncementsTemplate = ({
     setIsModalOpen(false);
   };
 
-  const handleSaveAnnouncement = async ({ _id, crop, description, imgFile, url }) => {
+  const handleSaveAnnouncement = async ({ _id, crop, description, dimensions, imgFile, url }) => {
     const success = _id
-      ? await patchAnnouncement({ _id, crop, description, imgFile, url })
-      : await postAnnouncement({ crop, description, imgFile, url });
+      ? await patchAnnouncement({ _id, crop, description, dimensions, imgFile, url })
+      : await postAnnouncement({ crop, description, dimensions, imgFile, url });
+    console.log('success: ', success);
     if (success) {
+      console.log('in handleSaveAnnouncement if...');
       setCurrentAnnouncement(null);
       setIsModalOpen(false);
     }

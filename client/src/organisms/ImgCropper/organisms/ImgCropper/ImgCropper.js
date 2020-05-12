@@ -4,19 +4,20 @@ import PropTypes from 'prop-types';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 // @jsx jsx
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 // Atoms
 import { Box } from 'atoms';
 
 // ImgCropper
 
 const ImgCropper = forwardRef(
-  ({ imgBlob, initialCrop, imgContainerStyle, imgStyle, liftCrop, ...props }, ref) => {
+  ({ imgBlob, initialCrop, imgContainerStyle, imgStyle, liftImg, ...props }, ref) => {
     const [crop, setCrop] = useState(initialCrop);
+    const [dimensions, setDimensions] = useState(null);
 
     const handleChange = crop => {
       setCrop(crop);
-      liftCrop(crop);
+      liftImg({ crop, dimensions });
     };
 
     return (
@@ -24,22 +25,17 @@ const ImgCropper = forwardRef(
         border='2px dashed orchid'
         className='ImgCropper'
         ref={ref}
-        styledFlex='center center'
+        styledFlex='stretch center'
         {...props}
       >
         <ReactCrop
           crop={crop}
+          css={imgContainerStyle}
           imageStyle={imgStyle}
           onChange={handleChange}
+          onImageLoaded={img => setDimensions(img.getBoundingClientRect())}
           ruleOfThirds
           src={imgBlob}
-          style={{
-            alignItems: 'center',
-            display: 'flex',
-            height: '100%',
-            justifyContent: 'center',
-            ...imgContainerStyle,
-          }}
         />
       </Box>
     );
@@ -51,7 +47,7 @@ ImgCropper.propTypes = {
   imgContainerStyle: PropTypes.object,
   imgStyle: PropTypes.object,
   initialCrop: PropTypes.object,
-  liftCrop: PropTypes.func.isRequired,
+  liftImg: PropTypes.func.isRequired,
 };
 
 ImgCropper.defaultProps = {
@@ -59,7 +55,7 @@ ImgCropper.defaultProps = {
   imgContainerStyle: null,
   imgStyle: null,
   initialCrop: null,
-  liftCrop: null,
+  liftImg: null,
 };
 
 export default ImgCropper;

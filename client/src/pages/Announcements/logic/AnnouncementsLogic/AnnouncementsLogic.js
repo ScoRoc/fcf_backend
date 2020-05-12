@@ -51,8 +51,8 @@ const AnnouncementsLogic = () => {
       // setIsLoading(false);
       removeAnnouncement(_id);
       // TODO Fix return to be based off if error or not
-      return true;
     });
+    return true;
   };
 
   // const getAnnouncements = ({ direction = QUERY_STRING.DIRECTION.DESC.value } = {}) => {
@@ -72,8 +72,8 @@ const AnnouncementsLogic = () => {
         // setAnnouncements({ data: res.data.announcements, direction });
         setAnnouncements({ data: res.data.announcements });
         // TODO Fix return to be based off if error or not
-        return true;
       });
+    return true;
   };
 
   const patchAnnouncement = async ({ _id, crop, description, imgFile, url }) => {
@@ -98,16 +98,16 @@ const AnnouncementsLogic = () => {
       // res.status === 200 ? handleSuccess(res) : handleErrors(res);
       setAnnouncement({ announcement: res.data.announcement });
       // TODO Fix return to be based off if error or not
-      return true;
     });
+    return true;
   };
 
-  const postAnnouncement = async ({ crop, description, imgFile, url }) => {
+  const postAnnouncement = async ({ crop, description, dimensions, imgFile, url }) => {
     console.log('in post');
     // TODO handle error validation
     // if (!date) throw new Error();
-    if (!description || !imgFile || !url) {
-      console.log('description, imgFile, and url need to be filled out');
+    if (!description || !dimensions || !imgFile || !url) {
+      console.log('description, dimensions, imgFile, and url need to be filled out');
       return false;
     }
 
@@ -116,18 +116,32 @@ const AnnouncementsLogic = () => {
       return false;
     }
 
+    const formData = new FormData();
+    formData.set('description', description);
+    console.log('dimensions: ', dimensions);
+    formData.set('height', crop.height);
+    formData.append('imgFile', imgFile);
+    formData.set('imgHeight', dimensions.height);
+    formData.set('imgWidth', dimensions.width);
+    formData.set('url', url);
+    formData.set('width', crop.width);
+    formData.set('x', crop.x);
+    formData.set('y', crop.y);
+
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
     const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
     const postUrl = `${baseUrl}${qs}`;
     console.log('user: ', user);
     // setIsLoading(true);
-    await axios.post(postUrl, { crop, description, imgFile, url }).then(res => {
+    await axios.post(postUrl, formData, config).then(res => {
       console.log('res: ', res);
       // res.status === 200 ? handleSuccess(res) : handleErrors(res);
       // setIsLoading(false);
       setAnnouncement({ announcement: res.data.announcement });
       // TODO Fix return to be based off if error or not
-      return true;
     });
+    return true;
   };
 
   // Sorted Announcements
