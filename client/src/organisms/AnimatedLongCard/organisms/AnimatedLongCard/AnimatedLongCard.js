@@ -31,7 +31,6 @@ const AnimatedLongCard = ({ children, ...props }) => {
       height='200px'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      padding='0 20px'
       style={{
         transform: scale.interpolate(scale => `scale(${scale})`),
         ...styleProps,

@@ -4,7 +4,7 @@ import { API, PATHS, QUERY_STRING } from 'utils/constants';
 const announcementReducers = {
   removeAnnouncement: async (globalState, dispatch, _id) => {
     const cachedAnnouncements = globalState.cache.announcements;
-    delete cachedAnnouncements.data[_id];
+    delete cachedAnnouncements[_id];
     await dispatch.setCache({ data: cachedAnnouncements, key: 'announcements' });
 
     const { announcements } = globalState;
@@ -13,6 +13,11 @@ const announcementReducers = {
   },
   setAnnouncement: async (globalState, dispatch, { announcement }) => {
     console.log('announcement in setAnnouncement: ', announcement);
+    await dispatch.setCache({
+      data: { ...globalState.announcements.data, [announcement._id]: announcement },
+      key: 'announcements',
+    });
+
     return {
       announcements: {
         data: { ...globalState.announcements.data, [announcement._id]: announcement },

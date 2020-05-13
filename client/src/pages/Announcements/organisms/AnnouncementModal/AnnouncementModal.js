@@ -9,6 +9,8 @@ import { Box, Button, Input, Text, TextArea } from 'atoms';
 import Dropzone from 'organisms/Dropzone';
 import ImgCropper from 'organisms/ImgCropper';
 import LabeledInput from 'organisms/LabeledInput';
+// Announcement Constants
+import { IMAGES } from '../../constants';
 
 // AnnouncementModal
 
@@ -21,6 +23,7 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   const [description, setDescription] = useState('yo yo yoooo');
   const [imgBlob, setImgBlob] = useState(announcement ? announcement.imgBlob : null);
   const [imgFile, setImgFile] = useState(announcement ? announcement.imgFile : null);
+  const [isLoading, setIsLoading] = useState(false);
   // const [url, setUrl] = useState(announcement ? announcement.url : '');
   const [url, setUrl] = useState('http://www.google.com');
 
@@ -46,8 +49,9 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
     setImgBlob(reader.result);
   };
 
-  const handleSaveClick = e => {
-    onSave({
+  const handleSaveClick = async e => {
+    setIsLoading(true);
+    const result = await onSave({
       _id: announcement && announcement._id,
       crop,
       description,
@@ -56,7 +60,11 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
       imgFile,
       url,
     });
+
+    setIsLoading(false);
   };
+
+  // TODO add spinner for waiting to add WOD
 
   // Return
 
@@ -77,7 +85,7 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
             imgContainerStyle={{ height: '236px' }}
             imgStyle={{ maxHeight: '236px' }}
             initialCrop={{
-              aspect: 16 / 9,
+              aspect: IMAGES.ASPECT_RATIO,
               unit: '%',
               width: 50,
               x: 25,
@@ -109,6 +117,8 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
           />
         </LabeledInput>
       </Box>
+
+      {isLoading && <Text>Loading...</Text>}
 
       <Box height='auto' styledFlex='flex-end'>
         <Button onClick={onCancel}>Cancel</Button>

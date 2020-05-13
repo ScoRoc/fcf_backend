@@ -9,6 +9,7 @@ const { promisify } = require('util');
 const Announcement = require('../models/announcement');
 // Helper Functions
 const { isHttpUrl } = require('../utils/urlHelpers');
+const { makeImage } = require('../utils/announcements/makeImage');
 // Library Var
 const unlinkAsync = promisify(fs.unlink);
 
@@ -17,7 +18,7 @@ const unlinkAsync = promisify(fs.unlink);
 // const upload = multer({ dest: './uploads' });
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log('file in destination: ', file);
+    // console.log('file in destination: ', file);
     cb(null, './uploads');
   },
   filename: (req, file, cb) => {
@@ -66,20 +67,6 @@ router.get('/:id', (req, res) => {
 router.post('/', multerUpload.single('imgFile'), (req, res) => {
   const { createdByUser } = req.query;
   const { description, url } = req.body;
-  const height = parseFloat(req.body.height);
-  const imgHeight = parseFloat(req.body.imgHeight);
-  const imgWidth = parseFloat(req.body.imgWidth);
-  const width = parseFloat(req.body.width);
-  const x = parseFloat(req.body.x) / 100;
-  const y = parseFloat(req.body.y) / 100;
-
-  console.log('req.body: ', req.body);
-  console.log('imgHeight: ', imgHeight);
-  console.log('imgWidth: ', imgWidth);
-  console.log('height; ', height);
-  console.log('width: ', width);
-  console.log('x: ', x);
-  console.log('y: ', y);
 
   // Validation
 
@@ -100,45 +87,65 @@ router.post('/', multerUpload.single('imgFile'), (req, res) => {
     });
   }
 
+  // TODO validate image props
+
+  // Image
+
+  const imageToSave = makeImage({
+    crop: {
+      height: req.body.cropHeight,
+      width: req.body.cropWidth,
+      x: req.body.cropX,
+      y: req.body.cropY,
+    },
+    dimensions: {
+      height: req.body.imgHeight,
+      width: req.body.imgWidth,
+    },
+  });
+
+  // Post to Cloudinary
+
   cloudinary.v2.uploader.upload(
     req.file.path,
     {
-      eager: [{ height, width, x, y, crop: 'crop' }],
-      // height,
-      // width,
-      // x,
-      // y,
-      // crop: 'crop',
+      eager: [{ ...imageToSave.crop.percent, crop: 'crop' }],
     },
-    async (err, result) => {
-      console.log('in cloudinary callback...');
+    async (err, cloudinaryResult) => {
       await unlinkAsync(req.file.path);
-      const imgUrl = result.eager[0].url;
-      const { public_id } = result;
+
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      imageToSave.cloudinary = {
+        public_id: cloudinaryResult.public_id,
+        url: cloudinaryResult.eager[0].url,
+      };
+
+      // Create new Announcement in db
+
+      Announcement.create(
+        {
+          description,
+          image: imageToSave,
+          meta: {
+            createdByUser,
+            updatedByUser: createdByUser,
+          },
+          url,
+        },
+        (err, announcement) => {
+          if (err) {
+            console.log('err: ', err);
+            return res.status(500).send(err);
+          }
+
+          res.status(201).json({ announcement });
+        },
+      );
     },
   );
-  return res.json({ announcement: { ...req.body, likedBy: [], viewedBy: [] } });
-
-  // Announcement.create({ announcementText, imgUrl, public_id, url }, (err, announcement) => {
-  Announcement.create(
-    {
-      description,
-      // imgUrl,
-      meta: {
-        createdByUser,
-        updatedByUser: createdByUser,
-      },
-      // public_id,
-      url,
-    },
-    (err, announcement) => {
-      if (err) return res.status(500).send(err);
-
-      res.status(201).json({ announcement });
-    },
-  );
-  // },
-  // );
 });
 
 // PATCH - update an announcement
@@ -205,14 +212,23 @@ router.delete('/:id', (req, res) => {
 
   Announcement.findByIdAndDelete(id, (err, deletedAnnouncement) => {
     if (err || deletedAnnouncement === null) {
+      console.log('err: ', err);
       return res
         .status(500)
         .send({ msg: 'An error occurred when attempting to delete the announcement.' });
     }
 
-    // cloudinary.v2.api.delete_resources([req.body.public_id], (err, result) => {
-    return res.status(204).send({ msg: 'Successfully deleted announcement' });
-    // });
+    cloudinary.v2.api.delete_resources(
+      [deletedAnnouncement.image.cloudinary.public_id],
+      (err, result) => {
+        if (err) {
+          console.log('err: ', err);
+          return res.status(500).send(err);
+        }
+
+        return res.status(204).send({ msg: 'Successfully deleted announcement' });
+      },
+    );
   });
 });
 

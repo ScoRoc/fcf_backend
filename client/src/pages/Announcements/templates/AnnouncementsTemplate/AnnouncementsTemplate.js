@@ -43,6 +43,7 @@ const AnnouncementsTemplate = ({
       setCurrentAnnouncement(null);
       setIsModalOpen(false);
     }
+    return success;
   };
 
   // Announcement

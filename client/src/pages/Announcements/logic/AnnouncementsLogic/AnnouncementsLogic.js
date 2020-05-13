@@ -118,21 +118,19 @@ const AnnouncementsLogic = () => {
 
     const formData = new FormData();
     formData.set('description', description);
-    console.log('dimensions: ', dimensions);
-    formData.set('height', crop.height);
+    formData.set('cropHeight', crop.height);
     formData.append('imgFile', imgFile);
     formData.set('imgHeight', dimensions.height);
     formData.set('imgWidth', dimensions.width);
     formData.set('url', url);
-    formData.set('width', crop.width);
-    formData.set('x', crop.x);
-    formData.set('y', crop.y);
+    formData.set('cropWidth', crop.width);
+    formData.set('cropX', crop.x);
+    formData.set('cropY', crop.y);
 
     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
     const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
     const postUrl = `${baseUrl}${qs}`;
-    console.log('user: ', user);
     // setIsLoading(true);
     await axios.post(postUrl, formData, config).then(res => {
       console.log('res: ', res);
