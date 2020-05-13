@@ -11,6 +11,8 @@ import 'react-dates/lib/css/_datepicker.css';
 import { jsx } from '@emotion/core';
 // Atoms
 import { Box, Button, Input, Text, TextArea } from 'atoms';
+// Organisms
+import LabeledInput from 'organisms/LabeledInput';
 
 // WodModal
 
@@ -56,8 +58,7 @@ const WodModal = ({ onCancel, onSave, wod }) => {
           />
         </Box>
 
-        <Box marginBottom='20px' width='100%'>
-          <Text marginBottom='30px'>Name</Text>
+        <LabeledInput label='Name'>
           <Input
             onChange={e => setName(e.target.value)}
             onClearIconClick={handleClearIconClick}
@@ -65,18 +66,16 @@ const WodModal = ({ onCancel, onSave, wod }) => {
             ref={inputRef}
             value={name}
           />
-        </Box>
+        </LabeledInput>
 
-        <Box width='100%'>
-          <Text marginBottom='30px'>Description</Text>
+        <LabeledInput label='Description'>
           <TextArea
-            marginBottom='40px'
             onChange={e => setDescription(e.target.value)}
             onClearButtonClick={() => setDescription('')}
             placeholder='Add WOD description...'
             value={description}
           />
-        </Box>
+        </LabeledInput>
       </Box>
 
       <Box height='auto' styledFlex='flex-end'>

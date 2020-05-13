@@ -2,25 +2,70 @@ const mongoose = require('mongoose');
 
 const announcementSchema = new mongoose.Schema(
   {
-    // COMMENTED OUT FOR TESTING
-    // cloudinary: {
-    //   imgUrl: {
-    //     // from Cloudinary
-    //     required: true,
-    //     type: String,
-    //   },
-    //   public_id: {
-    //     // from Cloudinary
-    //     required: true,
-    //     type: String,
-    //   },
-    // },
     description: {
       maxlength: 150,
       minlength: 1,
       required: true,
       trim: true,
       type: String,
+    },
+    image: {
+      cloudinary: {
+        url: {
+          required: true,
+          type: String,
+        },
+        public_id: {
+          required: true,
+          type: String,
+        },
+      },
+      crop: {
+        height: {
+          required: true,
+          type: Number,
+        },
+        percent: {
+          height: {
+            required: true,
+            type: Number,
+          },
+          width: {
+            required: true,
+            type: Number,
+          },
+          x: {
+            required: true,
+            type: Number,
+          },
+          y: {
+            required: true,
+            type: Number,
+          },
+        },
+        width: {
+          required: true,
+          type: Number,
+        },
+        x: {
+          required: true,
+          type: Number,
+        },
+        y: {
+          required: true,
+          type: Number,
+        },
+      },
+      dimensions: {
+        height: {
+          required: true,
+          type: Number,
+        },
+        width: {
+          required: true,
+          type: Number,
+        },
+      },
     },
     likedBy: [
       {

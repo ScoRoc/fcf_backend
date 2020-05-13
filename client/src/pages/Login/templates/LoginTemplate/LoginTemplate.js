@@ -9,7 +9,7 @@ import { Box, Button, Form, Text } from 'atoms';
 // Organisms
 import ThemeToggle from 'organisms/ThemeToggle';
 // LoginTemplate Organisms
-import { LoginInput } from '../../organisms';
+import LoginInput from '../../organisms';
 
 // LoginTemplate
 

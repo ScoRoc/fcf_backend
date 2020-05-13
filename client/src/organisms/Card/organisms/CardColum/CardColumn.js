@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
@@ -8,13 +8,19 @@ import { Box } from 'atoms';
 
 // CardColumn
 
-const CardColumn = ({ children, ...props }) => {
+const CardColumn = forwardRef(({ children, ...props }, ref) => {
   return (
-    <Box className='CardColumn' styledFlex='center space-evenly column' {...props}>
+    <Box
+      className='CardColumn'
+      padding='10px'
+      ref={ref}
+      styledFlex='center space-evenly column'
+      {...props}
+    >
       {children}
     </Box>
   );
-};
+});
 
 CardColumn.propTypes = {
   //

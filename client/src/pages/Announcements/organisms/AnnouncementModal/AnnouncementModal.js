@@ -1,43 +1,35 @@
 // Libraries
-import React, { useCallback, useRef, useState } from 'reactn';
+import React, { useRef, useState } from 'reactn';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { useDropzone } from 'react-dropzone';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
 import { Box, Button, Input, Text, TextArea } from 'atoms';
+// Organisms
+import Dropzone from 'organisms/Dropzone';
+import ImgCropper from 'organisms/ImgCropper';
+import LabeledInput from 'organisms/LabeledInput';
+// Announcement Constants
+import { IMAGES } from '../../constants';
 
 // AnnouncementModal
 
 const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
+  // State
+
+  const [crop, setCrop] = useState(null);
+  const [dimensions, setDimensions] = useState(null);
+  // const [description, setDescription] = useState(announcement ? announcement.description : '');
+  const [description, setDescription] = useState('yo yo yoooo');
+  const [imgBlob, setImgBlob] = useState(announcement ? announcement.imgBlob : null);
+  const [imgFile, setImgFile] = useState(announcement ? announcement.imgFile : null);
+  const [isLoading, setIsLoading] = useState(false);
+  // const [url, setUrl] = useState(announcement ? announcement.url : '');
+  const [url, setUrl] = useState('http://www.google.com');
+
   // Refs
 
   const inputRef = useRef(null);
-
-  // State
-
-  const [description, setDescription] = useState(announcement ? announcement.description : '');
-  const [img, setImg] = useState(announcement ? announcement.img : '');
-  const [url, setUrl] = useState(announcement ? announcement.url : '');
-
-  // Dropzone
-
-  const onDrop = useCallback(acceptedFiles => {
-    acceptedFiles.forEach(file => {
-      const reader = new FileReader();
-
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = () => {
-        console.log('here');
-      };
-      reader.readAsArrayBuffer(file);
-      console.log('file: ', file);
-    });
-  }, []);
-
-  const { getInputProps, getRootProps } = useDropzone({ onDrop });
 
   // Functions
 
@@ -48,33 +40,64 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
     inputRef.current?.focus();
   };
 
+  const handleLiftImg = ({ crop, dimensions }) => {
+    setCrop(crop);
+    setDimensions(dimensions);
+  };
+
+  const handleLoad = ({ event, reader }) => {
+    setImgBlob(reader.result);
+  };
+
+  const handleSaveClick = async e => {
+    setIsLoading(true);
+    const result = await onSave({
+      _id: announcement && announcement._id,
+      crop,
+      description,
+      dimensions,
+      imgBlob,
+      imgFile,
+      url,
+    });
+
+    setIsLoading(false);
+  };
+
+  // TODO add spinner for waiting to add WOD
+
   // Return
 
   return (
     <Box padding='10px' styledFlex='center space-between column'>
       <Box padding='20px 50px' styledFlex='flex-start space-between column'>
         <Box
-          {...getRootProps({
-            style: {
-              alignSelf: 'flexStart',
-              backgroundColor: 'green',
-              height: '100px',
-              marginTop: '40px',
-              width: '100%',
-            },
-          })}
+          className='announcement-modal-img-container'
+          height='240px'
+          marginBottom='10px'
+          styledFlex='stretch space-between'
         >
-          <input
-            // onChange={e => setImg(e.target.value)}
-            // onClearIconClick={handleClearIconClick}
-            // placeholder='announcement-image-input'
-            // value={img}
-            {...getInputProps()}
+          <Dropzone flex={1} marginRight='5px' onLoad={handleLoad} onNewFile={setImgFile} />
+
+          <ImgCropper
+            flex={1}
+            imgBlob={imgBlob}
+            imgContainerStyle={{ height: '236px' }}
+            imgStyle={{ maxHeight: '236px' }}
+            initialCrop={{
+              aspect: IMAGES.ASPECT_RATIO,
+              unit: '%',
+              width: 50,
+              x: 25,
+              y: 25,
+            }}
+            liftImg={handleLiftImg}
+            marginLeft='5px'
+            width='auto'
           />
         </Box>
 
-        <Box marginBottom='20px' width='100%'>
-          <Text marginBottom='30px'>Url</Text>
+        <LabeledInput label='Url'>
           <Input
             onChange={e => setUrl(e.target.value)}
             onClearIconClick={handleClearIconClick}
@@ -82,27 +105,24 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
             ref={inputRef}
             value={url}
           />
-        </Box>
-
-        <Box width='100%'>
-          <Text marginBottom='30px'>Description</Text>
+        </LabeledInput>
+        <LabeledInput label='Description'>
           <TextArea
-            marginBottom='40px'
+            height='150px'
+            marginBottom='10px'
             onChange={e => setDescription(e.target.value)}
             onClearButtonClick={() => setDescription('')}
             placeholder='Add Announcement description...'
             value={description}
           />
-        </Box>
+        </LabeledInput>
       </Box>
+
+      {isLoading && <Text>Loading...</Text>}
 
       <Box height='auto' styledFlex='flex-end'>
         <Button onClick={onCancel}>Cancel</Button>
-        <Button
-          onClick={() => onSave({ _id: announcement && announcement._id, description, img, url })}
-        >
-          Save
-        </Button>
+        <Button onClick={handleSaveClick}>Save</Button>
       </Box>
     </Box>
   );

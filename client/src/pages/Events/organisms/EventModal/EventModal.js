@@ -11,6 +11,8 @@ import 'react-dates/lib/css/_datepicker.css';
 import { jsx } from '@emotion/core';
 // Atoms
 import { Box, Button, Input, Text } from 'atoms';
+// Organisms
+import LabeledInput from 'organisms/LabeledInput';
 
 // EventModal
 
@@ -68,8 +70,7 @@ const EventModal = ({ event, onCancel, onSave }) => {
           />
         </Box>
 
-        <Box marginBottom='20px' width='100%'>
-          <Text marginBottom='30px'>Name</Text>
+        <LabeledInput label='Name' marginBottom='20px'>
           <Input
             onChange={e => setName(e.target.value)}
             onClearIconClick={handleClearIconClick}
@@ -77,10 +78,9 @@ const EventModal = ({ event, onCancel, onSave }) => {
             ref={inputRef}
             value={name}
           />
-        </Box>
+        </LabeledInput>
 
-        <Box marginBottom='20px' width='100%'>
-          <Text marginBottom='30px'>Type</Text>
+        <LabeledInput label='Type' marginBottom='20px'>
           <Input
             onChange={e => setType(e.target.value)}
             onClearIconClick={handleClearIconClick}
@@ -88,10 +88,9 @@ const EventModal = ({ event, onCancel, onSave }) => {
             ref={inputRef}
             value={type}
           />
-        </Box>
+        </LabeledInput>
 
-        <Box marginBottom='20px' width='100%'>
-          <Text marginBottom='30px'>Url</Text>
+        <LabeledInput label='Url' marginBottom='20px'>
           <Input
             onChange={e => setUrl(e.target.value)}
             onClearIconClick={handleClearIconClick}
@@ -99,7 +98,7 @@ const EventModal = ({ event, onCancel, onSave }) => {
             ref={inputRef}
             value={url}
           />
-        </Box>
+        </LabeledInput>
       </Box>
 
       <Box height='auto' styledFlex='flex-end'>

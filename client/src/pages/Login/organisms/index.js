@@ -1,3 +1,3 @@
 import LoginInput from './LoginInput/LoginInput';
 
-export { LoginInput };
+export default LoginInput;
