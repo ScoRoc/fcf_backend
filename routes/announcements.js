@@ -7,6 +7,8 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const { promisify } = require('util');
 // Models
 const Announcement = require('../models/announcement');
+// Constants
+const { IMG_UPDATE } = require('../constants/enums');
 // Helper Functions
 const { isHttpUrl } = require('../utils/urlHelpers');
 const { makeImage } = require('../utils/announcements/makeImage');
@@ -118,9 +120,13 @@ router.post('/', multerUpload.single('imgFile'), (req, res) => {
         return res.status(500).send(err);
       }
 
+      console.log('cloudinaryResult: ', cloudinaryResult);
+
       imageToSave.cloudinary = {
+        eagerUrl: cloudinaryResult.eager[0].url,
         public_id: cloudinaryResult.public_id,
-        url: cloudinaryResult.eager[0].url,
+        transformation: cloudinaryResult.eager[0].transformation,
+        url: cloudinaryResult.url,
       };
 
       // Create new Announcement in db
@@ -151,7 +157,7 @@ router.post('/', multerUpload.single('imgFile'), (req, res) => {
 // PATCH - update an announcement
 
 router.patch('/:id', (req, res) => {
-  const { id } = req.params;
+  const { id, imgUpdate } = req.params;
   const { updatedByUser } = req.query;
 
   // Validation
@@ -159,16 +165,28 @@ router.patch('/:id', (req, res) => {
   if (!ObjectId.isValid(id)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The id field is invalid and should be a valid announcement._id',
+      _msg: 'The id query string param is invalid and should be a valid announcement._id',
     });
   }
 
   if (!ObjectId.isValid(updatedByUser)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The updatedByUser field is invalid and should be a valid user._id',
+      _msg: 'The updatedByUser query string param is invalid and should be a valid user._id',
     });
   }
+
+  if (!imgUpdate || !Object.values(IMG_UPDATE).includes(imgUpdate)) {
+    return res.status(400).send({
+      enumValues: IMG_UPDATE,
+      error: true,
+      _msg:
+        'The imgUpdate field was incorrect. See the enumValues field in this response for possible values.',
+    });
+  }
+
+  // IF IMGFILE THEN DELETE CLOUDINARY IMG
+  // IF NO IMGFILE, DELETE OLD TRANSFORM AND THEN ADD NEW TRANSFORM
 
   // Update announcement
 
@@ -212,17 +230,17 @@ router.delete('/:id', (req, res) => {
 
   Announcement.findByIdAndDelete(id, (err, deletedAnnouncement) => {
     if (err || deletedAnnouncement === null) {
-      console.log('err: ', err);
+      console.log('err from Announcement.findByIdAndDelete: ', err);
       return res
         .status(500)
         .send({ msg: 'An error occurred when attempting to delete the announcement.' });
     }
 
-    cloudinary.v2.api.delete_resources(
-      [deletedAnnouncement.image.cloudinary.public_id],
+    cloudinary.v2.uploader.destroy(
+      deletedAnnouncement.image.cloudinary.public_id,
       (err, result) => {
         if (err) {
-          console.log('err: ', err);
+          console.log('err from cloudinary.v2.uploader.destroy: ', err);
           return res.status(500).send(err);
         }
 

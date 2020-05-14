@@ -11,11 +11,19 @@ const announcementSchema = new mongoose.Schema(
     },
     image: {
       cloudinary: {
-        url: {
+        eagerUrl: {
           required: true,
           type: String,
         },
         public_id: {
+          required: true,
+          type: String,
+        },
+        transformation: {
+          required: true,
+          type: String,
+        },
+        url: {
           required: true,
           type: String,
         },

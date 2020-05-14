@@ -23,6 +23,7 @@ const AnnouncementCard = ({
   // State
 
   const [cardHeight, setCardHeight] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Callback Ref
 
@@ -32,12 +33,26 @@ const AnnouncementCard = ({
     }
   }, []);
 
+  // Functions
+
+  const handlePencilIconClick = async () => {
+    setIsLoading(true);
+    const result = await onPencilIconClick();
+    setIsLoading(false);
+  };
+
+  const handleTrashIconClick = async () => {
+    setIsLoading(true);
+    const result = await onTrashIconClick();
+    setIsLoading(false);
+  };
+
   // Return
 
   return (
     <AnimatedLongCard className='AnnouncementCard' marginBottom='20px' {...props}>
       <CardColumn ref={cardRef}>
-        <AnnouncementImage height={cardHeight} src={image?.cloudinary?.url} />
+        <AnnouncementImage height={cardHeight} src={image?.cloudinary?.eagerUrl} />
       </CardColumn>
       <Separator />
       <CardColumn>
@@ -54,12 +69,13 @@ const AnnouncementCard = ({
       </CardColumn>
       <Separator />
       <CardColumn flexDirection='row'>
-        <Text cursor='pointer' onClick={onPencilIconClick}>
+        <Text cursor='pointer' onClick={handlePencilIconClick}>
           [edit]
         </Text>
-        <Text cursor='pointer' onClick={onTrashIconClick}>
+        <Text cursor='pointer' onClick={handleTrashIconClick}>
           [trash]
         </Text>
+        {isLoading && <Text>Loading...</Text>}
       </CardColumn>
     </AnimatedLongCard>
   );

@@ -1,9 +1,12 @@
 // Libraries
 import React, { useDispatch, useEffect, useGlobal } from 'reactn';
 import axios from 'axios';
-import moment from 'moment';
 // Announcements Templates
 import AnnouncementsTemplate from '../../templates';
+// Announcement Constants
+import { IMG_UPDATE } from '../../constants';
+// Announcement API Helpers
+import { buildPatch } from './apiHelpers';
 // Constants
 import { API, PATHS, QUERY_STRING } from 'utils/constants';
 
@@ -76,10 +79,18 @@ const AnnouncementsLogic = () => {
     return true;
   };
 
-  const patchAnnouncement = async ({ _id, crop, description, imgFile, url }) => {
+  const patchAnnouncement = async ({
+    _id,
+    crop,
+    description,
+    dimensions,
+    imgFile,
+    originalAnnouncement,
+    url,
+  }) => {
     console.log('in patch');
 
-    if (!description || !imgFile || !url) {
+    if (!description || !url) {
       console.log('description, imgFile, and url need to be filled out');
       return false;
     }
@@ -89,10 +100,19 @@ const AnnouncementsLogic = () => {
       return false;
     }
 
-    const qs = `?${QUERY_STRING.UPDATED_BY_USER.PARAM.value}=${user._id}`;
-    const patchUrl = `${baseUrl}/${_id}${qs}`;
+    const { config, data } = buildPatch({
+      crop,
+      description,
+      dimensions,
+      imgFile,
+      originalAnnouncement,
+      url,
+      userId: user._id,
+    });
+
+    const patchUrl = `${baseUrl}/${_id}`;
     // setIsLoading(true);
-    await axios.patch(patchUrl, { crop, description, imgFile, url }).then(res => {
+    await axios.patch(patchUrl, data, config).then(res => {
       console.log('res: ', res);
       // setIsLoading(false);
       // res.status === 200 ? handleSuccess(res) : handleErrors(res);
@@ -117,15 +137,15 @@ const AnnouncementsLogic = () => {
     }
 
     const formData = new FormData();
-    formData.set('description', description);
     formData.set('cropHeight', crop.height);
+    formData.set('cropWidth', crop.width);
+    formData.set('cropX', crop.x);
+    formData.set('cropY', crop.y);
+    formData.set('description', description);
     formData.append('imgFile', imgFile);
     formData.set('imgHeight', dimensions.height);
     formData.set('imgWidth', dimensions.width);
     formData.set('url', url);
-    formData.set('cropWidth', crop.width);
-    formData.set('cropX', crop.x);
-    formData.set('cropY', crop.y);
 
     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 

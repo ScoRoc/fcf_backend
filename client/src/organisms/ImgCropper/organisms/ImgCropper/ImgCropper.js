@@ -11,7 +11,7 @@ import { Box } from 'atoms';
 // ImgCropper
 
 const ImgCropper = forwardRef(
-  ({ imgBlob, initialCrop, imgContainerStyle, imgStyle, liftImg, ...props }, ref) => {
+  ({ initialCrop, imgContainerStyle, imgStyle, liftImg, src, ...props }, ref) => {
     const [crop, setCrop] = useState(initialCrop);
     const [dimensions, setDimensions] = useState(null);
 
@@ -35,7 +35,7 @@ const ImgCropper = forwardRef(
           onChange={handleChange}
           onImageLoaded={img => setDimensions(img.getBoundingClientRect())}
           ruleOfThirds
-          src={imgBlob}
+          src={src}
         />
       </Box>
     );
@@ -43,19 +43,19 @@ const ImgCropper = forwardRef(
 );
 
 ImgCropper.propTypes = {
-  imgBlob: PropTypes.oneOfType([PropTypes.object, PropTypes.string]), // imgBlob file type ??
   imgContainerStyle: PropTypes.object,
   imgStyle: PropTypes.object,
   initialCrop: PropTypes.object,
   liftImg: PropTypes.func.isRequired,
+  src: PropTypes.oneOfType([PropTypes.object, PropTypes.string]), // src file type ??
 };
 
 ImgCropper.defaultProps = {
-  imgBlob: null,
   imgContainerStyle: null,
   imgStyle: null,
   initialCrop: null,
   liftImg: null,
+  src: null,
 };
 
 export default ImgCropper;

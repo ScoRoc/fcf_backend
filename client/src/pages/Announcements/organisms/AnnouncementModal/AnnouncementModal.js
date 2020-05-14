@@ -17,15 +17,13 @@ import { IMAGES } from '../../constants';
 const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   // State
 
-  const [crop, setCrop] = useState(null);
-  const [dimensions, setDimensions] = useState(null);
-  // const [description, setDescription] = useState(announcement ? announcement.description : '');
-  const [description, setDescription] = useState('yo yo yoooo');
-  const [imgBlob, setImgBlob] = useState(announcement ? announcement.imgBlob : null);
-  const [imgFile, setImgFile] = useState(announcement ? announcement.imgFile : null);
+  const [crop, setCrop] = useState(announcement?.image?.crop ?? null);
+  const [dimensions, setDimensions] = useState(announcement?.image?.dimensions ?? null);
+  const [description, setDescription] = useState(announcement?.description ?? '');
+  const [imgBlob, setImgBlob] = useState(announcement?.imgBlob || null);
+  const [imgFile, setImgFile] = useState(announcement?.imgFile || null);
   const [isLoading, setIsLoading] = useState(false);
-  // const [url, setUrl] = useState(announcement ? announcement.url : '');
-  const [url, setUrl] = useState('http://www.google.com');
+  const [url, setUrl] = useState(announcement?.url ?? '');
 
   // Refs
 
@@ -56,8 +54,8 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
       crop,
       description,
       dimensions,
-      imgBlob,
       imgFile,
+      originalAnnouncement: announcement,
       url,
     });
 
@@ -65,6 +63,14 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   };
 
   // TODO add spinner for waiting to add WOD
+
+  const initialCrop = {
+    aspect: IMAGES.ASPECT_RATIO,
+    unit: announcement?.image?.crop ? 'px' : '%',
+    width: announcement?.image?.crop?.width ?? 50,
+    x: announcement?.image?.crop?.x ?? 25,
+    y: announcement?.image?.crop?.y ?? 25,
+  };
 
   // Return
 
@@ -81,18 +87,12 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
 
           <ImgCropper
             flex={1}
-            imgBlob={imgBlob}
             imgContainerStyle={{ height: '236px' }}
             imgStyle={{ maxHeight: '236px' }}
-            initialCrop={{
-              aspect: IMAGES.ASPECT_RATIO,
-              unit: '%',
-              width: 50,
-              x: 25,
-              y: 25,
-            }}
+            initialCrop={initialCrop}
             liftImg={handleLiftImg}
             marginLeft='5px'
+            src={announcement?.image?.cloudinary?.url ?? imgBlob}
             width='auto'
           />
         </Box>
