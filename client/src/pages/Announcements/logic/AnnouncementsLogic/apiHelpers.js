@@ -45,9 +45,17 @@ export const buildPatch = ({
         params: { imgUpdate: IMG_UPDATE.CROP, [QUERY_STRING.UPDATED_BY_USER.PARAM.value]: userId },
       },
       data: {
-        crop,
+        crop: {
+          height: crop.height,
+          width: crop.width,
+          x: crop.x,
+          y: crop.y,
+        },
         description,
-        dimensions,
+        dimensions: {
+          height: dimensions.height,
+          width: dimensions.width,
+        },
         transformation,
         url,
       },

@@ -20,9 +20,9 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   const [crop, setCrop] = useState(announcement?.image?.crop ?? null);
   const [dimensions, setDimensions] = useState(announcement?.image?.dimensions ?? null);
   const [description, setDescription] = useState(announcement?.description ?? '');
-  const [imgBlob, setImgBlob] = useState(announcement?.imgBlob || null);
   const [imgFile, setImgFile] = useState(announcement?.imgFile || null);
   const [isLoading, setIsLoading] = useState(false);
+  const [src, setSrc] = useState(announcement?.image?.cloudinary?.url ?? null);
   const [url, setUrl] = useState(announcement?.url ?? '');
 
   // Refs
@@ -44,7 +44,7 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
   };
 
   const handleLoad = ({ event, reader }) => {
-    setImgBlob(reader.result);
+    setSrc(reader.result);
   };
 
   const handleSaveClick = async e => {
@@ -92,7 +92,7 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
             initialCrop={initialCrop}
             liftImg={handleLiftImg}
             marginLeft='5px'
-            src={announcement?.image?.cloudinary?.url ?? imgBlob}
+            src={src}
             width='auto'
           />
         </Box>
