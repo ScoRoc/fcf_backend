@@ -52,7 +52,7 @@ const AnnouncementCard = ({
   return (
     <AnimatedLongCard className='AnnouncementCard' marginBottom='20px' {...props}>
       <CardColumn ref={cardRef}>
-        <AnnouncementImage height={cardHeight} src={image?.cloudinary?.eagerUrl} />
+        <AnnouncementImage height={cardHeight} src={image?.cloudinary?.croppedUrl} />
       </CardColumn>
       <Separator />
       <CardColumn>

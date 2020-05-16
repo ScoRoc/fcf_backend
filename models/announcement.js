@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const imageSchema = require('./image');
 
 const announcementSchema = new mongoose.Schema(
   {
@@ -10,70 +11,8 @@ const announcementSchema = new mongoose.Schema(
       type: String,
     },
     image: {
-      cloudinary: {
-        eagerUrl: {
-          required: true,
-          type: String,
-        },
-        public_id: {
-          required: true,
-          type: String,
-        },
-        transformation: {
-          required: true,
-          type: String,
-        },
-        url: {
-          required: true,
-          type: String,
-        },
-      },
-      crop: {
-        height: {
-          required: true,
-          type: Number,
-        },
-        percent: {
-          height: {
-            required: true,
-            type: Number,
-          },
-          width: {
-            required: true,
-            type: Number,
-          },
-          x: {
-            required: true,
-            type: Number,
-          },
-          y: {
-            required: true,
-            type: Number,
-          },
-        },
-        width: {
-          required: true,
-          type: Number,
-        },
-        x: {
-          required: true,
-          type: Number,
-        },
-        y: {
-          required: true,
-          type: Number,
-        },
-      },
-      dimensions: {
-        height: {
-          required: true,
-          type: Number,
-        },
-        width: {
-          required: true,
-          type: Number,
-        },
-      },
+      required: true,
+      type: imageSchema,
     },
     likedBy: [
       {

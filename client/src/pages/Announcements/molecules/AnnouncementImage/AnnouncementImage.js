@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { jsx } from '@emotion/core';
 // Atoms
 import { Box, Image, Text } from 'atoms';
-import { IMAGES } from '../../constants';
+import { IMAGES } from 'utils/constants';
 
 // AnnouncementImage
 

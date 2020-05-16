@@ -5,8 +5,6 @@ import { Route, Switch } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
-// Wods Components
-import AddWod from './AddWod';
 // Atoms
 import { Box, Text } from 'atoms';
 // Organisms
@@ -27,10 +25,6 @@ const UsersTemplate = props => {
   return (
     <Box className='UsersTemplate' flex={1} styledFlex='center flex-start column'>
       <Text>Users page</Text>
-
-      <Modal>
-        <p>Users Modal</p>
-      </Modal>
     </Box>
   );
 };

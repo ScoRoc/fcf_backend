@@ -112,27 +112,18 @@ const AnnouncementsLogic = () => {
 
     const patchUrl = `${baseUrl}/${_id}`;
 
-    // console.log('config: ', config);
-    // console.log('data: ', data);
-    // console.log('data.get(cropHeight)', data.get('cropHeight'));
-    // console.log('data.get(cropWidth)', data.get('cropWidth'));
-    // console.log('data.get(cropX)', data.get('cropX'));
-    // console.log('data.get(cropY)', data.get('cropY'));
-    // console.log('data.get(description)', data.get('description'));
-    // console.log('data.get(imgFile)', data.get('imgFile'));
-    // console.log('data.get(imgHeight)', data.get('imgHeight'));
-    // console.log('data.get(imgWidth)', data.get('imgWidth'));
-    // console.log('data.get(originalTransformation)', data.get('originalTransformation'));
-    // console.log('data.get(url)', data.get('url'));
+    console.log('patchUrl: ', patchUrl);
+    console.log('data: ', data);
+    console.log('config: ', config);
 
     // setIsLoading(true);
-    // await axios.patch(patchUrl, data, config).then(res => {
-    //   console.log('res: ', res);
-    //   // setIsLoading(false);
-    //   // res.status === 200 ? handleSuccess(res) : handleErrors(res);
-    //   setAnnouncement({ announcement: res.data.announcement });
-    //   // TODO Fix return to be based off if error or not
-    // });
+    await axios.patch(patchUrl, data, config).then(res => {
+      console.log('res: ', res);
+      // setIsLoading(false);
+      // res.status === 200 ? handleSuccess(res) : handleErrors(res);
+      setAnnouncement({ announcement: res.data.announcement });
+      // TODO Fix return to be based off if error or not
+    });
     return true;
   };
 

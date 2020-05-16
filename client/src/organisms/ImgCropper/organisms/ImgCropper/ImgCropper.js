@@ -7,17 +7,34 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { css, jsx } from '@emotion/core';
 // Atoms
 import { Box } from 'atoms';
+// Announcement Constants
+import { IMAGES } from 'utils/constants';
+
+// Default Crop
+
+const defaultCrop = {
+  aspect: IMAGES.ASPECT_RATIO,
+  unit: '%',
+  width: 50,
+  x: 25,
+  y: 25,
+};
 
 // ImgCropper
 
 const ImgCropper = forwardRef(
   ({ initialCrop, imgContainerStyle, imgStyle, liftImg, src, ...props }, ref) => {
-    const [crop, setCrop] = useState(initialCrop);
+    const [crop, setCrop] = useState(initialCrop || defaultCrop);
     const [dimensions, setDimensions] = useState(null);
 
     const handleChange = crop => {
       setCrop(crop);
       liftImg({ crop, dimensions });
+    };
+
+    const handleImageLoaded = img => {
+      setCrop(defaultCrop);
+      setDimensions(img.getBoundingClientRect());
     };
 
     return (
@@ -33,7 +50,7 @@ const ImgCropper = forwardRef(
           css={imgContainerStyle}
           imageStyle={imgStyle}
           onChange={handleChange}
-          onImageLoaded={img => setDimensions(img.getBoundingClientRect())}
+          onImageLoaded={handleImageLoaded}
           ruleOfThirds
           src={src}
         />

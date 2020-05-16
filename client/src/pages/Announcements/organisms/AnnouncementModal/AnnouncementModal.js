@@ -10,7 +10,7 @@ import Dropzone from 'organisms/Dropzone';
 import ImgCropper from 'organisms/ImgCropper';
 import LabeledInput from 'organisms/LabeledInput';
 // Announcement Constants
-import { IMAGES } from '../../constants';
+import { IMAGES } from 'utils/constants';
 
 // AnnouncementModal
 
@@ -64,12 +64,12 @@ const AnnouncementModal = ({ announcement, onCancel, onSave }) => {
 
   // TODO add spinner for waiting to add WOD
 
-  const initialCrop = {
+  const initialCrop = announcement && {
     aspect: IMAGES.ASPECT_RATIO,
-    unit: announcement?.image?.crop ? 'px' : '%',
-    width: announcement?.image?.crop?.width ?? 50,
-    x: announcement?.image?.crop?.x ?? 25,
-    y: announcement?.image?.crop?.y ?? 25,
+    unit: announcement?.image?.crop && 'px',
+    width: announcement?.image?.crop?.width,
+    x: announcement?.image?.crop?.x,
+    y: announcement?.image?.crop?.y,
   };
 
   // Return

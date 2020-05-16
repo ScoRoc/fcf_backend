@@ -13,6 +13,7 @@ import { Box, Text } from 'atoms';
 import Announcements from 'pages/Announcements';
 import Dashboard from 'pages/Dashboard';
 import Events from 'pages/Events';
+import Users from 'pages/Users';
 import Wods from 'pages/Wods';
 // Organisms
 import SideNav from 'organisms/SideNav';
@@ -121,7 +122,7 @@ const Page = props => {
                 </Route>
 
                 <Route path={`${match.path}${PATHS.USERS}`}>
-                  <Text>USERS PAGE</Text>
+                  <Users />
                 </Route>
 
                 <Route exact path={PATHS.APP}>
