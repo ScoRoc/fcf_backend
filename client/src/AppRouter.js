@@ -68,9 +68,10 @@ const Page = props => {
 
   const handleSuccess = res => {
     console.log('res: ', res);
-    const to = `${PATHS.APP}${PATHS.ANNOUNCEMENTS}`;
+    // const to = `${PATHS.APP}${PATHS.ANNOUNCEMENTS}`;
     // const to = `${PATHS.APP}${PATHS.DASHBOARD}`;
     // const to = `${PATHS.APP}${PATHS.EVENTS}`;
+    const to = `${PATHS.APP}${PATHS.USERS}`;
     // const to = `${PATHS.APP}${PATHS.WODS}`;
     const { from } = location.state || { from: { pathname: to } };
     authenticateUser();
