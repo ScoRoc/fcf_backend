@@ -1,49 +1,43 @@
 // Libraries
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
-import { Box, Text } from 'atoms';
+import { Box } from 'atoms';
 // Organisms
-import Modal from 'organisms/Modal';
+import Modal, { ModalProvider } from 'organisms/Modal';
 // User Molecules
 import { UserCard, UsersHeader } from '../../molecules';
 // User Organisms
-import { UsersCardHeaderBar } from '../../organisms/';
+import { UsersCardHeaderBar, UsersModal } from '../../organisms/';
 // Utils
 import { PATHS } from 'utils/constants';
 
 // UsersTemplate
 
 const UsersTemplate = ({ users, ...props }) => {
-  // Refs
+  // State
 
-  const usersCardheaderBarRef = useRef(null);
+  // const [currentUser, setCurrentUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Match
 
   const match = useRouteMatch(`${PATHS.APP}${PATHS.WODS}`);
   // console.log('match: ', match);
 
-  useEffect(() => {
-    const foo = e => {
-      console.log('e: ', e);
-    };
+  // Functions
 
-    if (usersCardheaderBarRef && usersCardheaderBarRef.current) {
-      usersCardheaderBarRef.current.addEventListener('scroll', foo);
-      return usersCardheaderBarRef.current.removeEventListener('scroll', foo);
-    }
-  }, []);
+  const handleCloseModal = () => {
+    // setCurrentUser(null);
+    setIsModalOpen(false);
+  };
 
   // User Cards
 
   const userCards = Object.values(users.data).map((user, i) => {
-    console.log('user: ', user);
-    console.log('user._id: ', user._id);
     return (
       <UserCard
         key={`${user._id}foo`}
@@ -56,15 +50,36 @@ const UsersTemplate = ({ users, ...props }) => {
   // Return
 
   return (
-    <Box className='UsersTemplate' flex={1} overflow='scroll' styledFlex='center flex-start column'>
-      <Box position='sticky' styledFlex='center flex-start column' top='0px'>
-        <UsersHeader />
-        <UsersCardHeaderBar ref={usersCardheaderBarRef} />
+    <ModalProvider
+      isOpen={isModalOpen}
+      onClose={() => console.log('closing...')}
+      onOpen={() => console.log('opening...')}
+      onOverlayClick={handleCloseModal}
+      setIsOpen={setIsModalOpen}
+    >
+      <Box
+        className='UsersTemplate'
+        flex={1}
+        overflow='scroll'
+        styledFlex='center flex-start column'
+      >
+        <Box position='sticky' styledFlex='center flex-start column' top='0px'>
+          <UsersHeader onAddNewClick={() => setIsModalOpen(true)} />
+          <UsersCardHeaderBar />
+        </Box>
+        <Box flex={1} padding='10px' width='100%'>
+          {userCards}
+        </Box>
       </Box>
-      <Box flex={1} padding='10px' width='100%'>
-        {userCards}
-      </Box>
-    </Box>
+
+      <Modal height='650px' width='650px'>
+        <UsersModal
+          onCancel={handleCloseModal}
+          // onSave={handleSaveuser}
+          // user={currentuser}
+        />
+      </Modal>
+    </ModalProvider>
   );
 };
 

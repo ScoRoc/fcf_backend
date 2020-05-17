@@ -21,7 +21,7 @@ const CardPageTitleBar = ({ onButtonClick, title, ...props }) => {
       //   background-color: linear-gradient(to bottom, white 80%, transparent);
       // `}
       height='auto'
-      marginBottom='20px'
+      // marginBottom='20px'
       padding='20px 30px 20px 30px'
       position='sticky'
       styledFlex='center space-between'

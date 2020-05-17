@@ -2,29 +2,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 // Atoms
-import { Box } from 'atoms';
+import { Box, Text } from 'atoms';
 // CardPageLayout Molecules
 import { CardPageTitleBar } from '../../molecules';
 
 // CardPageLayout
 
 const CardPageLayout = ({ children, onButtonClick, title, titleBarStyles, ...props }) => (
-  <Box
-    className='CardPageLayout'
-    flex={1}
-    overflowY='scroll'
-    styledFlex='center flex-start column'
-    {...props}
-  >
+  <Box className='CardPageLayout' flex={1} styledFlex='center flex-start column' {...props}>
     <CardPageTitleBar
       css={titleBarStyles}
       onButtonClick={onButtonClick}
       title={title}
       zIndex={10}
     />
-    {children}
+    <Box
+      css={css`
+        & > div:nth-child(1) {
+          margin-top: 20px;
+        }
+      `}
+      overflowY='scroll'
+      padding='0 20px'
+      styledFlex='stretch flex-start column'
+    >
+      {children}
+    </Box>
   </Box>
 );
 

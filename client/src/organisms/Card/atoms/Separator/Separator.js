@@ -8,16 +8,9 @@ import { Box } from 'atoms';
 
 // Separator
 
-const Separator = ({ children }) => {
+const Separator = props => {
   return (
-    <Box
-      bg='yellow'
-      className='Separator'
-      // css={{ boxSizing: 'border-box' }}
-      height='80%'
-      margin='10% 0'
-      width='1px'
-    />
+    <Box bg='yellow' className='Separator' height='80%' margin='10% 0' width='1px' {...props} />
   );
 };
 

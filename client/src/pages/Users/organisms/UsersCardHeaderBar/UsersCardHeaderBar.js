@@ -12,14 +12,16 @@ const UsersCardHeaderBar = forwardRef(({ children }, ref) => {
   return (
     <Box
       backgroundColor='rgba(255, 255, 255, 0.7)'
-      border='1px solid black'
+      borderBottom='1px solid black'
+      borderTop='1px solid black'
       className='UsersCardHeaderBar'
+      css={{ backdropFilter: 'blur(2px) hue-rotate(90deg)' }}
       height='auto'
-      marginTop='40px'
       padding='2px 0'
       ref={ref}
       styledFlex='stretch space-evenly'
     >
+      <Text>User Type</Text>
       <Text>Full Name</Text>
       <Text>Email</Text>
       <Text>Total likes</Text>

@@ -1,3 +1,4 @@
 import UsersCardHeaderBar from './UsersCardHeaderBar/UsersCardHeaderBar';
+import UsersModal from './UsersModal/UsersModal';
 
-export { UsersCardHeaderBar };
+export { UsersCardHeaderBar, UsersModal };
