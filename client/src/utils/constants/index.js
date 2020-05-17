@@ -1,4 +1,4 @@
 import { IMAGES } from './images';
-import { API, PATHS, QUERY_STRING } from './urls';
+import { API, FULL_PATHS, PATHS, QUERY_STRING } from './urls';
 
-export { API, IMAGES, PATHS, QUERY_STRING };
+export { API, FULL_PATHS, IMAGES, PATHS, QUERY_STRING };

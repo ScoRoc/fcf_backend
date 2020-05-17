@@ -24,14 +24,17 @@ setGlobal({
   },
   cache: {},
   events: {
-    data: [],
+    data: {},
   },
   isLoading: false,
   isUserAuthenticated: false,
   themeName: THEME_NAMES.MAIN,
   user: null,
+  users: {
+    data: {},
+  },
   wods: {
-    data: [],
+    data: {},
     direction: 'desc',
   },
 });

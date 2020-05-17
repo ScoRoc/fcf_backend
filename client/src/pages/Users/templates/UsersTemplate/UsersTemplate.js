@@ -1,7 +1,7 @@
 // Libraries
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useRouteMatch } from 'react-router-dom';
+import { useLocation, Route, Switch } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
@@ -12,8 +12,10 @@ import Modal, { ModalProvider } from 'organisms/Modal';
 import { UserCard, UsersHeader } from '../../molecules';
 // User Organisms
 import { UsersCardHeaderBar, UsersModal } from '../../organisms/';
+// Users Templates
+import UserPage from './UserPage';
 // Utils
-import { PATHS } from 'utils/constants';
+import { FULL_PATHS } from 'utils/constants';
 
 // UsersTemplate
 
@@ -23,10 +25,9 @@ const UsersTemplate = ({ users, ...props }) => {
   // const [currentUser, setCurrentUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Match
+  // Location
 
-  const match = useRouteMatch(`${PATHS.APP}${PATHS.WODS}`);
-  // console.log('match: ', match);
+  const location = useLocation();
 
   // Functions
 
@@ -35,16 +36,14 @@ const UsersTemplate = ({ users, ...props }) => {
     setIsModalOpen(false);
   };
 
+  const handleSaveUser = () => {
+    console.log('in handleSaveUser');
+  };
+
   // User Cards
 
   const userCards = Object.values(users.data).map((user, i) => {
-    return (
-      <UserCard
-        key={`${user._id}foo`}
-        onToUsersPageArrowClick={() => console.log(`clicked on user id: ${user._id}`)}
-        user={user}
-      />
-    );
+    return <UserCard key={`${user._id}foo`} user={user} />;
   });
 
   // Return
@@ -57,26 +56,34 @@ const UsersTemplate = ({ users, ...props }) => {
       onOverlayClick={handleCloseModal}
       setIsOpen={setIsModalOpen}
     >
-      <Box
-        className='UsersTemplate'
-        flex={1}
-        overflow='scroll'
-        styledFlex='center flex-start column'
-      >
-        <Box position='sticky' styledFlex='center flex-start column' top='0px'>
-          <UsersHeader onAddNewClick={() => setIsModalOpen(true)} />
-          <UsersCardHeaderBar />
-        </Box>
-        <Box flex={1} padding='10px' width='100%'>
-          {userCards}
-        </Box>
-      </Box>
+      <Switch>
+        <Route path={FULL_PATHS.USER}>
+          <UserPage />
+        </Route>
+
+        <Route path={FULL_PATHS.USERS}>
+          <Box
+            className='UsersTemplate'
+            flex={1}
+            overflow='scroll'
+            styledFlex='center flex-start column'
+          >
+            <Box position='sticky' styledFlex='center flex-start column' top='0px'>
+              <UsersHeader onAddNewClick={() => setIsModalOpen(true)} />
+              <UsersCardHeaderBar />
+            </Box>
+            <Box flex={1} padding='10px' width='100%'>
+              {userCards}
+            </Box>
+          </Box>
+        </Route>
+      </Switch>
 
       <Modal height='650px' width='650px'>
         <UsersModal
           onCancel={handleCloseModal}
-          // onSave={handleSaveuser}
-          // user={currentuser}
+          onSave={handleSaveUser}
+          // user={currentUser}
         />
       </Modal>
     </ModalProvider>

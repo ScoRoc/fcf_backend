@@ -41,7 +41,7 @@ const SideNavSubTile = ({ isHovered, path, ...props }) => {
             textDecoration: 'none',
             width: '100%',
           }}
-          to={`${path}${PATHS.ADD}`}
+          // to={`${path}${PATHS.ADD}`}
         >
           Add
         </NavLink>

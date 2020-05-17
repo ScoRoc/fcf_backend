@@ -1,27 +1,23 @@
 // Libraries
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useLocation, useRouteMatch, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // @jsx jsx
-import { css, jsx } from '@emotion/core';
+import { jsx } from '@emotion/core';
 // Atoms
 import { Box, Text } from 'atoms';
 // Organisms
 import { CardColumn, Separator } from 'organisms/Card';
 // Utils
-import { PATHS } from 'utils/constants';
+import { FULL_PATHS } from 'utils/constants';
 
 // UserCard
 
 const UserCard = ({ user, ...props }) => {
-  // History, Location, and Match
-
-  const history = useHistory();
-  const location = useLocation();
-  const match = useRouteMatch(PATHS.USERS);
-  const match = useRouteMatch();
-  console.log('match: ', match);
-
+  const to = {
+    pathname: `${FULL_PATHS.USERS}/${user._id}`,
+    state: { user },
+  };
   return (
     <Box
       backgroundColor='honeydew'
@@ -58,13 +54,7 @@ const UserCard = ({ user, ...props }) => {
       </CardColumn>
       <Separator />
       <CardColumn flexDirection='row'>
-        <Link
-          css={{ textDecoration: 'none' }}
-          to={location => {
-            console.log('location: ', location);
-            return `${location.pathname}/${user._ud}`;
-          }}
-        >
+        <Link css={{ textDecoration: 'none' }} to={to}>
           [rightArrow]
         </Link>
       </CardColumn>
@@ -73,12 +63,10 @@ const UserCard = ({ user, ...props }) => {
 };
 
 UserCard.propTypes = {
-  onToUsersPageArrowClick: PropTypes.number,
   users: PropTypes.number,
 };
 
 UserCard.defaultProps = {
-  onToUsersPageArrowClick: null,
   users: null,
 };
 

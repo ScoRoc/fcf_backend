@@ -3,10 +3,22 @@ const API = {
   PROD: 'FOOBAR',
 };
 
+const FULL_PATHS = {
+  ANNOUNCEMENTS: '/app/announcements',
+  APP: '/app',
+  AUTH: '/auth',
+  DASHBOARD: '/app/dashboard',
+  EVENTS: '/app/events',
+  LOGIN: '/login',
+  ROOT: '/',
+  USER: '/app/users/:id',
+  USERS: '/app/users',
+  WODS: '/app/wods',
+};
+
 const PATHS = {
   ANNOUNCEMENTS: '/announcements',
   APP: '/app',
-  ADD: '/add',
   AUTH: '/auth',
   DASHBOARD: '/dashboard',
   EVENTS: '/events',
@@ -50,4 +62,4 @@ const QUERY_STRING = {
   },
 };
 
-export { API, PATHS, QUERY_STRING };
+export { API, FULL_PATHS, PATHS, QUERY_STRING };
