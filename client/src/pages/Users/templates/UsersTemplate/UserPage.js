@@ -1,11 +1,23 @@
 // Libraries
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
 // Atoms
 import { Box, Text } from 'atoms';
+// UserPage Organisms
+import { UserPageCard } from '../../organisms';
+// UserPage Templates
+import LikesAndViews from './LikesAndViews/LikesAndViews';
+
+// Moments
+
+const sunday = moment().day('Sunday');
+
+const currentMonth = moment().month(sunday.month()).format('MMMM');
+const currentYear = moment().year();
 
 // UserPage
 
@@ -16,7 +28,30 @@ const UserPage = ({ children }) => {
 
   // State
 
+  const [likes, setLikes] = useState({
+    data: [
+      { name: 'Current Week', value: 54 },
+      { name: 'Last Week', value: 31 },
+      { name: `${currentMonth} ${currentYear}`, value: 28 },
+    ],
+    title: `Likes in ${currentMonth}`,
+  });
+  const [logins, setLogins] = useState({
+    data: [
+      { name: 'WODs', value: 54 },
+      { name: 'Announcements', value: 31 },
+      { name: 'Events', value: 28 },
+    ],
+    title: 'Logins',
+  });
   const [user, setUser] = useState(location?.state?.user || null);
+  const [views, setViews] = useState({
+    data: [
+      { name: 'Announcements', value: 31 },
+      { name: 'Events', value: 28 },
+    ],
+    title: `Views in ${currentMonth}`,
+  });
 
   // Effects
 
@@ -68,21 +103,25 @@ const UserPage = ({ children }) => {
         <Text>id: {user._id}</Text>
       </Box>
 
-      <Box gridArea='logins' styledFlex='stretch space-between column'>
-        <Text marginBottom='10px'>Logins</Text>
-        <Box backgroundColor='slateblue' flex={1} width='100%'>
-          54
-        </Box>
-      </Box>
-      <Box gridArea='likes'>
-        <Text>Likes in [month]</Text>
-      </Box>
-      <Box gridArea='views'>
-        <Text>Views in [month]</Text>
-      </Box>
-      <Box gridArea='likes-views'>
-        <Text>Likes and Views</Text>
-      </Box>
+      <UserPageCard
+        className='logins-card'
+        girdArea='logins'
+        items={logins.data}
+        title={logins.title}
+      />
+      <UserPageCard
+        className='likes-card'
+        girdArea='likes'
+        items={likes.data}
+        title={likes.title}
+      />
+      <UserPageCard
+        className='views-card'
+        girdArea='views'
+        items={views.data}
+        title={views.title}
+      />
+      <LikesAndViews gridArea='likes-views' />
     </Box>
   );
 };
