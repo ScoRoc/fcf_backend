@@ -87,16 +87,12 @@ const UserPage = ({ children }) => {
       display='grid'
       flex={1}
       gridGap='20px'
-      //   gridTemplateArea='header header
-      // logins likes-views
-      // likes likes-views
-      // views likes-views'
       gridTemplateColumns='2fr 1fr'
       gridTemplateRows='auto'
       height='100%'
       padding='20px'
     >
-      <Box gridArea='header'>
+      <Box gridArea='header' height='80px'>
         <Text>
           Hello {user.firstName} {user.lastName}
         </Text>
