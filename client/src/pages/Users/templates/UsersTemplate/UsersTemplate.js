@@ -67,17 +67,16 @@ const UsersTemplate = ({ users, ...props }) => {
         </Route>
 
         <Route path={FULL_PATHS.USERS}>
-          <Box
-            className='UsersTemplate'
-            flex={1}
-            overflow='scroll'
-            styledFlex='center flex-start column'
-          >
-            <Box position='sticky' styledFlex='center flex-start column' top='0px'>
+          <Box className='UsersTemplate' flex={1} styledFlex='center flex-start column'>
+            <Box
+              className='UsersTemplateHeader'
+              height='75px'
+              styledFlex='center flex-start column'
+            >
               <UsersHeader onAddNewClick={() => setIsModalOpen(true)} />
               <UsersCardHeaderBar />
             </Box>
-            <Box flex={1} padding='10px' width='100%'>
+            <Box flex={1} height='100%' overflow='scroll' padding='10px' width='100%'>
               {userCards}
             </Box>
           </Box>
