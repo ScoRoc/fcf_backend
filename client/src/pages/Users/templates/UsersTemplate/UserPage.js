@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
 // Atoms
-import { Box, Text } from 'atoms';
+import { Box, Button, Text } from 'atoms';
 // UserPage Organisms
 import { UserPageCard } from '../../organisms';
 // UserPage Templates
@@ -21,7 +21,7 @@ const currentYear = moment().year();
 
 // UserPage
 
-const UserPage = ({ children }) => {
+const UserPage = ({ onEditClick, ...props }) => {
   // Location
 
   const location = useLocation();
@@ -70,6 +70,12 @@ const UserPage = ({ children }) => {
     }
   }, []);
 
+  // Functions
+
+  const handleEditClick = e => {
+    onEditClick(user);
+  };
+
   // Return
 
   return !user ? (
@@ -87,16 +93,19 @@ const UserPage = ({ children }) => {
       display='grid'
       flex={1}
       gridGap='20px'
-      gridTemplateColumns='2fr 1fr'
+      gridTemplateColumns='2fr 1.2fr'
       gridTemplateRows='auto'
       height='100%'
       padding='20px'
+      {...props}
     >
-      <Box gridArea='header' height='80px'>
+      <Box gridArea='header' height='80px' styledFlex='center center column'>
         <Text>
-          Hello {user.firstName} {user.lastName}
+          Hello {user.firstName} {user.lastName} [permissionsIcon]
         </Text>
         <Text>id: {user._id}</Text>
+        <Text>{user.email}</Text>
+        <Button onClick={handleEditClick}>Edit Info</Button>
       </Box>
 
       <UserPageCard
@@ -123,11 +132,11 @@ const UserPage = ({ children }) => {
 };
 
 UserPage.propTypes = {
-  children: PropTypes.element,
+  onEditClick: PropTypes.func.isRequired,
 };
 
 UserPage.defaultProps = {
-  children: null,
+  onEditClick: null,
 };
 
 export default UserPage;

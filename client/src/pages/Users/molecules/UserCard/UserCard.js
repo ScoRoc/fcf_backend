@@ -11,6 +11,8 @@ import { CardColumn, Separator } from 'organisms/Card';
 // Utils
 import { FULL_PATHS } from 'utils/constants';
 
+const UserSeparator = props => <Separator backgroundColor='orchid' height='40px' margin='5px 0' />;
+
 // UserCard
 
 const UserCard = ({ user, ...props }) => {
@@ -31,28 +33,29 @@ const UserCard = ({ user, ...props }) => {
       <CardColumn>
         <Text>[userType]</Text>
       </CardColumn>
+      <UserSeparator />
       <CardColumn>
         <Text>
           {user.firstName} {user.lastName}
         </Text>
       </CardColumn>
-      <Separator />
+      <UserSeparator />
       <CardColumn>
         <Text>{user.email}</Text>
       </CardColumn>
-      <Separator />
+      <UserSeparator />
       <CardColumn>
         <Text>{user.totalLikes}</Text>
       </CardColumn>
-      <Separator />
+      <UserSeparator />
       <CardColumn>
         <Text>{user.totalViews}</Text>
       </CardColumn>
-      <Separator />
+      <UserSeparator />
       <CardColumn>
         <Text>{user.lastLogin}</Text>
       </CardColumn>
-      <Separator />
+      <UserSeparator />
       <CardColumn flexDirection='row'>
         <Link css={{ textDecoration: 'none' }} to={to}>
           [rightArrow]

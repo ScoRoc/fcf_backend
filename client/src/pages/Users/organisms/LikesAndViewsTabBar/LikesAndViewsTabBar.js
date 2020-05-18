@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
@@ -8,56 +8,42 @@ import { Box, Text } from 'atoms';
 
 // LikesAndViewsTabBar
 
-const LikesAndViewsTabBar = ({ onTabClick, ...props }) => {
-  // State
-
-  const [announcementsStatus, setAnnouncementsStatus] = useState({
-    backgroundColor: 'cornsilk',
-    boxShadow: '0 0 3px rgba(0, 0, 0, 0.2)',
-    zIndex: 10,
-  });
-  const [eventsStatus, setEventsStatus] = useState({
-    backgroundColor: 'mistyrose',
-    boxShadow: '0 0 3px rgba(0, 0, 0, 0.2)',
-    zIndex: 0,
-  });
-  const [wodsStatus, setWodsStatus] = useState({
-    backgroundColor: 'mistyrose',
-    boxShadow: '0 0 3px rgba(0, 0, 0, 0.2)',
-    zIndex: 0,
-  });
+const LikesAndViewsTabBar = ({ config, currentTab, onTabClick, tabs, tabStyle, ...props }) => {
   const handleClick = ({ tab, e }) => {
     console.log('e: ', e);
     console.log('tab: ', tab);
     onTabClick(tab);
-    setAnnouncementsStatus({
-      backgroundColor: `${tab === 'announcements' ? 'cornsilk' : 'mistyrose'}`,
-      boxShadow: `${
-        tab === 'announcements'
-          ? '0 0 3px rgba(0, 0, 0, 0.2)'
-          : '0 0 3px rgba(0, 0, 0, 0.2), 0 -2px 3px -2px rgba(0, 0, 0, 0.2) inset'
-      }`,
-      zIndex: `${tab === 'announcements' ? 10 : 1}`,
-    });
-    setEventsStatus({
-      backgroundColor: `${tab === 'events' ? 'cornsilk' : 'mistyrose'}`,
-      boxShadow: `${
-        tab === 'events'
-          ? '0 0 3px rgba(0, 0, 0, 0.2)'
-          : '0 0 3px rgba(0, 0, 0, 0.2), 0 -2px 3px -2px rgba(0, 0, 0, 0.2) inset'
-      }`,
-      zIndex: `${tab === 'events' ? 10 : 0}`,
-    });
-    setWodsStatus({
-      backgroundColor: `${tab === 'wods' ? 'cornsilk' : 'mistyrose'}`,
-      boxShadow: `${
-        tab === 'wods'
-          ? '0 0 3px rgba(0, 0, 0, 0.2)'
-          : '0 0 3px rgba(0, 0, 0, 0.2), 0 -2px 3px -2px rgba(0, 0, 0, 0.2) inset'
-      }`,
-      zIndex: `${tab === 'wods' ? 10 : 0}`,
-    });
   };
+
+  // Tabs
+  const _tabs = tabs.map(tab => {
+    const isActive = currentTab === tab.key;
+
+    const backgroundColor = isActive
+      ? config.active.backgroundColor
+      : config.inactive.backgroundColor;
+    const boxShadow = isActive ? config.active.boxShadow : config.inactive.boxShadow;
+
+    return (
+      <Box
+        backgroundColor={backgroundColor}
+        borderRadius='4px 4px 0 0'
+        boxShadow={boxShadow}
+        css={tabStyle}
+        cursor='pointer'
+        key={tab.key}
+        onClick={e => handleClick({ e, tab: tab.key })}
+        padding='0 5px 5px 5px'
+        styledFlex='flex-end center'
+        zIndex={isActive ? 10 : 0}
+      >
+        <Text>{tab.title}</Text>
+      </Box>
+    );
+  });
+
+  // Return
+
   return (
     <Box
       backgroundColor='transparent'
@@ -67,49 +53,48 @@ const LikesAndViewsTabBar = ({ onTabClick, ...props }) => {
       styledFlex='flex-bottom flex-start'
       {...props}
     >
-      <Box
-        backgroundColor={wodsStatus.backgroundColor}
-        borderRadius='4px 4px 0 0'
-        boxShadow={wodsStatus.boxShadow}
-        cursor='pointer'
-        onClick={e => handleClick({ e, tab: 'wods' })}
-        styledFlex='center center'
-        zIndex={wodsStatus.zIndex}
-      >
-        <Text>WODs</Text>
-      </Box>
-      <Box
-        backgroundColor={announcementsStatus.backgroundColor}
-        borderRadius='4px 4px 0 0'
-        boxShadow={announcementsStatus.boxShadow}
-        cursor='pointer'
-        onClick={e => handleClick({ e, tab: 'announcements' })}
-        styledFlex='center center'
-        zIndex={announcementsStatus.zIndex}
-      >
-        <Text>Announcements</Text>
-      </Box>
-      <Box
-        backgroundColor={eventsStatus.backgroundColor}
-        borderRadius='4px 4px 0 0'
-        boxShadow={eventsStatus.boxShadow}
-        cursor='pointer'
-        onClick={e => handleClick({ e, tab: 'events' })}
-        styledFlex='center center'
-        zIndex={eventsStatus.zIndex}
-      >
-        <Text>Events</Text>
-      </Box>
+      {_tabs}
     </Box>
   );
 };
 
 LikesAndViewsTabBar.propTypes = {
-  onTabClick: PropTypes.func,
+  config: PropTypes.shape({
+    active: PropTypes.shape({
+      backgroundColor: PropTypes.string,
+      boxShadow: PropTypes.string,
+    }),
+    active: PropTypes.shape({
+      backgroundColor: PropTypes.string,
+      boxShadow: PropTypes.string,
+    }),
+  }),
+  currentTab: PropTypes.string.isRequired,
+  onTabClick: PropTypes.func.isRequired,
+  tabs: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string,
+      title: PropTypes.string,
+    }),
+  ).isRequired,
+  tabStyle: PropTypes.object,
 };
 
 LikesAndViewsTabBar.defaultProps = {
+  config: {
+    active: {
+      backgroundColor: 'cornsilk',
+      boxShadow: '0 0 3px rgba(0, 0, 0, 0.2)',
+    },
+    inactive: {
+      backgroundColor: 'mistyrose',
+      boxShadow: '0 0 3px rgba(0, 0, 0, 0.2), 0 -2px 3px -2px rgba(0, 0, 0, 0.2) inset',
+    },
+  },
+  currentTab: null,
   onTabClick: null,
+  tabs: null,
+  tabStyle: null,
 };
 
 export default LikesAndViewsTabBar;

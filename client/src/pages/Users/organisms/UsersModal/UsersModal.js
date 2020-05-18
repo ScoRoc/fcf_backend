@@ -13,10 +13,10 @@ import LabeledInput from 'organisms/LabeledInput';
 const UsersModal = ({ onCancel, onSave, user }) => {
   // State
 
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [password, setPassword] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState(user?.email || '');
+  const [firstName, setFirstName] = useState(user?.firstName || '');
+  const [password, setPassword] = useState(user?.password || '');
+  const [lastName, setLastName] = useState(user?.lastName || '');
 
   // Functions
 

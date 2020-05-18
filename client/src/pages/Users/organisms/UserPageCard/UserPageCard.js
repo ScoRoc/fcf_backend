@@ -22,7 +22,12 @@ const UserPageCard = ({ direction, items, title, ...props }) => {
   return (
     <Box styledFlex='stretch space-between column' {...props}>
       <Text marginBottom='10px'>{title}</Text>
-      <Card backgroundColor='slateblue' flex={1} styledFlex='stretch space-between'>
+      <Card
+        backgroundColor='slateblue'
+        boxShadow='1px 2px 4px rgba(0, 0, 0, 0.3)'
+        flex={1}
+        styledFlex='stretch space-between'
+      >
         {_items}
       </Card>
     </Box>

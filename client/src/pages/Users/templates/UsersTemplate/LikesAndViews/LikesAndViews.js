@@ -42,6 +42,21 @@ const items = {
   ],
 };
 
+const tabs = [
+  {
+    key: 'announcements',
+    title: 'Announcements',
+  },
+  {
+    key: 'events',
+    title: 'Events',
+  },
+  {
+    key: 'wods',
+    title: 'WODs',
+  },
+];
+
 // LikesAndViews
 
 const LikesAndViews = ({ children, ...props }) => {
@@ -68,7 +83,7 @@ const LikesAndViews = ({ children, ...props }) => {
       {...props}
     >
       <Text marginBottom='10px'>Likes and Views</Text>
-      <LikesAndViewsTabBar currentTab={currentTab} onTabClick={handleTabClick} />
+      <LikesAndViewsTabBar currentTab={currentTab} onTabClick={handleTabClick} tabs={tabs} />
       <LikesAndViewsCard items={items[currentTab]} />
     </Box>
   );

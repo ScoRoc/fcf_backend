@@ -22,7 +22,7 @@ import { FULL_PATHS } from 'utils/constants';
 const UsersTemplate = ({ users, ...props }) => {
   // State
 
-  // const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Location
@@ -32,12 +32,17 @@ const UsersTemplate = ({ users, ...props }) => {
   // Functions
 
   const handleCloseModal = () => {
-    // setCurrentUser(null);
+    setCurrentUser(null);
     setIsModalOpen(false);
   };
 
   const handleSaveUser = () => {
     console.log('in handleSaveUser');
+  };
+
+  const handleUserPageEditClick = user => {
+    setCurrentUser(user);
+    setIsModalOpen(true);
   };
 
   // User Cards
@@ -54,11 +59,11 @@ const UsersTemplate = ({ users, ...props }) => {
       onClose={() => console.log('closing...')}
       onOpen={() => console.log('opening...')}
       onOverlayClick={handleCloseModal}
-      setIsOpen={setIsModalOpen}
+      setIsOpen={handleCloseModal}
     >
       <Switch>
         <Route path={FULL_PATHS.USER}>
-          <UserPage />
+          <UserPage onEditClick={handleUserPageEditClick} />
         </Route>
 
         <Route path={FULL_PATHS.USERS}>
@@ -80,11 +85,7 @@ const UsersTemplate = ({ users, ...props }) => {
       </Switch>
 
       <Modal height='650px' width='650px'>
-        <UsersModal
-          onCancel={handleCloseModal}
-          onSave={handleSaveUser}
-          // user={currentUser}
-        />
+        <UsersModal onCancel={handleCloseModal} onSave={handleSaveUser} user={currentUser} />
       </Modal>
     </ModalProvider>
   );
