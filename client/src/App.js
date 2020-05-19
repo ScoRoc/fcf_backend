@@ -10,6 +10,7 @@ import { Box } from 'atoms';
 // Reducers
 import announcementReducers from 'pages/Announcements/logic/AnnouncementsLogic/reducers';
 import eventReducers from 'pages/Events/logic/EventsLogic/reducers';
+import usersReducers from 'pages/Users/logic/UsersLogic/reducers';
 import wodReducers from 'pages/Wods/logic/WodsLogic/reducers';
 // Constants
 import { PATHS } from 'utils/constants';
@@ -42,6 +43,7 @@ setGlobal({
 addReducers({
   ...announcementReducers,
   ...eventReducers,
+  ...usersReducers,
   ...wodReducers,
   authenticateUser: (globalState, dispatch) => ({ isUserAuthenticated: true }),
   clearUser: (globalState, dispatch) => ({ user: null }),

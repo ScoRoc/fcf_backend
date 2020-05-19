@@ -10,8 +10,6 @@ import { Box, Text } from 'atoms';
 
 const LikesAndViewsTabBar = ({ config, currentTab, onTabClick, tabs, tabStyle, ...props }) => {
   const handleClick = ({ tab, e }) => {
-    console.log('e: ', e);
-    console.log('tab: ', tab);
     onTabClick(tab);
   };
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
 // Atoms
@@ -11,6 +11,9 @@ import { Box, Button, Text } from 'atoms';
 import { UserPageCard } from '../../organisms';
 // UserPage Templates
 import LikesAndViews from './LikesAndViews/LikesAndViews';
+// Utils
+import { FULL_PATHS } from 'utils/constants';
+import { fakeAsyncCall } from 'utils/functions';
 
 // Moments
 
@@ -21,9 +24,10 @@ const currentYear = moment().year();
 
 // UserPage
 
-const UserPage = ({ onEditClick, ...props }) => {
-  // Location
+const UserPage = ({ onDeleteClick, onEditClick, ...props }) => {
+  // History and Location
 
+  const history = useHistory();
   const location = useLocation();
 
   // State
@@ -72,9 +76,30 @@ const UserPage = ({ onEditClick, ...props }) => {
 
   // Functions
 
+  const handleDeleteClick = async () => {
+    const start = fakeAsyncCall(onDeleteClick);
+    const response = await start(1000, { _id: user._id });
+
+    // const response = await onDeleteClick(user?._id);
+    // is this the right history function to use?
+    console.log('response: ', response);
+    response && history.replace(FULL_PATHS.USERS);
+  };
+
   const handleEditClick = e => {
     onEditClick(user);
   };
+
+  // const fakeAsync = async () => {
+  //   const getUsers = ({ _id }) => `successfully deleted _id: ${_id}`;
+  //   // const getUsers = () => false;
+
+  //   const start = fakeAsyncCall(getUsers);
+  //   // replace start with getUsers()
+  //   const response = await start(1000, { _id: 'some id' });
+  //   console.log('response: ', response);
+  //   response ? history.replace(FULL_PATHS.USERS) : console.log('error deleting the user');
+  // };
 
   // Return
 
@@ -106,6 +131,8 @@ const UserPage = ({ onEditClick, ...props }) => {
         <Text>id: {user._id}</Text>
         <Text>{user.email}</Text>
         <Button onClick={handleEditClick}>Edit Info</Button>
+        {/* <Button onClick={fakeAsync}>Delete User</Button> */}
+        <Button onClick={handleDeleteClick}>Delete User</Button>
       </Box>
 
       <UserPageCard
@@ -132,10 +159,12 @@ const UserPage = ({ onEditClick, ...props }) => {
 };
 
 UserPage.propTypes = {
+  onDeleteClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
 };
 
 UserPage.defaultProps = {
+  onDeleteClick: null,
   onEditClick: null,
 };
 

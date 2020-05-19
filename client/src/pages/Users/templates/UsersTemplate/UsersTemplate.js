@@ -19,7 +19,7 @@ import { FULL_PATHS } from 'utils/constants';
 
 // UsersTemplate
 
-const UsersTemplate = ({ users, ...props }) => {
+const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUsers, users, ...props }) => {
   // State
 
   const [currentUser, setCurrentUser] = useState(null);
@@ -40,6 +40,10 @@ const UsersTemplate = ({ users, ...props }) => {
     console.log('in handleSaveUser');
   };
 
+  const handleUserPageDeleteClick = async ({ _id }) => {
+    return await deleteUser({ _id });
+  };
+
   const handleUserPageEditClick = user => {
     setCurrentUser(user);
     setIsModalOpen(true);
@@ -47,8 +51,8 @@ const UsersTemplate = ({ users, ...props }) => {
 
   // User Cards
 
-  const userCards = Object.values(users.data).map((user, i) => {
-    return <UserCard key={`${user._id}foo`} user={user} />;
+  const userCards = Object.values(users.data).map(user => {
+    return <UserCard key={`${user._id}`} user={user} />;
   });
 
   // Return
@@ -63,7 +67,10 @@ const UsersTemplate = ({ users, ...props }) => {
     >
       <Switch>
         <Route path={FULL_PATHS.USER}>
-          <UserPage onEditClick={handleUserPageEditClick} />
+          <UserPage
+            onDeleteClick={handleUserPageDeleteClick}
+            onEditClick={handleUserPageEditClick}
+          />
         </Route>
 
         <Route path={FULL_PATHS.USERS}>

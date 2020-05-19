@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Link } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
@@ -16,6 +17,21 @@ const UserSeparator = props => <Separator backgroundColor='orchid' height='40px'
 // UserCard
 
 const UserCard = ({ user, ...props }) => {
+  console.log('user in UserCard: ', user);
+  console.log('user.meta: ', user.meta);
+  console.log('user.meta.lastLogin: ', user.meta.lastLogin);
+
+  const buildLastLogin = user => {
+    if (!user.meta.lastLogin) return 'error getting date';
+
+    const day = moment(user.meta.lastLogin).format('D');
+    const month = moment(user.meta.lastLogin).format('MMM');
+    const year = moment(user.meta.lastLogin).format('YYYY');
+    return `${month} ${day}, ${year}`;
+  };
+
+  const lastLogin = buildLastLogin(user);
+
   const to = {
     pathname: `${FULL_PATHS.USERS}/${user._id}`,
     state: { user },
@@ -53,7 +69,7 @@ const UserCard = ({ user, ...props }) => {
       </CardColumn>
       <UserSeparator />
       <CardColumn>
-        <Text>{user.lastLogin}</Text>
+        <Text>{lastLogin}</Text>
       </CardColumn>
       <UserSeparator />
       <CardColumn flexDirection='row'>
