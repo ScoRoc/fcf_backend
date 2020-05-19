@@ -89,25 +89,28 @@ const UsersLogic = () => {
   //   });
   // };
 
-  // const postUser = ({ date, description, name }) => {
-  //   console.log('in post');
-  //   // TODO handle error validation
-  //   // if (!date) throw new Error();
-  //   if (!date || !description || !name) {
-  //     return void console.log('date, description, and name need to be filled out');
-  //   }
+  const postUser = ({ firstName, email, password, lastName }) => {
+    //   console.log('in post');
+    //   // TODO handle error validation
+    // if (!date) throw new Error();
+    if (!firstName || !email || !password || !lastName) {
+      return void console.log('firstName, email, password, and lastName need to be filled out');
+    }
 
-  //   const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
-  //   const url = `${baseUrl}${qs}`;
-  //   console.log('user: ', user);
-  //   // setIsLoading(true);
-  //   axios.post(url, { date, description, name }).then(res => {
-  //     console.log('res: ', res);
-  //     // res.status === 200 ? handleSuccess(res) : handleErrors(res);
-  //     // setIsLoading(false);
-  //     setUserInUsers({ user: res.data.user });
-  //   });
-  // };
+    const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
+    const url = `${baseUrl}${qs}`;
+    //   console.log('user: ', user);
+    //   // setIsLoading(true);
+    try {
+      const res = axios.post(url, { firstName, email, password, lastName });
+      //     console.log('res: ', res);
+      //     // res.status === 200 ? handleSuccess(res) : handleErrors(res);
+      //     // setIsLoading(false);
+      setUserInUsers({ user: res.data.user });
+    } catch (err) {
+      console.log('err: ', err);
+    }
+  };
 
   // Sorted Wods
 

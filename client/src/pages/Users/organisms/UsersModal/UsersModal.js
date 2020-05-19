@@ -7,6 +7,8 @@ import { jsx } from '@emotion/core';
 import { Box, Button, Input, Text } from 'atoms';
 // Organisms
 import LabeledInput from 'organisms/LabeledInput';
+// UsersModal Organisms
+import UserRolesRadioGroup from './UserRolesRadioGroup';
 
 // UsersModal
 
@@ -15,6 +17,7 @@ const UsersModal = ({ onCancel, onSave, user }) => {
 
   const [email, setEmail] = useState(user?.email || '');
   const [firstName, setFirstName] = useState(user?.firstName || '');
+  const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState(user?.password || '');
   const [lastName, setLastName] = useState(user?.lastName || '');
 
@@ -25,6 +28,12 @@ const UsersModal = ({ onCancel, onSave, user }) => {
     // TODO delete comment as this is valid 2020 ecma
     // eslint-disable-next-line no-unused-expressions
     // inputRef.current?.focus();
+  };
+
+  const handleOnClick = async () => {
+    setIsLoading(true);
+    await onSave({ _id: user && user._id, firstName, email, password, lastName });
+    setIsLoading(false);
   };
 
   // Return
@@ -69,21 +78,7 @@ const UsersModal = ({ onCancel, onSave, user }) => {
         </LabeledInput>
       </Box>
 
-      <Box height='auto' margin='40px 0' width='100%'>
-        <Text marginBottom='10px'>Permissions</Text>
-
-        <Box height='auto' styledFlex='stretch space-between'>
-          <Button fontSize='1.3rem' height='40px' width='31%'>
-            User
-          </Button>
-          <Button fontSize='1.3rem' height='40px' width='31%'>
-            Admin
-          </Button>
-          <Button fontSize='1.3rem' height='40px' width='31%'>
-            Super-Admin
-          </Button>
-        </Box>
-      </Box>
+      <UserRolesRadioGroup />
 
       <Box height='auto' styledFlex='flex-end'>
         <Button
@@ -101,12 +96,13 @@ const UsersModal = ({ onCancel, onSave, user }) => {
           border='none'
           borderRadius='0 4px 4px 0'
           height='30px'
-          onClick={() => onSave({ _id: user && user._id, firstName, email, password, lastName })}
+          onClick={handleOnClick}
           width='50%'
         >
           Save
         </Button>
       </Box>
+      {isLoading && <Text>Loading...</Text>}
     </Box>
   );
 };

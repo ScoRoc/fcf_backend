@@ -17,10 +17,6 @@ const UserSeparator = props => <Separator backgroundColor='orchid' height='40px'
 // UserCard
 
 const UserCard = ({ user, ...props }) => {
-  console.log('user in UserCard: ', user);
-  console.log('user.meta: ', user.meta);
-  console.log('user.meta.lastLogin: ', user.meta.lastLogin);
-
   const buildLastLogin = user => {
     if (!user.meta.lastLogin) return 'error getting date';
 
@@ -31,6 +27,10 @@ const UserCard = ({ user, ...props }) => {
   };
 
   const lastLogin = buildLastLogin(user);
+
+  const totalLikes =
+    user.announcements.liked.length + user.events.liked.length + user.wods.liked.length;
+  const totalViews = user.announcements.viewed.length + user.events.viewed.length;
 
   const to = {
     pathname: `${FULL_PATHS.USERS}/${user._id}`,
@@ -61,11 +61,11 @@ const UserCard = ({ user, ...props }) => {
       </CardColumn>
       <UserSeparator />
       <CardColumn>
-        <Text>{user.totalLikes}</Text>
+        <Text>{totalLikes}</Text>
       </CardColumn>
       <UserSeparator />
       <CardColumn>
-        <Text>{user.totalViews}</Text>
+        <Text>{totalViews}</Text>
       </CardColumn>
       <UserSeparator />
       <CardColumn>

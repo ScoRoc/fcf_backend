@@ -19,7 +19,7 @@ import { FULL_PATHS } from 'utils/constants';
 
 // UsersTemplate
 
-const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUsers, users, ...props }) => {
+const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUser, users, ...props }) => {
   // State
 
   const [currentUser, setCurrentUser] = useState(null);
@@ -36,8 +36,13 @@ const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUsers, users, ...
     setIsModalOpen(false);
   };
 
-  const handleSaveUser = () => {
-    console.log('in handleSaveUser');
+  const handleSaveUser = async ({ _id, firstName, email, password, lastName }) => {
+    const res = _id
+      ? await patchUser({ _id, firstName, email, password, lastName })
+      : await postUser({ firstName, email, password, lastName });
+
+    !!res && setIsModalOpen(false);
+    return res;
   };
 
   const handleUserPageDeleteClick = async ({ _id }) => {
