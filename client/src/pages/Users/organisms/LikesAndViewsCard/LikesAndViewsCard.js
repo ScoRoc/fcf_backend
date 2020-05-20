@@ -11,17 +11,17 @@ import { Box, Text } from 'atoms';
 const LikesAndViewsCard = ({ items, ...props }) => {
   const rows = items.map((item, i) => {
     const icons = item.icons.map((icon, j) => (
-      <Text key={`${j}${item.icons.length}${item.name}`}>{icon}</Text>
+      <Text key={`${i}${j}${item.icons.length}`}>{icon}</Text>
     ));
     const text = item.values.map((value, j) => (
-      <Text key={`${j}${item.values.length}${item.name}`}>{value}</Text>
+      <Text key={`${i}${j}${item.values.length}`}>{value}</Text>
     ));
 
     return (
       <Box
         backgroundColor='cornsilk'
         height='80px'
-        key={`${i}${item.name}`}
+        key={`${i}${item.values.length}`}
         padding='0 10px'
         styledFlex='center space-between'
         zIndex={20}
@@ -47,16 +47,16 @@ const LikesAndViewsCard = ({ items, ...props }) => {
 };
 
 LikesAndViewsCard.propTypes = {
-  data: PropTypes.arrayOf(
+  items: PropTypes.arrayOf(
     PropTypes.shape({
-      date: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
+      icons: PropTypes.oneOfType([PropTypes.node]),
+      values: PropTypes.oneOfType([PropTypes.node]),
     }),
   ).isRequired,
 };
 
 LikesAndViewsCard.defaultProps = {
-  data: null,
+  items: null,
 };
 
 export default LikesAndViewsCard;

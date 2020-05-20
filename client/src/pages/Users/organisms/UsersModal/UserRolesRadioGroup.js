@@ -12,8 +12,8 @@ import UsersRolesRadioButton from './UsersRolesRadioButton';
 
 // UserRolesRadioGroup
 
-const UserRolesRadioGroup = ({ onSelect, options, ...props }) => {
-  const [checked, setChecked] = useState(null);
+const UserRolesRadioGroup = ({ initialRole, onSelect, options, ...props }) => {
+  const [checked, setChecked] = useState(initialRole);
 
   const handleClick = value => {
     setChecked(value);
@@ -44,6 +44,7 @@ const UserRolesRadioGroup = ({ onSelect, options, ...props }) => {
 };
 
 UserRolesRadioGroup.propTypes = {
+  initialRole: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   onSelect: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
@@ -54,6 +55,7 @@ UserRolesRadioGroup.propTypes = {
 };
 
 UserRolesRadioGroup.defaultProps = {
+  initialRole: null,
   onSelect: null,
   options: null,
 };

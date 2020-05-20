@@ -1,8 +1,8 @@
 // Libraries
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useGlobal, useState } from 'reactn';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 // @jsx jsx
 import { css, jsx } from '@emotion/core';
 // Atoms
@@ -25,13 +25,21 @@ const currentYear = moment().year();
 // UserPage
 
 const UserPage = ({ onDeleteClick, onEditClick, ...props }) => {
-  // History and Location
+  // Global
+
+  const [users] = useGlobal('users');
+  // History and Match
 
   const history = useHistory();
-  const location = useLocation();
+  const match = useRouteMatch({
+    path: FULL_PATHS.USER,
+  });
+
+  console.log('match: ', match);
 
   // State
 
+  const [isLoading, setIsLoading] = useState(false);
   const [likes, setLikes] = useState({
     data: [
       { name: 'Current Week', value: 54 },
@@ -48,7 +56,10 @@ const UserPage = ({ onDeleteClick, onEditClick, ...props }) => {
     ],
     title: 'Logins',
   });
-  const [user, setUser] = useState(location?.state?.user || null);
+  /////////////////////////////////////
+  // NEED TO UPDATE USER AFTER PATCH //
+  /////////////////////////////////////
+  const [user, setUser] = useState(users.data[match.params.id]);
   const [views, setViews] = useState({
     data: [
       { name: 'Announcements', value: 31 },
@@ -77,9 +88,9 @@ const UserPage = ({ onDeleteClick, onEditClick, ...props }) => {
   // Functions
 
   const handleDeleteClick = async () => {
-    const start = fakeAsyncCall(onDeleteClick);
-    const response = await start(1000, { _id: user._id });
-
+    setIsLoading(true);
+    const response = await onDeleteClick({ _id: user._id });
+    setIsLoading(false);
     // const response = await onDeleteClick(user?._id);
     // is this the right history function to use?
     console.log('response: ', response);
@@ -126,13 +137,14 @@ const UserPage = ({ onDeleteClick, onEditClick, ...props }) => {
     >
       <Box gridArea='header' height='80px' styledFlex='center center column'>
         <Text>
-          Hello {user.firstName} {user.lastName} [permissionsIcon]
+          Hello {user.firstName} {user.lastName}, permission: {user.role}
         </Text>
         <Text>id: {user._id}</Text>
         <Text>{user.email}</Text>
         <Button onClick={handleEditClick}>Edit Info</Button>
         {/* <Button onClick={fakeAsync}>Delete User</Button> */}
         <Button onClick={handleDeleteClick}>Delete User</Button>
+        {isLoading && <Text>Loading...</Text>}
       </Box>
 
       <UserPageCard

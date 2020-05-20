@@ -32,10 +32,6 @@ const UserCard = ({ user, ...props }) => {
     user.announcements.liked.length + user.events.liked.length + user.wods.liked.length;
   const totalViews = user.announcements.viewed.length + user.events.viewed.length;
 
-  const to = {
-    pathname: `${FULL_PATHS.USERS}/${user._id}`,
-    state: { user },
-  };
   return (
     <Box
       backgroundColor='honeydew'
@@ -73,7 +69,7 @@ const UserCard = ({ user, ...props }) => {
       </CardColumn>
       <UserSeparator />
       <CardColumn flexDirection='row'>
-        <Link css={{ textDecoration: 'none' }} to={to}>
+        <Link css={{ textDecoration: 'none' }} to={`${FULL_PATHS.USERS}/${user._id}`}>
           [rightArrow]
         </Link>
       </CardColumn>

@@ -36,10 +36,10 @@ const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUser, users, ...p
     setIsModalOpen(false);
   };
 
-  const handleSaveUser = async ({ _id, firstName, email, password, lastName }) => {
+  const handleSaveUser = async ({ _id, email, firstName, lastName, password, role }) => {
     const res = _id
-      ? await patchUser({ _id, firstName, email, password, lastName })
-      : await postUser({ firstName, email, password, lastName });
+      ? await patchUser({ _id, email, firstName, lastName, password, role })
+      : await postUser({ email, firstName, lastName, password, role });
 
     !!res && setIsModalOpen(false);
     return res;

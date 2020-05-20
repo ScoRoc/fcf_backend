@@ -20,7 +20,7 @@ const CardPageLayout = ({ children, onButtonClick, title, titleBarStyles, ...pro
     />
     <Box
       css={css`
-        & > div:nth-child(1) {
+        & > div:nth-of-type(1) {
           margin-top: 20px;
         }
       `}

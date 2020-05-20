@@ -3,6 +3,7 @@ import { API, PATHS, QUERY_STRING } from 'utils/constants';
 
 const usersReducers = {
   removeUserInUsers: async (globalState, dispatch, _id) => {
+    console.log('_id: ', _id);
     const cachedUsers = globalState.cache.users;
     delete cachedUsers.data[_id];
     await dispatch.setCache({ data: cachedUsers, key: 'users' });
@@ -14,18 +15,17 @@ const usersReducers = {
   setUserInUsers: async (
     globalState,
     dispatch,
-    { direction = QUERY_STRING.DIRECTION.DESC.value, users },
+    { direction = QUERY_STRING.DIRECTION.DESC.value, user },
   ) => {
-    console.log('users in setUserInUsers: ', users);
+    console.log('user in setUserInUsers: ', user);
     await dispatch.setCache({
-      data: { ...globalState.users.data, [users._id]: users },
+      data: { ...globalState.users, data: { ...globalState.users.data, [user._id]: user } },
       key: 'users',
     });
     return {
       users: {
-        data: { ...globalState.users.data, [users._id]: users },
-        direction,
-        // users:
+        data: { ...globalState.users.data, [user._id]: user },
+        // direction,
         // direction === QUERY_STRING.DIRECTION.DESC.value
         //   ? [users, ...globalState.users.data]
         //   : [...globalState.users.data, users],

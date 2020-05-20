@@ -141,8 +141,18 @@ router.patch('/:id', (req, res) => {
   User.findById(id, (err, userToUpdate) => {
     if (err) return res.status(500).send(err);
 
+    console.log('userToUpdate: ', userToUpdate);
+    console.log('req.body: ', req.body);
+
+    const userUpdate = Object.entries(req.body).reduce((update, [key, value]) => {
+      if (value) update[key] = value;
+      return update;
+    }, {});
+
     userToUpdate.set({
-      ...req.body, // TODO need to do validation
+      ...userToUpdate,
+      // TODO need to do validation
+      ...userUpdate,
       meta: {
         updatedByUser,
       },
@@ -150,6 +160,7 @@ router.patch('/:id', (req, res) => {
 
     userToUpdate.save((err, updatedUser) => {
       if (err) {
+        console.log('err: ', err);
         return res
           .status(500)
           .send({ msg: 'An error occurred when attempting to update the user.' });

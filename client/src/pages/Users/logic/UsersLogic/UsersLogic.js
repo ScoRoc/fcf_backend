@@ -41,16 +41,17 @@ const UsersLogic = () => {
   // API Callbacks
 
   const deleteUser = async ({ _id }) => {
-    //   const url = `${baseUrl}/${_id}`;
+    const url = `${baseUrl}/${_id}`;
 
     //   // setIsLoading(true);
-    //   axios.delete(url).then(res => {
-    //     console.log('res: ', res);
-    //     // const updateUsers = {};
-    //     // setIsLoading(false);
-    //     removeUserInUsers(_id);
-    //   });
-    return await new Promise(resolve => setTimeout(() => resolve(`id: ${_id}`), 1000));
+    try {
+      const res = await axios.delete(url);
+      console.log('res: ', res);
+      if (res) removeUserInUsers(_id);
+      return res;
+    } catch (err) {
+      console.log('err: ', err);
+    }
   };
 
   // const getUsers = () => axios.get(baseUrl);
@@ -75,26 +76,33 @@ const UsersLogic = () => {
     }
   };
 
-  // const patchUser = ({ _id, date, description, name }) => {
-  //   console.log('in patch');
+  const patchUser = async ({ _id, email, firstName, lastName, password, role }) => {
+    //   console.log('in patch');
 
-  //   const qs = `?${QUERY_STRING.UPDATED_BY_USER.PARAM.value}=${user._id}`;
-  //   const url = `${baseUrl}/${_id}${qs}`;
-  //   // setIsLoading(true);
-  //   axios.patch(url, { date, description, name }).then(res => {
-  //     console.log('res: ', res);
-  //     // setIsLoading(false);
-  //     // res.status === 200 ? handleSuccess(res) : handleErrors(res);
-  //     setUserInUsers({ user: res.data.user });
-  //   });
-  // };
+    const qs = `?${QUERY_STRING.UPDATED_BY_USER.PARAM.value}=${user._id}`;
+    const url = `${baseUrl}/${_id}${qs}`;
+    //   // setIsLoading(true);
+    try {
+      const res = await axios.patch(url, { email, firstName, lastName, password, role });
+      console.log('res: ', res);
+      //     // setIsLoading(false);
+      //     // res.status === 200 ? handleSuccess(res) : handleErrors(res);
+      setUserInUsers({ user: res.data.user });
+      return res;
+    } catch (err) {
+      console.log('err: ', err);
+      console.error(err);
+    }
+  };
 
-  const postUser = ({ firstName, email, password, lastName }) => {
+  const postUser = async ({ email, firstName, lastName, password, role }) => {
     //   console.log('in post');
     //   // TODO handle error validation
     // if (!date) throw new Error();
-    if (!firstName || !email || !password || !lastName) {
-      return void console.log('firstName, email, password, and lastName need to be filled out');
+    if (!firstName || !email || !password || !lastName || !role) {
+      return void console.log(
+        'firstName, email, password, lastName, and role need to be filled out',
+      );
     }
 
     const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
@@ -102,11 +110,12 @@ const UsersLogic = () => {
     //   console.log('user: ', user);
     //   // setIsLoading(true);
     try {
-      const res = axios.post(url, { firstName, email, password, lastName });
-      //     console.log('res: ', res);
+      const res = await axios.post(url, { email, firstName, lastName, password, role });
+      console.log('res: ', res);
       //     // res.status === 200 ? handleSuccess(res) : handleErrors(res);
       //     // setIsLoading(false);
       setUserInUsers({ user: res.data.user });
+      return res;
     } catch (err) {
       console.log('err: ', err);
     }
@@ -125,160 +134,15 @@ const UsersLogic = () => {
   //     : -1;
   // });
 
-  /////////////////////
-  // FAKE USERS DATA //
-  /////////////////////
-
-  const fakeUsers = {
-    data: {
-      1: {
-        _id: 1,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-      2: {
-        _id: 2,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-      3: {
-        _id: 3,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-      4: {
-        _id: 4,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-      5: {
-        _id: 5,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-      6: {
-        _id: 6,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-      7: {
-        _id: 7,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-      8: {
-        _id: 8,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-      9: {
-        _id: 9,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      },
-    },
-    10: {
-      _id: 10,
-      email: 'john@john.com',
-      firstName: 'john',
-      lastLogin: 'yesterday',
-      lastName: 'smith',
-      totalLikes: 42,
-      totalViews: 42,
-    },
-    11: {
-      _id: 11,
-      email: 'john@john.com',
-      firstName: 'john',
-      lastLogin: 'yesterday',
-      lastName: 'smith',
-      totalLikes: 42,
-      totalViews: 42,
-    },
-    12: {
-      _id: 12,
-      email: 'john@john.com',
-      firstName: 'john',
-      lastLogin: 'yesterday',
-      lastName: 'smith',
-      totalLikes: 42,
-      totalViews: 42,
-    },
-    13: {
-      _id: 13,
-      email: 'john@john.com',
-      firstName: 'john',
-      lastLogin: 'yesterday',
-      lastName: 'smith',
-      totalLikes: 42,
-      totalViews: 42,
-    },
-    14: {
-      _id: 14,
-      email: 'john@john.com',
-      firstName: 'john',
-      lastLogin: 'yesterday',
-      lastName: 'smith',
-      totalLikes: 42,
-      totalViews: 42,
-    },
-    15: {
-      _id: 15,
-      email: 'john@john.com',
-      firstName: 'john',
-      lastLogin: 'yesterday',
-      lastName: 'smith',
-      totalLikes: 42,
-      totalViews: 42,
-    },
-  };
-
   // Return
 
   return (
     <UsersTemplate
       deleteUser={deleteUser}
       //     isLoading={isLoading}
-      //     patchUser={patchUser}
-      //     postUser={postUser}
+      patchUser={patchUser}
+      postUser={postUser}
       users={users}
-      // users={fakeUsers}
     />
   );
 };

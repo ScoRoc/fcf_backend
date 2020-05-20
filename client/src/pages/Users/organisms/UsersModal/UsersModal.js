@@ -39,6 +39,7 @@ const UsersModal = ({ onCancel, onSave, user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState(user?.password || '');
   const [lastName, setLastName] = useState(user?.lastName || '');
+  const [role, setRole] = useState(user?.role);
 
   // Functions
 
@@ -51,7 +52,7 @@ const UsersModal = ({ onCancel, onSave, user }) => {
 
   const handleOnClick = async () => {
     setIsLoading(true);
-    await onSave({ _id: user && user._id, firstName, email, password, lastName });
+    await onSave({ _id: user && user._id, email, firstName, lastName, password, role });
     setIsLoading(false);
   };
 
@@ -97,7 +98,7 @@ const UsersModal = ({ onCancel, onSave, user }) => {
         </LabeledInput>
       </Box>
 
-      <UserRolesRadioGroup onSelect={val => console.log('val: ', val)} options={rolesOptions} />
+      <UserRolesRadioGroup initialRole={role} onSelect={setRole} options={rolesOptions} />
 
       <Box height='auto' styledFlex='flex-end'>
         <Button
