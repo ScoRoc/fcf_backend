@@ -9,6 +9,25 @@ import { Box, Button, Input, Text } from 'atoms';
 import LabeledInput from 'organisms/LabeledInput';
 // UsersModal Organisms
 import UserRolesRadioGroup from './UserRolesRadioGroup';
+// User Constants
+import { USER_ROLES } from '../../constants/enums';
+
+// Roles Options
+
+const rolesOptions = [
+  {
+    label: 'User',
+    value: USER_ROLES.USER,
+  },
+  {
+    label: 'Admin',
+    value: USER_ROLES.ADMIN,
+  },
+  {
+    label: 'Super Admin',
+    value: USER_ROLES.SUPER_ADMIN,
+  },
+];
 
 // UsersModal
 
@@ -78,7 +97,7 @@ const UsersModal = ({ onCancel, onSave, user }) => {
         </LabeledInput>
       </Box>
 
-      <UserRolesRadioGroup />
+      <UserRolesRadioGroup onSelect={val => console.log('val: ', val)} options={rolesOptions} />
 
       <Box height='auto' styledFlex='flex-end'>
         <Button

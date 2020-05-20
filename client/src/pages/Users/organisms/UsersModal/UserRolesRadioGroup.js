@@ -1,41 +1,61 @@
 // Libraries
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
-import { Box, Button, StyledInput, Text } from 'atoms';
+import { Box, Text } from 'atoms';
+// Organisms
+import { RadioGroup } from 'organisms/Radio';
+// UsersRolesRadioButton
+import UsersRolesRadioButton from './UsersRolesRadioButton';
 
 // UserRolesRadioGroup
 
-const UserRolesRadioGroup = ({ children }) => {
+const UserRolesRadioGroup = ({ onSelect, options, ...props }) => {
+  const [checked, setChecked] = useState(null);
+
+  const handleClick = value => {
+    setChecked(value);
+    onSelect(value);
+  };
+
+  const buttons = options.map(option => (
+    <UsersRolesRadioButton
+      key={option.value}
+      onClick={() => handleClick(option.value)}
+      value={option.value}
+    >
+      {option.label}
+    </UsersRolesRadioButton>
+  ));
+
   return (
-    <Box height='auto' margin='40px 0' width='100%'>
+    <Box height='auto' margin='40px 0' width='100%' {...props}>
       <Text marginBottom='10px'>Permissions</Text>
 
-      <Box height='auto' styledFlex='stretch space-between'>
-        {/* <Button fontSize='1.3rem' height='40px' width='31%'>
-          User
-        </Button>
-        <Button fontSize='1.3rem' height='40px' width='31%'>
-          Admin
-        </Button>
-        <Button fontSize='1.3rem' height='40px' width='31%'>
-          Super-Admin
-        </Button> */}
-
-        <StyledInput cursor='pointer' height='30px' type='radio' width='80px' />
-      </Box>
+      <RadioGroup initialValue={{ checked }}>
+        <Box styledFlex='stretch space-between' {...props}>
+          {buttons}
+        </Box>
+      </RadioGroup>
     </Box>
   );
 };
 
 UserRolesRadioGroup.propTypes = {
-  children: PropTypes.element,
+  onSelect: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+      value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    }),
+  ).isRequired,
 };
 
 UserRolesRadioGroup.defaultProps = {
-  children: null,
+  onSelect: null,
+  options: null,
 };
 
 export default UserRolesRadioGroup;
