@@ -3,7 +3,6 @@ import { API, PATHS, QUERY_STRING } from 'utils/constants';
 
 const usersReducers = {
   removeUserInUsers: async (globalState, dispatch, _id) => {
-    console.log('_id: ', _id);
     const cachedUsers = globalState.cache.users;
     delete cachedUsers.data[_id];
     await dispatch.setCache({ data: cachedUsers, key: 'users' });
