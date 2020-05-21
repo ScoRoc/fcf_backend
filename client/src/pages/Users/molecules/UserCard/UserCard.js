@@ -78,11 +78,11 @@ const UserCard = ({ user, ...props }) => {
 };
 
 UserCard.propTypes = {
-  users: PropTypes.number,
+  user: PropTypes.object.isRequired, // valid user object
 };
 
 UserCard.defaultProps = {
-  users: null,
+  user: null,
 };
 
 export default UserCard;

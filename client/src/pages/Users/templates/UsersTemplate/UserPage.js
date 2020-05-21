@@ -7,13 +7,14 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import { css, jsx } from '@emotion/core';
 // Atoms
 import { Box, Button, Text } from 'atoms';
+// Organisms
+import Modal, { ModalProvider } from 'organisms/Modal';
 // UserPage Organisms
-import { UserPageCard } from '../../organisms';
+import { UserPageCard, UsersModal } from '../../organisms';
 // UserPage Templates
 import LikesAndViews from './LikesAndViews/LikesAndViews';
 // Utils
 import { FULL_PATHS } from 'utils/constants';
-import { fakeAsyncCall } from 'utils/functions';
 
 // Moments
 
@@ -24,22 +25,19 @@ const currentYear = moment().year();
 
 // UserPage
 
-const UserPage = ({ onDeleteClick, onEditClick, ...props }) => {
+const UserPage = ({ onDeleteClick, onEditClick, onSave, ...props }) => {
   // Global
 
   const [users] = useGlobal('users');
   // History and Match
 
   const history = useHistory();
-  const match = useRouteMatch({
-    path: FULL_PATHS.USER,
-  });
-
-  console.log('match: ', match);
+  const match = useRouteMatch();
 
   // State
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [likes, setLikes] = useState({
     data: [
       { name: 'Current Week', value: 54 },
@@ -56,9 +54,6 @@ const UserPage = ({ onDeleteClick, onEditClick, ...props }) => {
     ],
     title: 'Logins',
   });
-  /////////////////////////////////////
-  // NEED TO UPDATE USER AFTER PATCH //
-  /////////////////////////////////////
   const [user, setUser] = useState(users.data[match.params.id]);
   const [views, setViews] = useState({
     data: [
@@ -68,116 +63,103 @@ const UserPage = ({ onDeleteClick, onEditClick, ...props }) => {
     title: `Views in ${currentMonth}`,
   });
 
-  // Effects
-
-  useEffect(() => {
-    if (!user) {
-      // NEED TO PULL FROM DB TO HANDLE REFRESH
-      setUser({
-        _id: 9999,
-        email: 'john@john.com',
-        firstName: 'john',
-        lastLogin: 'yesterday',
-        lastName: 'smith',
-        totalLikes: 42,
-        totalViews: 42,
-      });
-    }
-  }, []);
-
   // Functions
 
   const handleDeleteClick = async () => {
     setIsLoading(true);
     const response = await onDeleteClick({ _id: user._id });
     setIsLoading(false);
-    // const response = await onDeleteClick(user?._id);
     // is this the right history function to use?
     console.log('response: ', response);
     response && history.replace(FULL_PATHS.USERS);
   };
 
-  const handleEditClick = e => {
-    onEditClick(user);
+  const handleSave = async ({ _id, email, firstName, lastName, password, role }) => {
+    const res = await onSave({ _id, email, firstName, lastName, password, role });
+    if (res) {
+      setUser(res.data.user);
+      setIsModalOpen(false);
+    }
   };
-
-  // const fakeAsync = async () => {
-  //   const getUsers = ({ _id }) => `successfully deleted _id: ${_id}`;
-  //   // const getUsers = () => false;
-
-  //   const start = fakeAsyncCall(getUsers);
-  //   // replace start with getUsers()
-  //   const response = await start(1000, { _id: 'some id' });
-  //   console.log('response: ', response);
-  //   response ? history.replace(FULL_PATHS.USERS) : console.log('error deleting the user');
-  // };
 
   // Return
 
   return !user ? (
     <Text>Loading...</Text>
   ) : (
-    <Box
-      className='UserPage'
-      css={css`
-        grid-template-areas:
-          'header header'
-          'logins likes-views'
-          'likes likes-views'
-          'views likes-views';
-      `}
-      display='grid'
-      flex={1}
-      gridGap='20px'
-      gridTemplateColumns='2fr 1.2fr'
-      gridTemplateRows='auto'
-      height='100%'
-      padding='20px'
-      {...props}
+    <ModalProvider
+      isOpen={isModalOpen}
+      onClose={() => console.log('closing...')}
+      onOpen={() => console.log('opening...')}
+      onOverlayClick={() => setIsModalOpen(false)}
+      setIsOpen={() => setIsModalOpen(false)}
     >
-      <Box gridArea='header' height='80px' styledFlex='center center column'>
-        <Text>
-          Hello {user.firstName} {user.lastName}, permission: {user.role}
-        </Text>
-        <Text>id: {user._id}</Text>
-        <Text>{user.email}</Text>
-        <Button onClick={handleEditClick}>Edit Info</Button>
-        {/* <Button onClick={fakeAsync}>Delete User</Button> */}
-        <Button onClick={handleDeleteClick}>Delete User</Button>
-        {isLoading && <Text>Loading...</Text>}
-      </Box>
+      <Box
+        className='UserPage'
+        css={css`
+          grid-template-areas:
+            'header header'
+            'logins likes-views'
+            'likes likes-views'
+            'views likes-views';
+        `}
+        display='grid'
+        flex={1}
+        gridGap='20px'
+        gridTemplateColumns='2fr 1.2fr'
+        gridTemplateRows='auto'
+        height='100%'
+        padding='20px'
+        {...props}
+      >
+        <Box gridArea='header' height='80px' styledFlex='center center column'>
+          <Text>
+            Hello {user.firstName} {user.lastName}, permission: {user.role}
+          </Text>
+          <Text>id: {user._id}</Text>
+          <Text>{user.email}</Text>
+          <Button onClick={() => setIsModalOpen(true)}>Edit Info</Button>
+          <Button onClick={handleDeleteClick}>Delete User</Button>
+          {isLoading && <Text>Loading...</Text>}
+        </Box>
 
-      <UserPageCard
-        className='logins-card'
-        girdArea='logins'
-        items={logins.data}
-        title={logins.title}
-      />
-      <UserPageCard
-        className='likes-card'
-        girdArea='likes'
-        items={likes.data}
-        title={likes.title}
-      />
-      <UserPageCard
-        className='views-card'
-        girdArea='views'
-        items={views.data}
-        title={views.title}
-      />
-      <LikesAndViews gridArea='likes-views' />
-    </Box>
+        <UserPageCard
+          className='logins-card'
+          girdArea='logins'
+          items={logins.data}
+          title={logins.title}
+        />
+        <UserPageCard
+          className='likes-card'
+          girdArea='likes'
+          items={likes.data}
+          title={likes.title}
+        />
+        <UserPageCard
+          className='views-card'
+          girdArea='views'
+          items={views.data}
+          title={views.title}
+        />
+        <LikesAndViews gridArea='likes-views' />
+      </Box>
+      <Modal height='650px' width='100vw'>
+        <UsersModal onCancel={() => setIsModalOpen(false)} onSave={handleSave} user={user} />
+      </Modal>
+    </ModalProvider>
   );
 };
 
 UserPage.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 UserPage.defaultProps = {
   onDeleteClick: null,
   onEditClick: null,
+  onSave: null,
 };
 
 export default UserPage;

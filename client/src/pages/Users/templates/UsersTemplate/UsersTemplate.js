@@ -1,7 +1,7 @@
 // Libraries
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useLocation, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 // Atoms
@@ -22,24 +22,18 @@ import { FULL_PATHS } from 'utils/constants';
 const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUser, users, ...props }) => {
   // State
 
-  const [currentUser, setCurrentUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Location
-
-  const location = useLocation();
 
   // Functions
 
-  const handleCloseModal = () => {
-    setCurrentUser(null);
-    setIsModalOpen(false);
+  const handlePatchUser = async ({ _id, email, firstName, lastName, password, role }) => {
+    console.log('in patach');
+    const res = await patchUser({ _id, email, firstName, lastName, password, role });
+    return res;
   };
 
-  const handleSaveUser = async ({ _id, email, firstName, lastName, password, role }) => {
-    const res = _id
-      ? await patchUser({ _id, email, firstName, lastName, password, role })
-      : await postUser({ email, firstName, lastName, password, role });
+  const handlePostUser = async ({ email, firstName, lastName, password, role }) => {
+    const res = await postUser({ email, firstName, lastName, password, role });
 
     !!res && setIsModalOpen(false);
     return res;
@@ -47,11 +41,6 @@ const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUser, users, ...p
 
   const handleUserPageDeleteClick = async ({ _id }) => {
     return await deleteUser({ _id });
-  };
-
-  const handleUserPageEditClick = user => {
-    setCurrentUser(user);
-    setIsModalOpen(true);
   };
 
   // User Cards
@@ -67,15 +56,12 @@ const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUser, users, ...p
       isOpen={isModalOpen}
       onClose={() => console.log('closing...')}
       onOpen={() => console.log('opening...')}
-      onOverlayClick={handleCloseModal}
-      setIsOpen={handleCloseModal}
+      onOverlayClick={() => setIsModalOpen(false)}
+      setIsOpen={() => setIsModalOpen(false)}
     >
       <Switch>
         <Route path={FULL_PATHS.USER}>
-          <UserPage
-            onDeleteClick={handleUserPageDeleteClick}
-            onEditClick={handleUserPageEditClick}
-          />
+          <UserPage onDeleteClick={handleUserPageDeleteClick} onSave={handlePatchUser} />
         </Route>
 
         <Route path={FULL_PATHS.USERS}>
@@ -96,7 +82,7 @@ const UsersTemplate = ({ deleteUser, isLoading, patchUser, postUser, users, ...p
       </Switch>
 
       <Modal height='650px' width='650px'>
-        <UsersModal onCancel={handleCloseModal} onSave={handleSaveUser} user={currentUser} />
+        <UsersModal onCancel={() => setIsModalOpen(false)} onSave={handlePostUser} />
       </Modal>
     </ModalProvider>
   );
