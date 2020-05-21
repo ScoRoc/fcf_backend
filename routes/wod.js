@@ -80,6 +80,7 @@ router.post('/', async (req, res) => {
       name,
     },
     (err, wod) => {
+      console.log('err: ', err);
       if (err) return res.status(500).send(err);
 
       res.status(201).json({ wod });

@@ -37,7 +37,7 @@ const WodsTemplate = ({ deleteWod, isLoading, patchWod, postWod, wods, ...props 
 
   const wodCards = wods.map((wod, i) => {
     // console.log('wod: ', wod);
-    const handleSetIsModalOpen = () => {
+    const handlePencilIconClick = () => {
       setCurrentWod(wod);
       setIsModalOpen(true);
     };
@@ -45,7 +45,7 @@ const WodsTemplate = ({ deleteWod, isLoading, patchWod, postWod, wods, ...props 
     return (
       <WodCard
         key={`${i}${wod.name}`}
-        onPencilIconClick={handleSetIsModalOpen}
+        onPencilIconClick={handlePencilIconClick}
         onTrashIconClick={() => deleteWod(wod._id)}
         wod={wod}
       />

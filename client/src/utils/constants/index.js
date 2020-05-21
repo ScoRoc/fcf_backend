@@ -1,3 +1,4 @@
-import { API, PATHS, QUERY_STRING } from './urls';
+import { IMAGES } from './images';
+import { API, FULL_PATHS, PATHS, QUERY_STRING } from './urls';
 
-export { API, PATHS, QUERY_STRING };
+export { API, FULL_PATHS, IMAGES, PATHS, QUERY_STRING };

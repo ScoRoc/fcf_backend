@@ -33,9 +33,25 @@ const AnnouncementsTemplate = ({
     setIsModalOpen(false);
   };
 
-  const handleSaveAnnouncement = async ({ _id, crop, description, dimensions, imgFile, url }) => {
+  const handleSaveAnnouncement = async ({
+    _id,
+    crop,
+    description,
+    dimensions,
+    imgFile,
+    originalAnnouncement,
+    url,
+  }) => {
     const success = _id
-      ? await patchAnnouncement({ _id, crop, description, dimensions, imgFile, url })
+      ? await patchAnnouncement({
+          _id,
+          crop,
+          description,
+          dimensions,
+          imgFile,
+          originalAnnouncement,
+          url,
+        })
       : await postAnnouncement({ crop, description, dimensions, imgFile, url });
     console.log('success: ', success);
     if (success) {
@@ -49,7 +65,7 @@ const AnnouncementsTemplate = ({
   // Announcement
 
   const announcementCards = announcements.map((announcement, i) => {
-    const handleSetIsModalOpen = () => {
+    const handlePencilIconClick = () => {
       setCurrentAnnouncement(announcement);
       setIsModalOpen(true);
     };
@@ -57,7 +73,7 @@ const AnnouncementsTemplate = ({
     return (
       <AnnouncementCard
         key={`${i}${announcement.url}`}
-        onPencilIconClick={handleSetIsModalOpen}
+        onPencilIconClick={handlePencilIconClick}
         onTrashIconClick={() => deleteAnnouncement(announcement._id)}
         announcement={announcement}
       />

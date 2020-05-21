@@ -12,8 +12,13 @@ const wodReducers = {
     return { wods };
   },
   setWod: async (globalState, dispatch, { direction = QUERY_STRING.DIRECTION.DESC.value, wod }) => {
-    console.log('wod in setWod: ', wod);
-    await dispatch.setCache({ data: { ...globalState.wods.data, [wod._id]: wod }, key: 'wods' });
+    await dispatch.setCache({
+      data: {
+        ...globalState.wods,
+        data: { ...globalState.wods.data, [wod._id]: wod },
+        key: 'wods',
+      },
+    });
     return {
       wods: {
         data: { ...globalState.wods.data, [wod._id]: wod },

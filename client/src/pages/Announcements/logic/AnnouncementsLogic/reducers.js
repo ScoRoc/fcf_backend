@@ -14,7 +14,10 @@ const announcementReducers = {
   setAnnouncement: async (globalState, dispatch, { announcement }) => {
     console.log('announcement in setAnnouncement: ', announcement);
     await dispatch.setCache({
-      data: { ...globalState.announcements.data, [announcement._id]: announcement },
+      data: {
+        ...globalState.announcements,
+        data: { ...globalState.announcements.data, [announcement._id]: announcement },
+      },
       key: 'announcements',
     });
 

@@ -4,7 +4,7 @@ import { API, PATHS, QUERY_STRING } from 'utils/constants';
 const eventReducers = {
   removeEvent: async (globalState, dispatch, _id) => {
     const cachedEvents = globalState.cache.events;
-    delete cachedEvents.data[_id];
+    delete cachedEvents[_id];
     await dispatch.setCache({ data: cachedEvents, key: 'events' });
 
     const { events } = globalState;
@@ -14,7 +14,7 @@ const eventReducers = {
   setEvent: async (globalState, dispatch, { event }) => {
     console.log('event in setEvent: ', event);
     await dispatch.setCache({
-      data: { ...globalState.events.data, [event._id]: event },
+      data: { ...globalState.events, data: { ...globalState.events.data, [event._id]: event } },
       key: 'events',
     });
 

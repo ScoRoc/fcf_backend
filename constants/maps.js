@@ -1,17 +1,15 @@
-const AUTH = {
-  LAST_LOGIN: {
-    APP: {
-      key: 'APP',
-      value: 'app',
-    },
-    NONE: {
-      key: 'NONE',
-      value: 'none',
-    },
-    PORTAL: {
-      key: 'PORTAL',
-      value: 'portal',
-    },
+const LAST_LOGIN = {
+  APP: {
+    key: 'APP',
+    value: 'app',
+  },
+  NONE: {
+    key: 'NONE',
+    value: 'none',
+  },
+  PORTAL: {
+    key: 'PORTAL',
+    value: 'portal',
   },
 };
 
@@ -40,4 +38,4 @@ const WODS = {
   },
 };
 
-module.exports = { AUTH, WODS };
+module.exports = { LAST_LOGIN, WODS };

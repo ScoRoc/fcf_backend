@@ -10,6 +10,7 @@ import { Box } from 'atoms';
 // Reducers
 import announcementReducers from 'pages/Announcements/logic/AnnouncementsLogic/reducers';
 import eventReducers from 'pages/Events/logic/EventsLogic/reducers';
+import usersReducers from 'pages/Users/logic/UsersLogic/reducers';
 import wodReducers from 'pages/Wods/logic/WodsLogic/reducers';
 // Constants
 import { PATHS } from 'utils/constants';
@@ -24,14 +25,17 @@ setGlobal({
   },
   cache: {},
   events: {
-    data: [],
+    data: {},
   },
   isLoading: false,
   isUserAuthenticated: false,
   themeName: THEME_NAMES.MAIN,
   user: null,
+  users: {
+    data: {},
+  },
   wods: {
-    data: [],
+    data: {},
     direction: 'desc',
   },
 });
@@ -39,6 +43,7 @@ setGlobal({
 addReducers({
   ...announcementReducers,
   ...eventReducers,
+  ...usersReducers,
   ...wodReducers,
   authenticateUser: (globalState, dispatch) => ({ isUserAuthenticated: true }),
   clearUser: (globalState, dispatch) => ({ user: null }),
@@ -51,9 +56,11 @@ addReducers({
     await dispatch.clearUser();
     await dispatch.deauthenticateUser();
   },
-  setCache: (globalState, dispatch, { data, key }) => ({
-    cache: { ...globalState.cache, [key]: data },
-  }),
+  setCache: (globalState, dispatch, { data, key }) => {
+    console.log('key: ', key);
+    console.log('data: ', data);
+    return { cache: { ...globalState.cache, [key]: data } };
+  },
   setUser: async (globalState, dispatch, user) => {
     await dispatch.setCache({ data: user, key: 'user' });
     return { user };

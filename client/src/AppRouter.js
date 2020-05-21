@@ -3,21 +3,22 @@ import React, { useDispatch, useEffect, useGlobal } from 'reactn';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 // @jsx jsx
 import { jsx } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 // Atoms
-import { Box, Text } from 'atoms';
+import { Box } from 'atoms';
 // Pages
 import Announcements from 'pages/Announcements';
 import Dashboard from 'pages/Dashboard';
 import Events from 'pages/Events';
+import Users from 'pages/Users';
 import Wods from 'pages/Wods';
 // Organisms
 import SideNav from 'organisms/SideNav';
 // Utils
-import { PATHS } from 'utils/constants';
+import { FULL_PATHS, PATHS } from 'utils/constants';
 
 // Page
 
@@ -32,13 +33,10 @@ const Page = props => {
   const logout = useDispatch('logout');
   const setUser = useDispatch('setUser');
 
-  // History, Location, and Match
+  // History and Location
 
   const history = useHistory();
   const location = useLocation();
-  const match = useRouteMatch(PATHS.APP);
-  // const match = useRouteMatch();
-  // console.log('match: ', match);
 
   // Theme
 
@@ -67,10 +65,11 @@ const Page = props => {
 
   const handleSuccess = res => {
     console.log('res: ', res);
-    const to = `${PATHS.APP}${PATHS.ANNOUNCEMENTS}`;
-    // const to = `${PATHS.APP}${PATHS.DASHBOARD}`;
-    // const to = `${PATHS.APP}${PATHS.EVENTS}`;
-    // const to = `${PATHS.APP}${PATHS.WODS}`;
+    // const to = `${FULL_PATHS.ANNOUNCEMENTS}`;
+    const to = `${FULL_PATHS.DASHBOARD}`;
+    // const to = `${FULL_PATHS.EVENTS}`;
+    // const to = `${FULL_PATHS.USERS}`;
+    // const to = `${FULL_PATHS.WODS}`;
     const { from } = location.state || { from: { pathname: to } };
     authenticateUser();
     history.replace(from);
@@ -89,7 +88,7 @@ const Page = props => {
       {...props}
       render={({ location }) =>
         !isUserAuthenticated ? (
-          <Redirect to={{ pathname: PATHS.LOGIN, state: { from: location } }} />
+          <Redirect to={{ pathname: FULL_PATHS.LOGIN, state: { from: location } }} />
         ) : (
           <Box
             className='Page'
@@ -104,27 +103,27 @@ const Page = props => {
 
             <Box className='PageBody' flex={1}>
               <Switch>
-                <Route path={`${match.path}${PATHS.DASHBOARD}`}>
+                <Route path={`${FULL_PATHS.DASHBOARD}`}>
                   <Dashboard />
                 </Route>
 
-                <Route path={`${match.path}${PATHS.WODS}`}>
+                <Route path={`${FULL_PATHS.WODS}`}>
                   <Wods />
                 </Route>
 
-                <Route path={`${match.path}${PATHS.ANNOUNCEMENTS}`}>
+                <Route path={`${FULL_PATHS.ANNOUNCEMENTS}`}>
                   <Announcements />
                 </Route>
 
-                <Route path={`${match.path}${PATHS.EVENTS}`}>
+                <Route path={`${FULL_PATHS.EVENTS}`}>
                   <Events />
                 </Route>
 
-                <Route path={`${match.path}${PATHS.USERS}`}>
-                  <Text>USERS PAGE</Text>
+                <Route path={`${FULL_PATHS.USERS}`}>
+                  <Users />
                 </Route>
 
-                <Route exact path={PATHS.APP}>
+                <Route exact path={FULL_PATHS.APP}>
                   <Dashboard />
                 </Route>
               </Switch>

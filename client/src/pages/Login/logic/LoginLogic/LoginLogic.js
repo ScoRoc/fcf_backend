@@ -28,7 +28,7 @@ const LoginLogic = () => {
   };
 
   const handleSuccess = res => {
-    const to = `${PATHS.APP}${PATHS.DASHBOARD}`;
+    const to = `${PATHS.DASHBOARD}`;
     const { from } = location.state || { from: { pathname: to } };
     const { user } = res.data;
     login(user);
