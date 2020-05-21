@@ -66,9 +66,9 @@ const Page = props => {
   const handleSuccess = res => {
     console.log('res: ', res);
     // const to = `${FULL_PATHS.ANNOUNCEMENTS}`;
-    // const to = `${FULL_PATHS.DASHBOARD}`;
+    const to = `${FULL_PATHS.DASHBOARD}`;
     // const to = `${FULL_PATHS.EVENTS}`;
-    const to = `${FULL_PATHS.USERS}`;
+    // const to = `${FULL_PATHS.USERS}`;
     // const to = `${FULL_PATHS.WODS}`;
     const { from } = location.state || { from: { pathname: to } };
     authenticateUser();

@@ -44,16 +44,16 @@ const items = {
 
 const tabs = [
   {
+    key: 'wods',
+    title: 'WODs',
+  },
+  {
     key: 'announcements',
     title: 'Announcements',
   },
   {
     key: 'events',
     title: 'Events',
-  },
-  {
-    key: 'wods',
-    title: 'WODs',
   },
 ];
 

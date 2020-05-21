@@ -25,7 +25,7 @@ const currentYear = moment().year();
 
 // UserPage
 
-const UserPage = ({ onDeleteClick, onEditClick, onSave, ...props }) => {
+const UserPage = ({ onDeleteClick, onSave, ...props }) => {
   // Global
 
   const [users] = useGlobal('users');
@@ -40,17 +40,17 @@ const UserPage = ({ onDeleteClick, onEditClick, onSave, ...props }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [likes, setLikes] = useState({
     data: [
-      { name: 'Current Week', value: 54 },
-      { name: 'Last Week', value: 31 },
-      { name: `${currentMonth} ${currentYear}`, value: 28 },
+      { name: 'WODs', value: 54 },
+      { name: 'Announcements', value: 31 },
+      { name: 'Events', value: 28 },
     ],
     title: `Likes in ${currentMonth}`,
   });
   const [logins, setLogins] = useState({
     data: [
-      { name: 'WODs', value: 54 },
-      { name: 'Announcements', value: 31 },
-      { name: 'Events', value: 28 },
+      { name: 'Current Week', value: 54 },
+      { name: 'Last Week', value: 31 },
+      { name: `${currentMonth} ${currentYear}`, value: 28 },
     ],
     title: 'Logins',
   });
@@ -152,13 +152,11 @@ const UserPage = ({ onDeleteClick, onEditClick, onSave, ...props }) => {
 
 UserPage.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
-  onEditClick: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
 };
 
 UserPage.defaultProps = {
   onDeleteClick: null,
-  onEditClick: null,
   onSave: null,
 };
 

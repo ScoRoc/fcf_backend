@@ -14,7 +14,7 @@ const eventReducers = {
   setEvent: async (globalState, dispatch, { event }) => {
     console.log('event in setEvent: ', event);
     await dispatch.setCache({
-      data: { ...globalState.events.data, [event._id]: event },
+      data: { ...globalState.events, data: { ...globalState.events.data, [event._id]: event } },
       key: 'events',
     });
 
