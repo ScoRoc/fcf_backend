@@ -12,8 +12,8 @@ const announcements = require('./routes/announcements');
 const auth = require('./routes/auth');
 const events = require('./routes/events');
 const sockets = require('./websocket/sockets');
-const user = require('./routes/user');
-const wod = require('./routes/wod');
+const users = require('./routes/users');
+const wods = require('./routes/wods');
 
 // App Setup
 
@@ -30,8 +30,8 @@ app.use(cookieParser());
 app.use('/announcements', announcements);
 app.use('/auth', auth);
 app.use('/events', events);
-app.use('/users', user);
-app.use('/wods', wod);
+app.use('/users', users);
+app.use('/wods', wods);
 // https://app.swaggerhub.com/home - ToDo complete Swagger
 
 // add this in client package.json for local dev after scripts

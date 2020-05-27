@@ -38,7 +38,7 @@ const getOneAnnouncement = (req, res) => {
 // POST - create a new announcement
 
 const postAnnouncement = (req, res) => {
-  const { createdByUser } = req.query;
+  const { createdByUserId } = req.query;
   const { description, url } = req.body;
 
   // TODO validate image props
@@ -84,8 +84,8 @@ const postAnnouncement = (req, res) => {
         description,
         image: imageToSave,
         meta: {
-          createdByUser,
-          updatedByUser: createdByUser,
+          createdByUserId,
+          updatedByUserId: createdByUserId,
         },
         url,
       },
@@ -112,7 +112,7 @@ const patchAnnouncement_NoImg = (req, res) => {
     announcementToUpdate.set({
       ...req.body, // TODO need to do validation
       meta: {
-        updatedByUser: req.query.updatedByUser,
+        updatedByUserId: req.query.updatedByUserId,
       },
     });
 
@@ -152,7 +152,7 @@ const patchAnnouncement_CropImg = (req, res) => {
         dimensions: imageToSave.dimensions,
       },
       meta: {
-        updatedByUser: req.query.updatedByUser,
+        updatedByUserId: req.query.updatedByUserId,
       },
       url: req.body.url,
     });
@@ -229,7 +229,7 @@ const patchAnnouncement_NewImg = (req, res) => {
               },
             },
             meta: {
-              updatedByUser: req.query.updatedByUser,
+              updatedByUserId: req.query.updatedByUserId,
             },
             url: req.body.url,
           });
@@ -272,6 +272,28 @@ const patchAnnouncement = (req, res) => {
   }
 };
 
+const viewAnnouncement = async (req, res) => {
+  const { id } = req.params;
+  const { viewedByUserId } = req.query;
+
+  try {
+    const announcementToUpdate = await Announcement.findById(id).exec();
+
+    // Bail if user has already viewed
+    if (announcementToUpdate.viewedBy.includes(viewedByUserId)) {
+      console.log(`User id ${viewedByUserId} has already viewed this announcement.`);
+      return res.send(`User id ${viewedByUserId} has already viewed this announcement.`);
+    }
+
+    announcementToUpdate.viewedBy.push(viewedByUserId);
+    const updatedAnnouncement = await announcementToUpdate.save().exec();
+
+    res.send(updatedAnnouncement);
+  } catch (err) {
+    res.status(500).send({ err, msg: 'An error occurred when attempting to modify the database' });
+  }
+};
+
 // DELETE - an announcement
 
 const deleteAnnouncement = (req, res) => {
@@ -305,4 +327,5 @@ module.exports = {
   getOneAnnouncement,
   patchAnnouncement,
   postAnnouncement,
+  viewAnnouncement,
 };

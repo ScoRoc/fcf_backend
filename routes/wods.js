@@ -48,7 +48,7 @@ router.get('/:id', (req, res) => {
 // POST - create new wod
 
 router.post('/', async (req, res) => {
-  const { createdByUser } = req.query;
+  const { createdByUserId } = req.query;
   const { date, description, name } = req.body; // TODO NEEDS VALIDATION
 
   // Validation
@@ -60,10 +60,10 @@ router.post('/', async (req, res) => {
     });
   }
 
-  if (createdByUser !== undefined && !ObjectId.isValid(createdByUser)) {
+  if (createdByUserId !== undefined && !ObjectId.isValid(createdByUserId)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The createdByUser field is invalid and should either be null or a valid user._id',
+      _msg: 'The createdByUserId field is invalid and should either be null or a valid user._id',
     });
   }
 
@@ -74,8 +74,8 @@ router.post('/', async (req, res) => {
       date,
       description,
       meta: {
-        createdByUser,
-        updatedByUser: createdByUser,
+        createdByUserId,
+        updatedByUserId: createdByUserId,
       },
       name,
     },
@@ -92,7 +92,7 @@ router.post('/', async (req, res) => {
 
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
-  const { updatedByUser } = req.query;
+  const { updatedByUserId } = req.query;
 
   // Validation
 
@@ -103,10 +103,10 @@ router.patch('/:id', (req, res) => {
     });
   }
 
-  if (!ObjectId.isValid(updatedByUser)) {
+  if (!ObjectId.isValid(updatedByUserId)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The updatedByUser field is invalid and should be a valid user._id',
+      _msg: 'The updatedByUserId field is invalid and should be a valid user._id',
     });
   }
 
@@ -118,7 +118,7 @@ router.patch('/:id', (req, res) => {
     wodToUpdate.set({
       ...req.body, // TODO need to do validation
       meta: {
-        updatedByUser,
+        updatedByUserId,
       },
     });
 

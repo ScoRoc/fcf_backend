@@ -74,7 +74,7 @@ const WodsLogic = () => {
   const patchWod = ({ _id, date, description, name }) => {
     console.log('in patch');
 
-    const qs = `?${QUERY_STRING.UPDATED_BY_USER.PARAM.value}=${user._id}`;
+    const qs = `?${QUERY_STRING.UPDATED_BY_USER_ID.PARAM.value}=${user._id}`;
     const url = `${baseUrl}/${_id}${qs}`;
     // setIsLoading(true);
     axios.patch(url, { date, description, name }).then(res => {
@@ -93,7 +93,7 @@ const WodsLogic = () => {
       return void console.log('date, description, and name need to be filled out');
     }
 
-    const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
+    const qs = `?${QUERY_STRING.CREATED_BY_USER_ID.PARAM.value}=${user._id}`;
     const url = `${baseUrl}${qs}`;
     console.log('user: ', user);
     // setIsLoading(true);

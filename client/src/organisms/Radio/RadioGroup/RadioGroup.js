@@ -8,7 +8,7 @@ import { Box } from 'atoms';
 
 // RadioGroup
 
-const RadioContext = createContext({});
+export const RadioContext = createContext({});
 
 const RadioGroup = ({ children, initialValue, ...props }) => {
   const [checked, setChecked] = useState(initialValue?.checked);
@@ -32,4 +32,3 @@ RadioGroup.defaultProps = {
 };
 
 export default RadioGroup;
-export { RadioContext };

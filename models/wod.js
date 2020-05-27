@@ -20,13 +20,13 @@ const wodSchema = new mongoose.Schema(
       },
     ],
     meta: {
-      createdByUser: {
+      createdByUserId: {
         immutable: true,
         ref: 'User',
         required: true,
         type: mongoose.Schema.Types.ObjectId,
       },
-      updatedByUser: {
+      updatedByUserId: {
         ref: 'User',
         type: mongoose.Schema.Types.ObjectId,
       },

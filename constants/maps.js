@@ -14,8 +14,8 @@ const LAST_LOGIN = {
 };
 
 const WODS = {
-  CREATED_BY_USER: {
-    PARAM: 'createdByUser',
+  CREATED_BY_USER_ID: {
+    PARAM: 'createdByUserId',
   },
   DIRECTION: {
     ASC: {

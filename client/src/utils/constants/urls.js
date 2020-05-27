@@ -29,10 +29,10 @@ const PATHS = {
 };
 
 const QUERY_STRING = {
-  CREATED_BY_USER: {
+  CREATED_BY_USER_ID: {
     PARAM: {
       key: 'PARAM',
-      value: 'createdByUser',
+      value: 'createdByUserId',
     },
   },
   DIRECTION: {
@@ -54,10 +54,10 @@ const QUERY_STRING = {
     PARAM: 'loginFrom',
     PORTAL: 'portal',
   },
-  UPDATED_BY_USER: {
+  UPDATED_BY_USER_ID: {
     PARAM: {
       key: 'PARAM',
-      value: 'updatedByUser',
+      value: 'updatedByUserId',
     },
   },
 };

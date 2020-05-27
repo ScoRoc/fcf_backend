@@ -28,9 +28,11 @@ const UserCard = ({ user, ...props }) => {
 
   const lastLogin = buildLastLogin(user);
 
-  const totalLikes =
-    user.announcements.liked.length + user.events.liked.length + user.wods.liked.length;
-  const totalViews = user.announcements.viewed.length + user.events.viewed.length;
+  // const totalLikes =
+  //   user.announcements.liked.length + user.events.liked.length + user.wods.liked.length;
+  // const totalViews = user.announcements.viewed.length + user.events.viewed.length;
+  const totalLikes = 0;
+  const totalViews = 0;
 
   return (
     <Box

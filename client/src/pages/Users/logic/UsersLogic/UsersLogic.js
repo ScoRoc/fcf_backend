@@ -79,7 +79,7 @@ const UsersLogic = () => {
   const patchUser = async ({ _id, email, firstName, lastName, password, role }) => {
     //   console.log('in patch');
 
-    const qs = `?${QUERY_STRING.UPDATED_BY_USER.PARAM.value}=${user._id}`;
+    const qs = `?${QUERY_STRING.UPDATED_BY_USER_ID.PARAM.value}=${user._id}`;
     const url = `${baseUrl}/${_id}${qs}`;
     //   // setIsLoading(true);
     try {
@@ -105,7 +105,7 @@ const UsersLogic = () => {
       );
     }
 
-    const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
+    const qs = `?${QUERY_STRING.CREATED_BY_USER_ID.PARAM.value}=${user._id}`;
     const url = `${baseUrl}${qs}`;
     //   console.log('user: ', user);
     //   // setIsLoading(true);

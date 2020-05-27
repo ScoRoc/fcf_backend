@@ -33,7 +33,10 @@ export const buildPatch = ({
 
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
-      params: { imgUpdate: IMG_UPDATE.NEW_IMG, [QUERY_STRING.UPDATED_BY_USER.PARAM.value]: userId },
+      params: {
+        imgUpdate: IMG_UPDATE.NEW_IMG,
+        [QUERY_STRING.UPDATED_BY_USER_ID.PARAM.value]: userId,
+      },
     };
 
     return { config, data: formData };
@@ -42,7 +45,10 @@ export const buildPatch = ({
   const buildNewCropPatch = ({ crop, description, dimensions, transformation, url }) => {
     return {
       config: {
-        params: { imgUpdate: IMG_UPDATE.CROP, [QUERY_STRING.UPDATED_BY_USER.PARAM.value]: userId },
+        params: {
+          imgUpdate: IMG_UPDATE.CROP,
+          [QUERY_STRING.UPDATED_BY_USER_ID.PARAM.value]: userId,
+        },
       },
       data: {
         crop: {
@@ -65,7 +71,10 @@ export const buildPatch = ({
   const buildNoImgPatch = () => {
     return {
       config: {
-        params: { imgUpdate: IMG_UPDATE.NONE, [QUERY_STRING.UPDATED_BY_USER.PARAM.value]: userId },
+        params: {
+          imgUpdate: IMG_UPDATE.NONE,
+          [QUERY_STRING.UPDATED_BY_USER_ID.PARAM.value]: userId,
+        },
       },
       data: {
         description,
