@@ -64,8 +64,8 @@ const AnnouncementCard = ({
       </CardColumn>
       <Separator />
       <CardColumn>
-        <Text>[icon1] {viewedBy.length}</Text>
-        <Text>[icon2] {likedBy.length}</Text>
+        <Text>[viewedBy] {viewedBy.length}</Text>
+        <Text>[likedBy] {likedBy.length}</Text>
       </CardColumn>
       <Separator />
       <CardColumn flexDirection='row'>

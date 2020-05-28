@@ -6,21 +6,6 @@ const { ROLES } = require('../constants/enums');
 
 const userSchema = new mongoose.Schema(
   {
-    announcements: {
-      liked: [
-        {
-          ref: 'Announcement',
-          type: mongoose.Schema.Types.ObjectId,
-        },
-      ],
-      viewed: [
-        {
-          // which urls have they clicked on
-          ref: 'Announcement',
-          type: mongoose.Schema.Types.ObjectId,
-        },
-      ],
-    },
     email: {
       lowercase: true,
       maxlength: 99,
@@ -29,21 +14,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
       type: String,
       unique: true,
-    },
-    events: {
-      liked: [
-        {
-          ref: 'Event',
-          type: mongoose.Schema.Types.ObjectId,
-        },
-      ],
-      viewed: [
-        {
-          // which urls have they clicked on
-          ref: 'Event',
-          type: mongoose.Schema.Types.ObjectId,
-        },
-      ],
     },
     firstName: {
       maxlength: 99,
@@ -58,7 +28,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     meta: {
-      createdByUser: {
+      createdByUserId: {
         immutable: true,
         ref: 'User',
         // required: true,
@@ -68,7 +38,7 @@ const userSchema = new mongoose.Schema(
         app: { type: Date },
         portal: { type: Date },
       },
-      updatedByUser: {
+      updatedByUserId: {
         ref: 'User',
         type: mongoose.Schema.Types.ObjectId,
       },
@@ -84,14 +54,6 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(ROLES),
       // required: true,
       type: String,
-    },
-    wods: {
-      liked: [
-        {
-          ref: 'Wod',
-          type: mongoose.Schema.Types.ObjectId,
-        },
-      ],
     },
   },
   {

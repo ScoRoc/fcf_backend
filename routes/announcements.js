@@ -11,6 +11,7 @@ const {
   getOneAnnouncement,
   patchAnnouncement,
   postAnnouncement,
+  viewAnnouncement,
 } = require('../controllers/announcements');
 // Constants
 const { IMG_UPDATE } = require('../constants/enums');
@@ -61,7 +62,7 @@ router.get('/:id', (req, res) => {
 // POST - create a new announcement
 
 router.post('/', multerUpload.single('imgFile'), (req, res) => {
-  const { createdByUser } = req.query;
+  const { createdByUserId } = req.query;
   const { description, url } = req.body;
 
   // Validation
@@ -83,11 +84,11 @@ router.post('/', multerUpload.single('imgFile'), (req, res) => {
     });
   }
 
-  // if (createdByUser !== undefined && !ObjectId.isValid(createdByUser)) {
-  if (!ObjectId.isValid(createdByUser)) {
+  // if (createdByUserId !== undefined && !ObjectId.isValid(createdByUserId)) {
+  if (!ObjectId.isValid(createdByUserId)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The createdByUser field is invalid and should be a valid user._id',
+      _msg: 'The createdByUserId field is invalid and should be a valid user._id',
     });
   }
 
@@ -100,7 +101,7 @@ router.post('/', multerUpload.single('imgFile'), (req, res) => {
 
 router.patch('/:id', multerUpload.single('imgFile'), (req, res) => {
   const { id } = req.params;
-  const { imgUpdate, updatedByUser } = req.query;
+  const { imgUpdate, updatedByUserId } = req.query;
 
   // Validation
 
@@ -111,10 +112,10 @@ router.patch('/:id', multerUpload.single('imgFile'), (req, res) => {
     });
   }
 
-  if (!ObjectId.isValid(updatedByUser)) {
+  if (!ObjectId.isValid(updatedByUserId)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The updatedByUser query string param is invalid and should be a valid user._id',
+      _msg: 'The updatedByUserId query string param is invalid and should be a valid user._id',
     });
   }
 
@@ -128,6 +129,31 @@ router.patch('/:id', multerUpload.single('imgFile'), (req, res) => {
   }
 
   return patchAnnouncement(req, res);
+});
+
+// PATCH - update announcement.viewedBy
+
+router.patch('/:id/viewedBy/', async (req, res) => {
+  const { id } = req.params;
+  const { viewedByUserId } = req.query;
+
+  // Validation
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).send({
+      error: true,
+      _msg: 'The id field is invalid and should a valid user._id',
+    });
+  }
+
+  if (!ObjectId.isValid(viewedByUserId)) {
+    return res.status(400).send({
+      error: true,
+      _msg: 'The viewedByUserId field is invalid and should be a valid user._id',
+    });
+  }
+
+  return viewAnnouncement(req, res);
 });
 
 // DELETE - an announcement

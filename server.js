@@ -11,17 +11,19 @@ const path = require('path');
 const announcements = require('./routes/announcements');
 const auth = require('./routes/auth');
 const events = require('./routes/events');
-const sockets = require('./websocket/sockets');
-const user = require('./routes/user');
-const wod = require('./routes/wod');
+// const sockets = require('./websocket/sockets');
+const users = require('./routes/users');
+const wods = require('./routes/wods');
 
 // App Setup
 
 const app = express();
 const http = httpLib.createServer(app);
-const io = sockets.listen(http);
 
-app.io = io;
+// Sockets
+const io = require('socket.io').listen(http);
+const sockets = require('./websocket/sockets')(io);
+
 // libraries
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,8 +32,8 @@ app.use(cookieParser());
 app.use('/announcements', announcements);
 app.use('/auth', auth);
 app.use('/events', events);
-app.use('/users', user);
-app.use('/wods', wod);
+app.use('/users', users);
+app.use('/wods', wods);
 // https://app.swaggerhub.com/home - ToDo complete Swagger
 
 // add this in client package.json for local dev after scripts

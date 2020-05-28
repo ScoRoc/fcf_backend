@@ -57,8 +57,8 @@ addReducers({
     await dispatch.deauthenticateUser();
   },
   setCache: (globalState, dispatch, { data, key }) => {
-    console.log('key: ', key);
-    console.log('data: ', data);
+    // console.log('key: ', key);
+    // console.log('data: ', data);
     return { cache: { ...globalState.cache, [key]: data } };
   },
   setUser: async (globalState, dispatch, user) => {

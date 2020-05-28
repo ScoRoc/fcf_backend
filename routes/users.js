@@ -50,7 +50,7 @@ router.get('/:id', (req, res) => {
 // POST - create new user
 
 router.post('/', async (req, res) => {
-  const { createdByUser, loginFrom } = req.query;
+  const { createdByUserId, loginFrom } = req.query;
   const { email, firstName, lastName, password, role } = req.body; // TODO NEEDS VALIDATION
 
   // Validation
@@ -64,10 +64,10 @@ router.post('/', async (req, res) => {
     });
   }
 
-  if (createdByUser !== undefined && !ObjectId.isValid(createdByUser)) {
+  if (createdByUserId !== undefined && !ObjectId.isValid(createdByUserId)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The createdByUser field is invalid and should either be null or a valid user._id',
+      _msg: 'The createdByUserId field is invalid and should either be null or a valid user._id',
     });
   }
 
@@ -83,12 +83,12 @@ router.post('/', async (req, res) => {
       lastName,
       email,
       meta: {
-        createdByUser: createdByUser || APP_USER_ID,
+        createdByUserId: createdByUserId || APP_USER_ID,
         lastLogin: {
           app: loginFrom === LAST_LOGIN.APP ? new Date() : undefined,
           portal: loginFrom === LAST_LOGIN.PORTAL ? new Date() : undefined, // ??? if created from portal they aren't logging in...I think... ???
         },
-        updatedByUser: createdByUser || APP_USER_ID,
+        updatedByUserId: createdByUserId || APP_USER_ID,
       },
       password,
       role: role || ROLES.USER,
@@ -118,7 +118,7 @@ router.post('/', async (req, res) => {
 
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
-  const { updatedByUser } = req.query;
+  const { updatedByUserId } = req.query;
 
   // Validation
 
@@ -129,10 +129,10 @@ router.patch('/:id', (req, res) => {
     });
   }
 
-  if (!ObjectId.isValid(updatedByUser)) {
+  if (!ObjectId.isValid(updatedByUserId)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The updatedByUser field is invalid and should be a valid user._id',
+      _msg: 'The updatedByUserId field is invalid and should be a valid user._id',
     });
   }
 
@@ -154,7 +154,7 @@ router.patch('/:id', (req, res) => {
       // TODO need to do validation
       ...userUpdate,
       meta: {
-        updatedByUser,
+        updatedByUserId,
       },
     });
 

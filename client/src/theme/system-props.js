@@ -2,7 +2,6 @@ import {
   background,
   border,
   color,
-  config,
   compose,
   flexbox,
   grid,
@@ -46,6 +45,7 @@ const _variant = variant({
 
 export default compose(
   _config,
+  _variant,
   background,
   border,
   color,
@@ -57,5 +57,4 @@ export default compose(
   shadow,
   space,
   typography,
-  _variant,
 );

@@ -154,7 +154,7 @@ const AnnouncementsLogic = () => {
 
     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-    const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
+    const qs = `?${QUERY_STRING.CREATED_BY_USER_ID.PARAM.value}=${user._id}`;
     const postUrl = `${baseUrl}${qs}`;
     // setIsLoading(true);
     await axios.post(postUrl, formData, config).then(res => {

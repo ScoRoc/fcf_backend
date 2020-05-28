@@ -56,15 +56,15 @@ router.get('/:id', (req, res) => {
 // POST - create new event
 
 router.post('/', (req, res) => {
-  const { createdByUser } = req.query;
+  const { createdByUserId } = req.query;
   const { endDate, name, startDate, type, url } = req.body;
 
   // Validation
 
-  if (!createdByUser || !ObjectId.isValid(createdByUser)) {
+  if (!createdByUserId || !ObjectId.isValid(createdByUserId)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The createdByUser field is invalid and should either be null or a valid user._id',
+      _msg: 'The createdByUserId field is invalid and should either be null or a valid user._id',
     });
   }
 
@@ -104,8 +104,8 @@ router.post('/', (req, res) => {
     {
       endDate: endDate && endDate,
       meta: {
-        createdByUser,
-        updatedByUser: createdByUser,
+        createdByUserId,
+        updatedByUserId: createdByUserId,
       },
       name,
       startDate: startDate,
@@ -124,7 +124,7 @@ router.post('/', (req, res) => {
 
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
-  const { updatedByUser } = req.query;
+  const { updatedByUserId } = req.query;
 
   // Validation
 
@@ -135,10 +135,10 @@ router.patch('/:id', (req, res) => {
     });
   }
 
-  if (!ObjectId.isValid(updatedByUser)) {
+  if (!ObjectId.isValid(updatedByUserId)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The updatedByUser field is invalid and should be a valid user._id',
+      _msg: 'The updatedByUserId field is invalid and should be a valid user._id',
     });
   }
 
@@ -150,7 +150,7 @@ router.patch('/:id', (req, res) => {
     eventToUpdate.set({
       ...req.body, // TODO need to do validation
       meta: {
-        updatedByUser,
+        updatedByUserId,
       },
     });
 

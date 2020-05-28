@@ -68,7 +68,7 @@ const EventsLogic = () => {
   const patchEvent = ({ _id, endDate, name, startDate, type, url }) => {
     console.log('in patch');
 
-    const qs = `?${QUERY_STRING.UPDATED_BY_USER.PARAM.value}=${user._id}`;
+    const qs = `?${QUERY_STRING.UPDATED_BY_USER_ID.PARAM.value}=${user._id}`;
     const patchUrl = `${baseUrl}/${_id}${qs}`;
     // setIsLoading(true);
     axios.patch(patchUrl, { endDate, name, startDate, type, url }).then(res => {
@@ -87,7 +87,7 @@ const EventsLogic = () => {
       return void console.log('name, startDate, type, and url need to be filled out');
     }
 
-    const qs = `?${QUERY_STRING.CREATED_BY_USER.PARAM.value}=${user._id}`;
+    const qs = `?${QUERY_STRING.CREATED_BY_USER_ID.PARAM.value}=${user._id}`;
     const postUrl = `${baseUrl}${qs}`;
     console.log('user: ', user);
     // setIsLoading(true);
