@@ -286,10 +286,11 @@ const viewAnnouncement = async (req, res) => {
     }
 
     announcementToUpdate.viewedBy.push(viewedByUserId);
-    const updatedAnnouncement = await announcementToUpdate.save().exec();
+    const updatedAnnouncement = await announcementToUpdate.save();
 
     res.send(updatedAnnouncement);
   } catch (err) {
+    console.log('err: ', err);
     res.status(500).send({ err, msg: 'An error occurred when attempting to modify the database' });
   }
 };
