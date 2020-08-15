@@ -18,7 +18,7 @@ const wodweek = require('./routes/wodweek');
 
 const mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/fcf_backend', { useNewUrlParser: true, useCreateIndex: true }); // for local dev
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(process.env.FOUNDATION_DB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
 }); // for heroku deployment
