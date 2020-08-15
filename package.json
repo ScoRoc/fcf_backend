@@ -2,6 +2,9 @@
   "name": "fcf_backend",
   "version": "1.0.0",
   "description": "FCF server for management portal and API for the FCF app",
+  "engines": {
+    "node": "13.x"
+  },
   "main": "server.js",
   "scripts": {
     "client": "cd client && npm start",
