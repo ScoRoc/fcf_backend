@@ -142,7 +142,7 @@ router.patch('/:id/viewedBy/', async (req, res) => {
   if (!ObjectId.isValid(id)) {
     return res.status(400).send({
       error: true,
-      _msg: 'The id field is invalid and should a valid user._id',
+      _msg: 'The id field is invalid and should a valid announcement._id',
     });
   }
 

@@ -22,7 +22,6 @@ const http = httpLib.createServer(app);
 
 // Sockets
 const io = require('socket.io').listen(http);
-const sockets = require('./websocket/sockets')(io);
 
 // libraries
 app.use(bodyParser.json());
@@ -46,7 +45,7 @@ mongoose.connect('mongodb://localhost/fcf_backend', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }); // for local dev
-// mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true }); // for heroku deployment
+// mongoose.connect(process.env.FOUNDATION_DB_URI, { useNewUrlParser: true, useCreateIndex: true }); // for heroku deployment
 
 // Cloudinary
 
