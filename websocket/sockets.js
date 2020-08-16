@@ -2,6 +2,7 @@
 const ObjectId = require('mongoose').Types.ObjectId;
 // Models
 const Announcement = require('../models/announcement');
+const Event = require('../models/event');
 
 module.exports = io => {
   io.on('connection', socket => {
@@ -51,11 +52,42 @@ module.exports = io => {
   });
 
   // Events
-  // const eventsNamespace = io.of('/events')
-  // eventsNamespace.on('connection', function(socket) {
-  //   console.log('a user connected to /events namespace...')
-  //   socket.on('test', msg => console.log('msg: ', msg))
-  // })
+
+  const eventsNamespace = io.of('/events');
+  eventsNamespace.on('connection', socket => {
+    console.log('a user connected to /events namespace...');
+
+    // Emitters
+
+    // socket.emit('foo', 'hello from nsp');
+
+    // Listeners
+
+    socket.on('disconnect', () => {
+      console.log('a user disconnected...');
+    });
+
+    socket.on('like', async ({ eventId, userId }) => {
+      // Validate
+
+      if (!ObjectId.isValid(eventId) || !ObjectId.isValid(userId)) {
+        socket.emit(
+          'invalidLike',
+          `Either eventId: ${eventId} or userId: ${userId} was incorrect. Must be a valid mongo document _id.`,
+        );
+      }
+      try {
+        const event = await Event.findById(eventId).exec();
+        event.likedBy.includes(userId)
+          ? event.likedBy.splice(event.likedBy.indexOf(userId), 1)
+          : event.likedBy.push(userId);
+        const updatedEvent = await event.save();
+        socket.broadcast.emit('newLike', updatedEvent);
+      } catch (err) {
+        console.log('err: ', err);
+      }
+    });
+  });
 
   return io;
 };
