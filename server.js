@@ -17,7 +17,10 @@ const wod = require('./routes/wod');
 const wodweek = require('./routes/wodweek');
 
 const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/fcf_backend', { useNewUrlParser: true, useCreateIndex: true }); // for local dev
+// mongoose.connect('mongodb://localhost/fcf_backend', {
+//   useNewUrlParser: true,
+//   useCreateIndex: true,
+// }); // for local dev
 mongoose.connect(process.env.FOUNDATION_DB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
