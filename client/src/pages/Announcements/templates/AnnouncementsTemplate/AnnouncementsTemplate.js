@@ -17,8 +17,9 @@ const AnnouncementsTemplate = ({
   announcements,
   deleteAnnouncement,
   isLoading,
-  patchAnnouncement,
-  postAnnouncement,
+  saveAnnouncement,
+  // patchAnnouncement,
+  // postAnnouncement,
   ...props
 }) => {
   // State
@@ -33,31 +34,11 @@ const AnnouncementsTemplate = ({
     setIsModalOpen(false);
   };
 
-  const handleSaveAnnouncement = async ({
-    _id,
-    crop,
-    description,
-    dimensions,
-    imgFile,
-    originalAnnouncement,
-    url,
-  }) => {
-    const success = _id
-      ? await patchAnnouncement({
-          _id,
-          crop,
-          description,
-          dimensions,
-          imgFile,
-          originalAnnouncement,
-          url,
-        })
-      : await postAnnouncement({ crop, description, dimensions, imgFile, url });
+  const handleSaveAnnouncement = async data => {
+    const success = await saveAnnouncement(data);
     console.log('success: ', success);
     if (success) {
-      console.log('in handleSaveAnnouncement if...');
-      setCurrentAnnouncement(null);
-      setIsModalOpen(false);
+      handleCloseModal();
     }
     return success;
   };
@@ -124,15 +105,17 @@ AnnouncementsTemplate.propTypes = {
     // }), // TODO should this be required ??
   ),
   deleteAnnouncement: PropTypes.func.isRequired,
-  patchAnnouncement: PropTypes.func.isRequired,
-  postAnnouncement: PropTypes.func.isRequired,
+  saveAnnouncement: PropTypes.func.isRequired,
+  // patchAnnouncement: PropTypes.func.isRequired,
+  // postAnnouncement: PropTypes.func.isRequired,
 };
 
 AnnouncementsTemplate.defaultProps = {
   announcements: null,
   deleteAnnouncement: null,
-  patchAnnouncement: null,
-  postAnnouncement: null,
+  saveAnnouncement: null,
+  // patchAnnouncement: null,
+  // postAnnouncement: null,
 };
 
 export default AnnouncementsTemplate;
