@@ -44,7 +44,7 @@ module.exports = io => {
           ? announcement.likedBy.splice(announcement.likedBy.indexOf(userId), 1)
           : announcement.likedBy.push(userId);
         const updatedAnnouncement = await announcement.save();
-        socket.broadcast.emit('newLike', updatedAnnouncement);
+        socket.broadcast.emit('likeUpdate', updatedAnnouncement);
       } catch (err) {
         console.log('err: ', err);
       }
@@ -78,11 +78,13 @@ module.exports = io => {
       }
       try {
         const event = await Event.findById(eventId).exec();
+        console.log('event: ', event);
         event.likedBy.includes(userId)
           ? event.likedBy.splice(event.likedBy.indexOf(userId), 1)
           : event.likedBy.push(userId);
         const updatedEvent = await event.save();
-        socket.broadcast.emit('newLike', updatedEvent);
+        console.log('updatedEvent: ', updatedEvent);
+        socket.broadcast.emit('likeUpdate', updatedEvent);
       } catch (err) {
         console.log('err: ', err);
       }

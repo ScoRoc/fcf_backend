@@ -22,11 +22,11 @@ const { isHttpUrl } = require('../utils/urlHelpers');
 
 // const upload = multer({ dest: './uploads' });
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, _file, cb) => {
     // console.log('file in destination: ', file);
     cb(null, './uploads');
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
