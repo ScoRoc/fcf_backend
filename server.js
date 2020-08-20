@@ -23,7 +23,6 @@ const mongoose = require('mongoose');
 // }); // for local dev
 mongoose.connect(process.env.FOUNDATION_DB_URI, {
   useNewUrlParser: true,
-  useCreateIndex: true,
 }); // for heroku deployment
 
 // add this in client package.json for local dev after scripts
