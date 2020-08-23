@@ -14,9 +14,11 @@
   "rules": {
     "eqeqeq": "error",
     "linebreak-style": ["error", "unix"],
+    "no-unused-vars": "warn",
     "prettier/prettier": [
       "error",
       {
+        "arrowParens": "avoid",
         "printWidth": 100,
         "singleQuote": true,
         "trailingComma": "all"

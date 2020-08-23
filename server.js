@@ -11,7 +11,6 @@ const path = require('path');
 const announcements = require('./routes/announcements');
 const auth = require('./routes/auth');
 const events = require('./routes/events');
-// const sockets = require('./websocket/sockets');
 const users = require('./routes/users');
 const wods = require('./routes/wods');
 
@@ -22,6 +21,7 @@ const http = httpLib.createServer(app);
 
 // Sockets
 const io = require('socket.io').listen(http);
+const sockets = require('./websocket/sockets')(io);
 
 // libraries
 app.use(bodyParser.json());

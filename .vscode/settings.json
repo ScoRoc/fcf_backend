@@ -1,6 +1,30 @@
 {
+  "workbench.colorTheme": "1Dark Poncho",
+  "editor.minimap.enabled": false,
   "editor.tabSize": 2,
+  "todo-tree.tree.showScanModeButton": false,
+  "todo-tree.highlights.defaultHighlight": {
+    // "background": "#5FF084",
+    // "background": "#F0D769",
+    "background": "#CF9FF0",
+    "foreground": "black"
+  },
+  "eslint.options": {
+    "configFile": "./.eslintrc"
+  },
+  "eslint.validate": ["html", "javascript"],
+  "prettier.singleQuote": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "editor.codeActionsOnSave": {
-    "source": true
-  }
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
+  },
+  "prettier.jsxSingleQuote": true,
+  "prettier.arrowParens": "avoid",
+  "bracket-pair-colorizer-2.colors": ["Gold", "Orchid", "LightSkyBlue"],
+  "window.zoomLevel": 0,
+  "eslint.alwaysShowStatus": true,
+  "editor.formatOnSave": true
 }
