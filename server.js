@@ -40,12 +40,11 @@ app.use('/wods', wods);
 
 // Mongoose
 
-mongoose.connect('mongodb://localhost/fcf_backend', {
+mongoose.connect(process.env.FOUNDATION_DB_URI, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}); // for local dev
-// mongoose.connect(process.env.FOUNDATION_DB_URI, { useNewUrlParser: true, useCreateIndex: true }); // for heroku deployment
+});
 
 // Cloudinary
 
