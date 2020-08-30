@@ -17,32 +17,32 @@ const makeWodsNamespace = io => {
 
     // Listeners
 
-    // socket.on('disconnect', () => {
-    //   console.log('a user disconnected...');
-    // });
+    socket.on('disconnect', () => {
+      console.log('a user disconnected...');
+    });
 
-    // socket.on('like', async ({ eventId, userId }) => {
-    //   // Validate
+    socket.on('like', async ({ userId, wodId }) => {
+      //   // Validate
 
-    //   if (!ObjectId.isValid(eventId) || !ObjectId.isValid(userId)) {
-    //     socket.emit(
-    //       'invalidLike',
-    //       `Either eventId: ${eventId} or userId: ${userId} was incorrect. Must be a valid mongo document _id.`,
-    //     );
-    //   }
-    //   try {
-    //     const event = await Event.findById(eventId).exec();
-    //     console.log('event: ', event);
-    //     event.likedBy.includes(userId)
-    //       ? event.likedBy.splice(event.likedBy.indexOf(userId), 1)
-    //       : event.likedBy.push(userId);
-    //     const updatedEvent = await event.save();
-    //     console.log('updatedEvent: ', updatedEvent);
-    //     socket.broadcast.emit('likeUpdate', updatedEvent);
-    //   } catch (err) {
-    //     console.log('err: ', err);
-    //   }
-    // });
+      if (!ObjectId.isValid(wodId) || !ObjectId.isValid(userId)) {
+        socket.emit(
+          'invalidLike',
+          `Either wodId: ${wodId} or userId: ${userId} was incorrect. Must be a valid mongo document _id.`,
+        );
+      }
+      try {
+        const wod = await Wod.findById(wodId).exec();
+        console.log('wod: ', wod);
+        wod.likedBy.includes(userId)
+          ? wod.likedBy.splice(wod.likedBy.indexOf(userId), 1)
+          : wod.likedBy.push(userId);
+        const updatedWod = await wod.save();
+        console.log('updatedWod: ', updatedWod);
+        socket.broadcast.emit('likeUpdate', updatedWod);
+      } catch (err) {
+        console.log('err: ', err);
+      }
+    });
   });
   return wodsNamespace;
 };
