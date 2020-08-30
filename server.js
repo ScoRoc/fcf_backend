@@ -21,7 +21,7 @@ const http = httpLib.createServer(app);
 
 // Sockets
 const io = require('socket.io').listen(http);
-const sockets = require('./websocket/sockets')(io);
+const sockets = require('./websocket')(io);
 
 // libraries
 app.use(bodyParser.json());
