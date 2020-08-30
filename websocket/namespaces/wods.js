@@ -9,7 +9,7 @@ const makeWodsNamespace = io => {
   const wodsNamespace = io.of('/wods');
 
   wodsNamespace.on('connection', socket => {
-    console.log('a user connected to /events namespace...');
+    console.log('a user connected to /wods namespace...');
 
     // Emitters
 

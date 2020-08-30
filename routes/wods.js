@@ -1,6 +1,7 @@
 // Libraries
 const router = require('express').Router();
 const ObjectId = require('mongoose').Types.ObjectId;
+const moment = require('moment');
 // Models
 const Wod = require('../models/wod');
 // Helper Functions
@@ -21,9 +22,35 @@ router.get('/', (req, res) => {
   });
 });
 
+// GET - current week wods
+
+const getDaysOfWeek = date => {
+  const week = [];
+  for (let i = 1; i <= 7; i++) {
+    week.push(moment(date).days(i));
+  }
+  return week;
+};
+
+router.get('/current-week', (req, res) => {
+  // TODO - add query string for options
+
+  Wod.find({}, (err, wods) => {
+    if (err) return res.status(500).send(err);
+
+    const thisWeek = getDaysOfWeek(moment());
+    const currentWeekWods = wods.filter(wod =>
+      thisWeek.some(day => day.isSame(moment(wod.date), 'day')),
+    );
+
+    res.status(200).json({ currentWeekWods });
+  });
+});
+
 // GET - one wod
 
 router.get('/:id', (req, res) => {
+  console.log('## calling /wods/:id');
   // TODO - add query string for options rollup data, populate, etc.
   const { id } = req.params;
 
@@ -52,6 +79,8 @@ router.post('/', async (req, res) => {
   const { date, description, name } = req.body; // TODO NEEDS VALIDATION
 
   // Validation
+
+  // TODO do I need to validate for string length ???
 
   if (!isDateString(date)) {
     return res.status(400).send({

@@ -8,7 +8,7 @@ const wodSchema = new mongoose.Schema(
       unique: true,
     },
     description: {
-      maxlength: 75,
+      maxlength: 500,
       minlength: 1,
       required: true,
       type: String,
