@@ -102,6 +102,7 @@ const WodsLogic = () => {
       // res.status === 200 ? handleSuccess(res) : handleErrors(res);
       // setIsLoading(false);
       setWod({ wod: res.data.wod });
+      // TODO handle errors
     });
   };
 
