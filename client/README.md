@@ -1,3 +1,11 @@
+For absolute imports to work, make sure to add a '.env' file under client with | NODE_PATH=src | in it.
+
+---
+
+Content that came with CRA
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

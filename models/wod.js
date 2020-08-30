@@ -23,7 +23,9 @@ const wodSchema = new mongoose.Schema(
       createdByUserId: {
         immutable: true,
         ref: 'User',
-        required: true,
+        required: function () {
+          return !!this.meta.createdByUserId;
+        },
         type: mongoose.Schema.Types.ObjectId,
       },
       updatedByUserId: {

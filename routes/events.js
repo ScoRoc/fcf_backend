@@ -155,6 +155,7 @@ router.patch('/:id', (req, res) => {
     });
 
     eventToUpdate.save((err, updatedEvent) => {
+      console.log('err: ', err);
       if (err)
         return res
           .status(500)
@@ -163,6 +164,47 @@ router.patch('/:id', (req, res) => {
       res.status(200).json({ event: updatedEvent.toObject() });
     });
   });
+});
+
+// PATCH - update event.viewedBy
+
+router.patch('/:id/viewedBy/', async (req, res) => {
+  const { id } = req.params;
+  const { viewedByUserId } = req.query;
+
+  // Validation
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).send({
+      error: true,
+      _msg: 'The id field is invalid and should a valid event._id',
+    });
+  }
+
+  if (!ObjectId.isValid(viewedByUserId)) {
+    return res.status(400).send({
+      error: true,
+      _msg: 'The viewedByUserId field is invalid and should be a valid user._id',
+    });
+  }
+
+  try {
+    const eventToUpdate = await Event.findById(id).exec();
+
+    // Bail if user has already viewed
+    if (eventToUpdate.viewedBy.includes(viewedByUserId)) {
+      console.log(`User id ${viewedByUserId} has already viewed this event.`);
+      return res.send(`User id ${viewedByUserId} has already viewed this event.`);
+    }
+
+    eventToUpdate.viewedBy.push(viewedByUserId);
+    const updatedEvent = await eventToUpdate.save();
+
+    res.send(updatedEvent);
+  } catch (err) {
+    console.log('err: ', err);
+    res.status(500).send({ err, msg: 'An error occurred when attempting to modify the database' });
+  }
 });
 
 // DELETE - an event

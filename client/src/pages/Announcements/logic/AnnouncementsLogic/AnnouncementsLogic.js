@@ -4,11 +4,10 @@ import axios from 'axios';
 // Announcements Templates
 import AnnouncementsTemplate from '../../templates';
 // Announcement Constants
-import { IMG_UPDATE } from '../../constants';
 // Announcement API Helpers
 import { buildPatch } from './apiHelpers';
 // Constants
-import { API, PATHS, QUERY_STRING } from 'utils/constants';
+import { PATHS, QUERY_STRING } from 'utils/constants';
 
 // URL Deets
 
@@ -167,6 +166,35 @@ const AnnouncementsLogic = () => {
     return true;
   };
 
+  // Functions
+
+  const handleSaveAnnouncement = async ({
+    _id,
+    crop,
+    description,
+    dimensions,
+    imgFile,
+    originalAnnouncement,
+    url,
+  }) => {
+    const success = _id
+      ? await patchAnnouncement({
+          _id,
+          crop,
+          description,
+          dimensions,
+          imgFile,
+          originalAnnouncement,
+          url,
+        })
+      : await postAnnouncement({ crop, description, dimensions, imgFile, url });
+    console.log('success: ', success);
+    if (success) {
+      // console.log('in handleSaveAnnouncement if success...');
+    }
+    return success;
+  };
+
   // Sorted Announcements
 
   // TODO fix sorting
@@ -186,8 +214,10 @@ const AnnouncementsLogic = () => {
     <AnnouncementsTemplate
       deleteAnnouncement={deleteAnnouncement}
       isLoading={isLoading}
-      patchAnnouncement={patchAnnouncement}
-      postAnnouncement={postAnnouncement}
+      saveAnnouncement={handleSaveAnnouncement}
+      // patchAnnouncement={patchAnnouncement}
+      // postAnnouncement={postAnnouncement}
+
       // announcements={sortedWods}
       announcements={Object.values(announcements.data)}
     />

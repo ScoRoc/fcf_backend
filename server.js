@@ -11,7 +11,6 @@ const path = require('path');
 const announcements = require('./routes/announcements');
 const auth = require('./routes/auth');
 const events = require('./routes/events');
-// const sockets = require('./websocket/sockets');
 const users = require('./routes/users');
 const wods = require('./routes/wods');
 
@@ -22,7 +21,7 @@ const http = httpLib.createServer(app);
 
 // Sockets
 const io = require('socket.io').listen(http);
-const sockets = require('./websocket/sockets')(io);
+const sockets = require('./websocket')(io);
 
 // libraries
 app.use(bodyParser.json());
@@ -41,12 +40,11 @@ app.use('/wods', wods);
 
 // Mongoose
 
-mongoose.connect('mongodb://localhost/fcf_backend', {
+mongoose.connect(process.env.FOUNDATION_DB_URI, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}); // for local dev
-// mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true }); // for heroku deployment
+});
 
 // Cloudinary
 
